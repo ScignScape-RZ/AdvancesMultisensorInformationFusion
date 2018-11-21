@@ -1,0 +1,12 @@
+
+,fnd ::: Fn_Doc*;
+fnd \== default; 
+
+,kenv ::: KCM_Env*;
+kenv \= (envv "KCM_Env*");
+
+fnd -> init kenv;
+
+,test-fn ::: .(int)  $-> extern;
+
+fnd -> read  "test-fn";

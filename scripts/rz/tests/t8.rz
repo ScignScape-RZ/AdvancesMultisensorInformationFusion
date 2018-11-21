@@ -1,0 +1,10 @@
+
+,fnd ::: Fn_Doc*;
+fnd \== default; 
+
+,kenv ::: KCM_Env*;
+kenv \= (envv "KCM_Env*");
+
+fnd -> init kenv;
+
+fnd -> test-0-S10;

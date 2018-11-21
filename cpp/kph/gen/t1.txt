@@ -1,0 +1,20 @@
+-
+Auto Generated
+.
+;lambda:1
+.
+;sigma:2
+.
+@str::1
+.
+@ScignStage_Audio_Dialog*::2
+.
+#1
+.
+&:test_msgbox
+.
+1:1::1::::Testing
+.
+2:1::2::::#*ScignStage_Audio_Dialog*
+.
+-

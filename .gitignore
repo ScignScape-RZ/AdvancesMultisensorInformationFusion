@@ -1,0 +1,16 @@
+build-*
+!build-proset.pri
+!build-group.pri
+!build-root.pri
+!build-root-both.pri
+!build-all.pro
+!build-quick.pro
+!build-most.pro
+targets
+Contents
+*.pro.user
+screenshots
+*.rz.*
+
+
+

@@ -1,0 +1,33 @@
+
+,fnm ::: Fn_Doc_Multi*;
+fnm \== default;
+
+,kenv ::: KCM_Env*;
+kenv \= (envv _$);
+
+fnm -> init kenv;
+
+,play_sample ::: .[ScignStage_Audio_Dialog*] .(int)  $-> extern;
+,test_msgbox ::: .[ScignStage_Audio_Dialog*] .(QString)  $-> extern;
+,play_next_sample ::: .[ScignStage_Audio_Dialog*]  $-> extern;
+,play_next_sample_in_peer_group ::: .[ScignStage_Audio_Dialog*]  $-> extern;
+,play_previous_sample ::: .[ScignStage_Audio_Dialog*]  $-> extern;
+,play_previous_sample_in_peer_group ::: .[ScignStage_Audio_Dialog*]  $-> extern;
+,show_sentence_text ::: .[ScignStage_Audio_Dialog*] .(int)  $-> extern;
+,show_distractor_text ::: .[ScignStage_Audio_Dialog*] .(int)  $-> extern;
+,highlight_sample ::: .[ScignStage_Audio_Dialog*] .(int)  $-> extern;
+,highlight_peers ::: .[ScignStage_Audio_Dialog*] .(int)  $-> extern;
+
+fnm -> read "play_sample";
+fnm -> read "test_msgbox";
+fnm -> read "play_next_sample";
+fnm -> read "play_next_sample_in_peer_group";
+fnm -> read "play_previous_sample";
+fnm -> read "play_previous_sample_in_peer_group";
+fnm -> read "show_sentence_text";
+fnm -> read "show_distractor_text";
+fnm -> read "highlight_sample";
+fnm -> read "highlight_peers";
+
+fnm -> kph-gen-multi  "@/cpp/kph/gen-multi/t1.kph";
+

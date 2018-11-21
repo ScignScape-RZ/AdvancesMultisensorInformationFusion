@@ -1,0 +1,5 @@
+
+SMOS refers to subjective assessments of the speech quality 
+(how clearly the spoken content is audible) in each audio sample, on 
+a scale of 1-5 (5 being highest quality).  Click 'More' for 
+additional information (requires XPDF).

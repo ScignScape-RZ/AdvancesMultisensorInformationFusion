@@ -1,0 +1,18 @@
+
+<kauvir-phaon-xml>
+<ch c='1' n='lambda'/>
+<ch c='2' n='result'/>
+<ty c='1' n='str'/>
+<pkg c='1'>
+<fuxe n='test_s_ss'/>
+<arg c='1' chc='1' tyc='1'>
+OK
+</arg>
+<arg c='2' chc='1' tyc='1'>
+Test
+</arg>
+<arg c='1' chc='2' tyc='1'>
+</arg>
+</pkg>
+</kauvir-phaon-xml>
+

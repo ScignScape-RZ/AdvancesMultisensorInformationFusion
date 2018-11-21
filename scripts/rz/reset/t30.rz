@@ -1,0 +1,13 @@
+
+,x ::: int;
+x \= test-find "abcdef" "de";
+ 
+&if \(x =? 3) \do
+ @format t "Found: ~a~%" x;
+ &prs "OK";
+;, \else
+ &prs "Not Found";
+;;
+
+@format t "review, x = ~a~%" x;
+&prs "done.";

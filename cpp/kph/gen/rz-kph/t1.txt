@@ -1,0 +1,20 @@
+-
+Auto Generated
+.
+;lambda:1
+.
+;sigma:2
+.
+@u32::1
+.
+@ScignStage_Audio_Dialog*::2
+.
+#1
+.
+&:play_sample
+.
+1:1::1::::3
+.
+2:1::2::::#*ScignStage_Audio_Dialog*
+.
+-

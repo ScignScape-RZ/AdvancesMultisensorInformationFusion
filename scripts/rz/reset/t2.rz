@@ -1,0 +1,6 @@
+
+&test-calls do .() ->
+ &prn 78;
+ ;, do .() ->
+ &prn 79;
+ ;;

@@ -1,0 +1,4 @@
+
+,x6 ::: int;
+x6 \= test-i-s "abcdef";
+&prn x6;

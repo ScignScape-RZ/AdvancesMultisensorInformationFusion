@@ -1,0 +1,5 @@
+
+,x5 ::: str;
+x5 \= test-s-s "abcdef";
+&prs x5;
+

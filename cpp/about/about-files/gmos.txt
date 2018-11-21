@@ -1,0 +1,4 @@
+
+GMOS refers to subjective evaluation of the overall quality 
+of each audio sample, on a scale of 1-5 (5 being highest quality).  
+Click 'More' for additional information (requires XPDF).
