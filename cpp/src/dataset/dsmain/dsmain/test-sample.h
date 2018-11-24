@@ -56,6 +56,8 @@ public:
  void set_temperature_adj(precon_pr<temperature_adj_t> pr);
  void set_temperature_adj(quint16 q, precon<temperature_adj_t> pre);
 
+ void finalize();
+
  static void read_samples_from_file(QString path, QVector<Test_Sample*>& samps);
  static void read_samples_from_raw_file(QString path, QVector<Test_Sample*>& samps);
  static void write_samples_to_file(QString path, QVector<Test_Sample*>& samps);

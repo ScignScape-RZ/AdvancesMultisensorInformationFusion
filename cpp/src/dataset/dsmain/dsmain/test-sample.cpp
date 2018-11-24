@@ -58,6 +58,10 @@ void Test_Sample::read_samples_from_file(QString path, QVector<Test_Sample*>& sa
   if(qs.startsWith('#'))
   {
    current_index = qs.mid(1).toInt();
+
+   if(samp)
+     samp->finalize();
+
    samp = new Test_Sample(current_index);
    samps[current_index - 1] = samp;
    field = 0;
@@ -91,6 +95,13 @@ void Test_Sample::read_samples_from_file(QString path, QVector<Test_Sample*>& sa
   }
   ++field;
  }
+}
+
+void Test_Sample::finalize()
+{
+ temperature_kelvin_ = Posit( double(temperature_adj_/100) + 273.15 );
+ average_time_ = (time_with_flow_ + time_against_flow_) / 2;
+ delta_time_ = time_against_flow_ - time_with_flow_;
 }
 
 void Test_Sample::read_samples_from_raw_file(QString path, QVector<Test_Sample*>& samps)

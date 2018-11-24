@@ -169,29 +169,31 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
   QStringList headers {
    "Index",
    "Flow",
-   "Time With",
-   "Time Against",
-   "Temperature"
+   "Time With\n / Average",
+   "Time Against\n / Delta",
+   "Temperature C\u00b0\n / K\u00b0",
+   "Oxygen \n (calculated)"
   };
 
-  main_tree_widget_->setColumnCount(5);
+  main_tree_widget_->setColumnCount(6);
   main_tree_widget_->setHeaderLabels(headers);
 
-  main_tree_widget_->setColumnWidth(0, 30);
-  main_tree_widget_->setColumnWidth(1, 105);
-  main_tree_widget_->setColumnWidth(2, 100);
+  main_tree_widget_->setColumnWidth(0, 50);
+  main_tree_widget_->setColumnWidth(1, 65);
+  main_tree_widget_->setColumnWidth(2, 105);
   main_tree_widget_->setColumnWidth(3, 105);
-  main_tree_widget_->setColumnWidth(4, 105);
+  main_tree_widget_->setColumnWidth(4, 135);
+  main_tree_widget_->setColumnWidth(5, 65);
 
   main_tree_widget_->header()->setStretchLastSection(false);
-  main_tree_widget_->header()->setSectionResizeMode(0, QHeaderView::Stretch);
+  main_tree_widget_->header()->setSectionResizeMode(5, QHeaderView::Stretch);
 
   int c = 0;
   for(Test_Sample* samp : *samples_)
   {
    ++c;
 
-   QStringList qsl; // = group->all_sample_text();
+   QStringList qsl;
 
    qsl.push_back(QString::number(samp->index()));
    qsl.push_back(QString::number(samp->flow().getDouble()));
@@ -205,6 +207,16 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
    QTreeWidgetItem* twi = new QTreeWidgetItem((QTreeWidget*) nullptr,
      qsl);
 
+   QStringList sqsl {{"", ""}};
+
+   sqsl.push_back(" " + QString::number(samp->average_time().getDouble()));
+   sqsl.push_back(" " + QString::number(samp->delta_time().getDouble()));
+   sqsl.push_back(" " + QString::number(samp->temperature_kelvin().getDouble()));
+
+   QTreeWidgetItem* stwi = new QTreeWidgetItem((QTreeWidget*) nullptr,
+     sqsl);
+
+   twi->addChild(stwi);
 
    main_tree_widget_->addTopLevelItem(twi);
 
