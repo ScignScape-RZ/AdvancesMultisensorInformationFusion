@@ -45,6 +45,58 @@ void Test_Sample::read_samples_from_file(QString path, QVector<Test_Sample*>& sa
 {
  QString text = load_file(path);
  QStringList qsl = text.split('\n');
+ int sz = qsl.takeFirst().mid(1).toInt();
+ samps.resize(sz);
+ int current_index = 0;
+ int field = 0;
+ char fields [4] = {'t', 'f', 'w', 'a'};
+ Test_Sample* samp = nullptr;
+ for(QString qs : qsl)
+ {
+  if(qs.isEmpty())
+    continue;
+  if(qs.startsWith('#'))
+  {
+   current_index = qs.mid(1).toInt();
+   samp = new Test_Sample(current_index);
+   samps[current_index - 1] = samp;
+   field = 0;
+   continue;
+  }
+  switch(fields[field])
+  {
+  case 't':
+   {
+    samp->set_temperature_adj(qs.toInt());
+   }
+   break;
+
+  case 'f':
+   {
+    samp->set_flow(Posit(qs.toDouble()));
+   }
+   break;
+
+  case 'w':
+   {
+    samp->set_time_with_flow(Posit(qs.toDouble()));
+   }
+   break;
+
+  case 'a':
+   {
+    samp->set_time_against_flow(Posit(qs.toDouble()));
+   }
+   break;
+  }
+  ++field;
+ }
+}
+
+void Test_Sample::read_samples_from_raw_file(QString path, QVector<Test_Sample*>& samps)
+{
+ QString text = load_file(path);
+ QStringList qsl = text.split('\n');
 
  char c = 0;
  int i = 0;
@@ -97,11 +149,11 @@ void Test_Sample::read_samples_from_file(QString path, QVector<Test_Sample*>& sa
 
 void Test_Sample::write_samples_to_file(QString path, QVector<Test_Sample*>& samps)
 {
- QString text;
+ QString text = QString("=%1").arg(samps.size());
 
  for(Test_Sample* samp : samps)
  {
-  text += QString("#%1\n%2\n%3\n%4\n%5\n").arg(samp->index_)
+  text += QString("\n#%1\n%2\n%3\n%4\n%5").arg(samp->index_)
     .arg(samp->temperature_adj())
     .arg(samp->flow().getDouble())
     .arg(samp->time_with_flow().getDouble())
