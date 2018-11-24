@@ -10,7 +10,7 @@
 #include <QVector>
 
 
-#include "dsmain/pri.h"
+//#include "dsmain/pri.h"
 
 #include "dsmain/test-sample.h"
 

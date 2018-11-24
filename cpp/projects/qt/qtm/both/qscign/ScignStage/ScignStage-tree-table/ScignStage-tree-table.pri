@@ -11,6 +11,8 @@ QT += widgets multimedia
 
 INCLUDEPATH += $$SRC_DIR $$SRC_GROUP_DIR
 
+INCLUDEPATH += $$POSIT_SRC_GROUP_DIR
+
 INCLUDEPATH += $$DSMAIN_SRC_GROUP_DIR
 INCLUDEPATH += $$XPDF_SRC_GROUP_DIR
 INCLUDEPATH += $$PHAON_SRC_GROUP_DIR
@@ -55,20 +57,20 @@ exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/tests-kph--kauvir-phaon--kauvir-phao
 
 
 HEADERS += \
-  $$SRC_DIR/scignstage-table-dialog.h \
+  $$SRC_DIR/scignstage-tree-table-dialog.h \
   $$SRC_DIR/nav-protocols/nav-table-1d-panel.h \
   $$SRC_DIR/subwindows/scignstage-clickable-label.h \
   $$SRC_DIR/xpdf-bridge.h \
 
 
 SOURCES += \
-  $$SRC_DIR/scignstage-table-dialog.cpp \
+  $$SRC_DIR/scignstage-tree-table-dialog.cpp \
   $$SRC_DIR/nav-protocols/nav-table-1d-panel.cpp \
   $$SRC_DIR/subwindows/scignstage-clickable-label.cpp \
   $$SRC_DIR/xpdf-bridge.cpp \
 
 
-LIBS += -L$$TARGETSDIR -ldsmain
+LIBS += -L$$TARGETSDIR -ldsmain -lposit-lib
 
 
 

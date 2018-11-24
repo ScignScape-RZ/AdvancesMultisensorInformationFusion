@@ -5,8 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 
-
-#include "nav-audio-1d-panel.h"
+#include "nav-table-1d-panel.h"
 
 #include "styles.h"
 

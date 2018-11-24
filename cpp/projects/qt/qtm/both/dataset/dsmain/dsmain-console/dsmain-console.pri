@@ -28,11 +28,14 @@ DEFINES += RELAE_LABEL_NODES
 
 DEFINES += SAMPLES_FOLDER=\\\"$$DATA_ROOT_DIR/samples\\\"
 DEFINES += SCREENSHOTS_FOLDER=\\\"$$ROOT_DIR/screenshots\\\"
+DEFINES += DATA_FOLDER=\\\"$$DATA_ROOT_DIR\\\"
 
 
 DEFINES += USE_KANS
 DEFINES += USE_RZNS
 DEFINES += USE_QSNS
+
+INCLUDEPATH += $$POSIT_SRC_GROUP_DIR
 
 
 HEADERS += \
@@ -44,7 +47,7 @@ SOURCES += \
   $$SRC_DIR/test-functions.cpp \
 
 
-LIBS += -L$$TARGETSDIR -ldsmain  # -lScignStage-audio \
+LIBS += -L$$TARGETSDIR -ldsmain  -lScignStage-tree-table \
 
 exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/external--xpdf--xpdf) \#/
 {

@@ -28,7 +28,11 @@
 
 #include <QFileDialog>
 
-//#include "ScignStage-audio/scignstage-audio-dialog.h"
+//
+#include "ScignStage-tree-table/scignstage-tree-table-dialog.h"
+
+
+#include "dsmain/test-sample.h"
 
 //#include "ScignStage-audio/xpdf-bridge.h"
 
@@ -62,16 +66,14 @@ int main(int argc, char **argv)
 {
  QApplication qapp(argc, argv);
 
- Test_Series_Folder tsf(SAMPLES_FOLDER);
-
- Test_Series ts;
- tsf.read_files(ts);
+ QVector<Test_Sample*> ts;
+ Test_Sample::read_samples_from_file(DATA_FOLDER "/t1.txt", ts);
 
 #ifdef USING_XPDF
  XPDF_Bridge xpdf_bridge(argc, argv);
- ScignStage_Audio_Dialog dlg (&xpdf_bridge, &ts);
+ ScignStage_Tree_Table_Dialog dlg (&xpdf_bridge, &ts);
 #else
- ScignStage_Audio_Dialog dlg (nullptr, &ts);
+ ScignStage_Tree_Table_Dialog dlg (nullptr, &ts);
 #endif
 
 #ifdef USING_KPH
@@ -86,7 +88,7 @@ int main(int argc, char **argv)
  });
 #endif
 
- QObject::connect(&dlg, &ScignStage_Audio_Dialog::canceled,
+ QObject::connect(&dlg, &ScignStage_Tree_Table_Dialog::canceled,
    []()
  {
    qDebug() << "Closing ...";

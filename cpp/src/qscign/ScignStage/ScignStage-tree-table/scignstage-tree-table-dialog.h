@@ -5,8 +5,8 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 
-#ifndef SCIGNSTAGE_AUDIO_DIALOG__H
-#define SCIGNSTAGE_AUDIO_DIALOG__H
+#ifndef SCIGNSTAGE_TREE_TABLE_DIALOG__H
+#define SCIGNSTAGE_TREE_TABLE_DIALOG__H
 
 #include <QObject>
 
@@ -24,15 +24,13 @@
 #include "accessors.h"
 #include "qsns.h"
 
-#include "nav-protocols/nav-audio-1d-panel.h"
+#include "nav-protocols/nav-table-1d-panel.h"
 
 #include <functional>
 
 #include "kans.h"
 
-KANS_CLASS_DECLARE(DSM ,Test_Series)
 KANS_CLASS_DECLARE(DSM ,Test_Sample)
-KANS_CLASS_DECLARE(DSM ,Test_Sentence)
 
 
 USING_KANS(DSM)
@@ -55,6 +53,7 @@ class QGridLayout;
 class QMediaPlayer;
 class QProcess;
 class QTcpServer;
+class QTreeWidget;
 
 class ScignStage_Clickable_Label;
 
@@ -69,7 +68,7 @@ _QSNS(ScignStage)
 
 
 
-class ScignStage_Audio_Dialog : public QDialog
+class ScignStage_Tree_Table_Dialog : public QDialog
 {
 
  Q_OBJECT
@@ -83,9 +82,6 @@ class ScignStage_Audio_Dialog : public QDialog
  QHBoxLayout* middle_layout_;
  QVBoxLayout* main_layout_;
 
- QLabel* sentence_label_;
-
-
  // //  "Pseudo" Toolbar ...
  QHBoxLayout* top_buttons_layout_;
 
@@ -93,46 +89,13 @@ class ScignStage_Audio_Dialog : public QDialog
 
  QPushButton* take_screenshot_button_;
 
-
- QScrollArea* grid_scroll_area_;
- QFrame* main_frame_;
- QGridLayout* main_grid_layout_;
+ QTreeWidget* main_tree_widget_;
 
  NAV_Audio1D_Panel* nav_panel_;
 
  XPDF_Bridge* xpdf_bridge_;
 
- QVector<QString> files_;
-
  QVector<Test_Sample*>* samples_;
-
- void test_to_string(QString& result, bool wl);
-
- void smos_to_string(QString& result, bool wl);
- void nmos_to_string(QString& result, bool wl);
- void gmos_to_string(QString& result, bool wl);
-
- void save_to_user_select_file(QString text);
-
- QMap<Test_Sample*, QPair<QLabel*, int> > sample_to_label_map_;
-
- Test_Sample* last_sample_;
-
- QMediaPlayer* player_;
-
- int current_index_;
-
- int max_index_;
-
- QWidget* last_highlight_;
-
- int current_volume_;
-
- QProcess* xpdf_process_;
-
- quint64 current_tcp_msecs_;
-
- int xpdf_port_;
 
  QTcpServer* tcp_server_;
 
@@ -161,45 +124,22 @@ class ScignStage_Audio_Dialog : public QDialog
 
  bool ask_pdf_proceed(QString name);
 
- void run_smos_message(const QPoint& p, int col);
- void run_nmos_message(const QPoint& p, int col);
- void run_gmos_message(const QPoint& p, int col);
-
- void run_test_with_load_message(const QPoint& p, int col);
- void run_test_no_load_message(const QPoint& p, int col);
-
- void run_about_context_menu(const QPoint& p, int col, std::function<void()> about_fn,
-    std::function<void()> copy_fn, std::function<void()> save_fn);
-
- void run_sample_context_menu(const QPoint& p, std::function<void()> play_fn,
-    std::function<void()> copy_fn);
-
-
- void run_message_by_grid_position(const QPoint& p, int r, int c);
 
 public:
 
 
 
- ScignStage_Audio_Dialog(XPDF_Bridge* xpdf_bridge,
-   Test_Series* ts, QWidget* parent = nullptr);
+ ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bridge,
+   QVector<Test_Sample*>* samples, QWidget* parent = nullptr);
 
- ~ScignStage_Audio_Dialog();
+ ~ScignStage_Tree_Table_Dialog();
 
  ACCESSORS__SET(std::function<void(Phaon_Runner&)>, phr_init_function)
  ACCESSORS__SET(std::function<void()> ,screenshot_function)
 
  // //  Kernel Application Interface
  void test_msgbox(QString msg);
- void play_sample(int index);
- Q_INVOKABLE void play_next_sample();
- Q_INVOKABLE void play_next_sample_in_peer_group();
- Q_INVOKABLE void play_previous_sample();
- Q_INVOKABLE void play_previous_sample_in_peer_group();
- void show_sentence_text(int index);
- void show_distractor_text(int index);
- void highlight_sample(int index);
- void highlight_peers(int index);
+
 
 Q_SIGNALS:
  void canceled(QDialog*);
@@ -218,14 +158,6 @@ public Q_SLOTS:
 
  void handle_sample_up();
  void handle_sample_down();
-
- void handle_peer_up();
- void handle_peer_down();
-
- void handle_sample_replay();
- void handle_sample_first();
-
- void handle_volume_change_requested(int);
 
 };
 
