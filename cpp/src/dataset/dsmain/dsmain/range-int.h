@@ -44,6 +44,7 @@ public:
  static Range_Int cocon(T r) { return Range_Int(r); }
 
  operator T() { return raw_; }
+ operator T() const { return raw_; }
  void operator=(T r) { raw_ = r; }
 
 };
@@ -51,4 +52,4 @@ public:
 
 _KANS(DSM)
 
-#endif // RANGE__INT__H
+#endif // RANGE_INT__H

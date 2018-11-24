@@ -115,6 +115,13 @@
 #endif
 
 
+#ifndef ACCESSORS__GET__SDECLARE
+#define ACCESSORS__GET__SDECLARE(type, name) \
+ ACCESSORS__GET(type, name) \
+ ACCESSORS__SDECLARE(type, name)
+#endif
+
+
 #ifndef ACCESSORS
 #define ACCESSORS(type, name) \
  ACCESSORS__GET(type, name) \

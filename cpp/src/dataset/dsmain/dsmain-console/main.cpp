@@ -28,14 +28,14 @@
 
 #include <QFileDialog>
 
-#include "ScignStage-audio/scignstage-audio-dialog.h"
+//#include "ScignStage-audio/scignstage-audio-dialog.h"
 
-#include "ScignStage-audio/xpdf-bridge.h"
+//#include "ScignStage-audio/xpdf-bridge.h"
 
 
-#include "dsmain/assessment-scores.h"
-#include "dsmain/test-series-folder.h"
-#include "dsmain/test-series.h"
+//#include "dsmain/assessment-scores.h"
+//#include "dsmain/test-series-folder.h"
+//#include "dsmain/test-series.h"
 
 #include "kauvir-code-model/kauvir-code-model.h"
 
@@ -55,8 +55,7 @@ USING_KANS(KCM)
 USING_KANS(Phaon)
 USING_KANS(PhaonLib)
 #endif
-USING_QSNS(ScignStage)
-
+//USING_QSNS(ScignStage)
 
 
 int main(int argc, char **argv)
@@ -120,3 +119,4 @@ int main(int argc, char **argv)
  qapp.exec();
 
 }
+

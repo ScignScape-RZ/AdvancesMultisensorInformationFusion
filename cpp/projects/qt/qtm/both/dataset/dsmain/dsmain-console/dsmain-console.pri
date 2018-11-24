@@ -10,6 +10,8 @@ QT += widgets
 
 TEMPLATE = app
 
+
+
 INCLUDEPATH += $$SRC_DIR $$SRC_GROUP_DIR
 
 INCLUDEPATH += $$SCIGNSTAGE_SRC_GROUP_DIR
@@ -42,7 +44,7 @@ SOURCES += \
   $$SRC_DIR/test-functions.cpp \
 
 
-LIBS += -L$$TARGETSDIR -ldsmain -lScignStage-audio \
+LIBS += -L$$TARGETSDIR -ldsmain  # -lScignStage-audio \
 
 exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/external--xpdf--xpdf) \#/
 {
