@@ -226,6 +226,35 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
   }
  }
 
+ main_tree_widget_->setContextMenuPolicy(Qt::CustomContextMenu);
+ connect(main_tree_widget_, &QTreeWidget::customContextMenuRequested, [this](const QPoint& qp)
+ {
+  QTreeWidgetItem* twi = main_tree_widget_->itemAt(qp);
+  QModelIndex qmi = main_tree_widget_->indexAt(qp);
+  qDebug() << qmi.column();
+
+
+  run_tree_context_menu(qp, qmi.column());
+
+  if(twi)
+  {
+   qDebug() << twi->text(1);
+  }
+ });
+
+ main_tree_widget_->header()->setContextMenuPolicy(Qt::CustomContextMenu);
+ connect(main_tree_widget_->header(), &QTreeWidget::customContextMenuRequested, [this](const QPoint& qp)
+ {
+//  QModelIndex qmi = main_tree_widget_->indexAt(qp);
+//  qDebug() << qmi.column();
+
+  int col = main_tree_widget_->header()->logicalIndexAt(qp);
+
+  run_tree_context_menu(qp, col);
+
+ });
+
+
  middle_layout_->addWidget(main_tree_widget_);
 
  main_layout_->addLayout(middle_layout_);
@@ -265,6 +294,53 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
 #endif // USING_XPDF
 
 }
+
+void ScignStage_Tree_Table_Dialog::run_tree_context_menu(const QPoint& qp, int col)
+{
+ run_tree_context_menu(qp, 0, col,
+ [this](int page)
+ {
+
+ },
+ [this](int col)
+ {
+  QString copy;
+  for(Test_Sample* samp : *samples_)
+  {
+   switch (col)
+   {
+   case 0:
+    copy += QString("%1\n").arg(samp->flow().getDouble());
+    break;
+   case 1:
+    copy += QString("%1\n").arg(samp->time_with_flow().getDouble());
+    break;
+   }
+  }
+  QApplication::clipboard()->setText(copy);
+ }
+ );
+}
+
+void ScignStage_Tree_Table_Dialog::run_tree_context_menu(const QPoint& qp,
+  int page, int col,
+  std::function<void(int)> pdf_fn, std::function<void(int)> copyc_fn
+//                                                         ,
+//  std::function<void()> highlight_fn
+                                                         )
+{
+ QMenu* qm = new QMenu(this);
+ qm->addAction("Show in Document (requires XPDF)",
+   [pdf_fn, page](){pdf_fn(page);});
+ qm->addAction("Copy Column to Clipboard",
+   [copyc_fn, col](){copyc_fn(col);});
+// qm->addAction("Highlight (scroll from here)",
+//   [highlight_fn](){highlight_fn();});
+ QPoint g = main_tree_widget_->mapToGlobal(qp);
+ qm->popup(g);
+}
+
+
 
 void ScignStage_Tree_Table_Dialog::handle_peer_down()
 {

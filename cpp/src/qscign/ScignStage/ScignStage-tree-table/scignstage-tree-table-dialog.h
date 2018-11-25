@@ -126,6 +126,12 @@ class ScignStage_Tree_Table_Dialog : public QDialog
 
  bool ask_pdf_proceed(QString name);
 
+ void run_tree_context_menu(const QPoint& qp, int col);
+ void run_tree_context_menu(const QPoint& qp, int page, int col,
+   std::function<void(int)> pdf_fn, std::function<void(int)> copyc_fn
+//                            ,
+//   std::function<void()> highlight_fn
+                            );
 
 public:
 
