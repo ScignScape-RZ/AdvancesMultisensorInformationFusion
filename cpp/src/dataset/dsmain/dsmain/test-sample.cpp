@@ -20,12 +20,28 @@ USING_KANS(TextIO)
 
 
 Test_Sample::Test_Sample(int index)
-  :  index_(index), temperature_adj_(0)
+  :  index_(index), temperature_adj_(0), oxy_(0)
 {
 
 }
 
-void Test_Sample::set_temperature_adj(quint16 q)
+void Test_Sample::set_oxy(precon_pr<oxy_t> pr)
+{
+ oxy_ = pr.data;
+}
+
+void Test_Sample::set_oxy(quint8 q, precon<oxy_t> pre)
+{
+ if(pre.pass_fn)
+   set_oxy(precon_pr<oxy_t>{q, pre});
+}
+
+void Test_Sample::set_oxy(quint8 q)
+{
+ set_oxy(q, precon<oxy_t>(q));
+}
+
+void Test_Sample::set_temperature_adj(qint16 q)
 {
  set_temperature_adj(q, precon<temperature_adj_t>(q));
 }
@@ -35,7 +51,7 @@ void Test_Sample::set_temperature_adj(precon_pr<temperature_adj_t> pr)
  temperature_adj_ = pr.data;
 }
 
-void Test_Sample::set_temperature_adj(quint16 q, precon<temperature_adj_t> pre)
+void Test_Sample::set_temperature_adj(qint16 q, precon<temperature_adj_t> pre)
 {
  if(pre.pass_fn)
    set_temperature_adj(precon_pr<temperature_adj_t>{q, pre});
@@ -49,7 +65,7 @@ void Test_Sample::read_samples_from_file(QString path, QVector<Test_Sample*>& sa
  samps.resize(sz);
  int current_index = 0;
  int field = 0;
- char fields [4] = {'t', 'f', 'w', 'a'};
+ char fields [5] = {'t', 'f', 'w', 'a', 'o'};
  Test_Sample* samp = nullptr;
  for(QString qs : qsl)
  {
@@ -90,6 +106,12 @@ void Test_Sample::read_samples_from_file(QString path, QVector<Test_Sample*>& sa
   case 'a':
    {
     samp->set_time_against_flow(Posit(qs.toDouble()));
+   }
+   break;
+
+  case 'o':
+   {
+    samp->set_oxy(qs.toInt());
    }
    break;
   }
@@ -147,6 +169,12 @@ void Test_Sample::read_samples_from_raw_file(QString path, QVector<Test_Sample*>
    continue;
   }
 
+  if(c == 'o')
+  {
+   samp->set_oxy(qs.toInt());
+   continue;
+  }
+
   double dbl = qs.toDouble();
   Posit p = Posit(dbl);
 
@@ -164,11 +192,12 @@ void Test_Sample::write_samples_to_file(QString path, QVector<Test_Sample*>& sam
 
  for(Test_Sample* samp : samps)
  {
-  text += QString("\n#%1\n%2\n%3\n%4\n%5").arg(samp->index_)
+  text += QString("\n#%1\n%2\n%3\n%4\n%5\n%6").arg(samp->index_)
     .arg(samp->temperature_adj())
     .arg(samp->flow().getDouble())
     .arg(samp->time_with_flow().getDouble())
-    .arg(samp->time_against_flow().getDouble());
+    .arg(samp->time_against_flow().getDouble())
+    .arg(samp->oxy());
  }
  save_file(path, text);
 }

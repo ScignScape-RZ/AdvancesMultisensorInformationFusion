@@ -31,6 +31,9 @@ class Test_Sample
  typedef Range_Int<qint32, -10000, 10000> temperature_adj_t;
  temperature_adj_t temperature_adj_;
 
+ typedef Range_Int<qint8, 0, 100> oxy_t;
+ oxy_t oxy_;
+
  Posit flow_;
  Posit time_with_flow_;
  Posit time_against_flow_;
@@ -51,10 +54,14 @@ public:
  ACCESSORS(Posit ,average_time)
  ACCESSORS(Posit ,delta_time)
 
- ACCESSORS__GET__SDECLARE(quint16 ,temperature_adj)
+ ACCESSORS__GET__SDECLARE(qint16 ,temperature_adj)
+ ACCESSORS__GET__SDECLARE(quint8 ,oxy)
 
  void set_temperature_adj(precon_pr<temperature_adj_t> pr);
- void set_temperature_adj(quint16 q, precon<temperature_adj_t> pre);
+ void set_temperature_adj(qint16 q, precon<temperature_adj_t> pre);
+
+ void set_oxy(precon_pr<oxy_t> pr);
+ void set_oxy(quint8 q, precon<oxy_t> pre);
 
  void finalize();
 

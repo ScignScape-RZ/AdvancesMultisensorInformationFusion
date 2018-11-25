@@ -212,6 +212,7 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
    sqsl.push_back(" " + QString::number(samp->average_time().getDouble()));
    sqsl.push_back(" " + QString::number(samp->delta_time().getDouble()));
    sqsl.push_back(" " + QString::number(samp->temperature_kelvin().getDouble()));
+   sqsl.push_back(" " + QString::number(samp->oxy()));
 
    QTreeWidgetItem* stwi = new QTreeWidgetItem((QTreeWidget*) nullptr,
      sqsl);
