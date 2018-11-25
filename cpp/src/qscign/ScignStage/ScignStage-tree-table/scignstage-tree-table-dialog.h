@@ -24,7 +24,7 @@
 #include "accessors.h"
 #include "qsns.h"
 
-#include "nav-protocols/nav-table-1d-panel.h"
+#include "nav-protocols/nav-tree-table-1d-panel.h"
 
 #include <functional>
 
@@ -91,7 +91,7 @@ class ScignStage_Tree_Table_Dialog : public QDialog
 
  QTreeWidget* main_tree_widget_;
 
- NAV_Audio1D_Panel* nav_panel_;
+ NAV_Tree_Table1D_Panel* nav_panel_;
 
  XPDF_Bridge* xpdf_bridge_;
 
@@ -105,6 +105,8 @@ class ScignStage_Tree_Table_Dialog : public QDialog
 
  std::function<void(Phaon_Runner&)> phr_init_function_;
  std::function<void()> screenshot_function_;
+
+ Test_Sample* current_sample_;
 
  bool xpdf_is_ready();
  void check_phr();
@@ -151,13 +153,19 @@ public Q_SLOTS:
  void handle_xpdf_is_ready();
  void handle_take_screenshot_requested();
 
+ void handle_sample_down();
+ void handle_sample_up();
+
+ void handle_sample_first();
+
+ void handle_peer_down();
+ void handle_peer_up();
+
  void accept();
  void cancel();
 
  void activate_tcp_requested();
 
- void handle_sample_up();
- void handle_sample_down();
 
 };
 

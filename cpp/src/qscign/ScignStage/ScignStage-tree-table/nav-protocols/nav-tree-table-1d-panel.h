@@ -6,8 +6,8 @@
 
 
 
-#ifndef NAV_AUDIO_1D_PANEL__H
-#define NAV_AUDIO_1D_PANEL__H
+#ifndef NAV_Tree_Table1D_PANEL__H
+#define NAV_Tree_Table1D_PANEL__H
 
 #include <QObject>
 
@@ -52,7 +52,7 @@ class ScignStage_Clickable_Label;
 class ScignStage_Image_Tile;
 
 
-class NAV_Audio1D_Panel : public QFrame
+class NAV_Tree_Table1D_Panel : public QFrame
 {
  Q_OBJECT
 
@@ -68,66 +68,31 @@ class NAV_Audio1D_Panel : public QFrame
  QPushButton* peer_up_button_;
  QPushButton* peer_down_button_;
 
- QVBoxLayout* first_replay_note_layout_;
- QHBoxLayout* first_replay_layout_;
- QLabel* first_replay_label_;
-
  QLabel* sample_first_label_;
  QPushButton* sample_first_button_;
 
- QLabel* sample_replay_label_;
- QPushButton* sample_replay_button_;
-
- QVBoxLayout* first_layout_;
- QVBoxLayout* replay_layout_;
- QVBoxLayout* navigation_buttons_up_down_layout_;
-
- QGroupBox* up_down_group_box_;
- QButtonGroup* up_down_button_group_;
-
- QVBoxLayout* peer_up_down_layout_;
+ QGroupBox* sample_up_down_group_box_;
+ QButtonGroup* sample_up_down_button_group_;
 
  QGroupBox* peer_up_down_group_box_;
  QButtonGroup* peer_up_down_button_group_;
 
- QHBoxLayout* volume_layout_;
+ QVBoxLayout* peer_up_down_layout_;
+ QVBoxLayout* sample_up_down_layout_;
 
-
-
- QVBoxLayout* zoom_sample_distractor_layout_;
- QHBoxLayout* sample_distractor_layout_;
-
- QLabel* sample_label_;
- QLineEdit* sample_line_edit_;
- QLabel* distractor_label_;
- QLineEdit* distractor_line_edit_;
-
- QSlider* volume_slider_;
-
- qreal old_zoom_slider_value_;
-
- int volume_min_;
- int volume_max_;
+ QHBoxLayout* first_hlayout_;
+ QVBoxLayout* first_vlayout_;
 
 public:
 
- NAV_Audio1D_Panel(int vmn, int vmx, int v, QWidget* parent = nullptr);
+ NAV_Tree_Table1D_Panel(QWidget* parent = nullptr);
 
- ~NAV_Audio1D_Panel();
-
- void set_sample_text(int r);
- void set_distractor_text(QString qs);
+ ~NAV_Tree_Table1D_Panel();
 
 Q_SIGNALS:
 
  void canceled(QDialog*);
  void accepted(QDialog*);
-
- void volume_change_requested(int);
-
- void zoom_in_requested();
- void zoom_out_requested();
- void scale_ratio_change_requested(qreal ratio);
 
  void peer_up_requested();
  void peer_down_requested();
@@ -135,20 +100,16 @@ Q_SIGNALS:
  void sample_up_requested();
  void sample_down_requested();
  void sample_first_requested();
- void sample_replay_requested();
 
 
 public Q_SLOTS:
-
- void zoom_slider_value_changed(int);
- void volume_slider_value_changed(int);
 
 };
 
 //_QSNS(ScignStage)
 
 
-#endif  // NAV_AUDIO_1D_PANEL__H
+#endif  // NAV_Tree_Table1D_PANEL__H
 
 
 

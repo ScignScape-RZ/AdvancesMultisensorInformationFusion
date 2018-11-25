@@ -91,7 +91,8 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
   QVector<Test_Sample*>* samples, QWidget* parent)
   : QDialog(parent), xpdf_bridge_(xpdf_bridge),
     samples_(samples), tcp_server_(nullptr),
-    phr_(nullptr), phr_init_function_(nullptr), screenshot_function_(nullptr)
+    phr_(nullptr), phr_init_function_(nullptr),
+    screenshot_function_(nullptr), current_sample_(nullptr)
 {
  // // setup RZW
 
@@ -229,8 +230,22 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
 
  main_layout_->addLayout(middle_layout_);
 
- nav_panel_ = new NAV_Audio1D_Panel(0, 100, 50, this);
+ nav_panel_ = new NAV_Tree_Table1D_Panel(this);
 
+ connect(nav_panel_, SIGNAL(sample_up_requested()),
+   this, SLOT(handle_sample_up()));
+
+ connect(nav_panel_, SIGNAL(sample_down_requested()),
+   this, SLOT(handle_sample_down()));
+
+ connect(nav_panel_, SIGNAL(sample_first_requested()),
+   this, SLOT(handle_sample_first()));
+
+ connect(nav_panel_, SIGNAL(peer_up_requested()),
+   this, SLOT(handle_peer_up()));
+
+ connect(nav_panel_, SIGNAL(peer_down_requested()),
+   this, SLOT(handle_peer_down()));
 
  main_layout_->addWidget(nav_panel_);
 
@@ -249,6 +264,98 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
  }
 #endif // USING_XPDF
 
+}
+
+void ScignStage_Tree_Table_Dialog::handle_peer_down()
+{
+
+}
+
+void ScignStage_Tree_Table_Dialog::handle_peer_up()
+{
+
+}
+
+void ScignStage_Tree_Table_Dialog::handle_sample_down()
+{
+ int index;
+ if(current_sample_)
+ {
+  index = current_sample_->index() - 1;
+  main_tree_widget_->topLevelItem(index)->setExpanded(false);
+  ++index;
+  if(index == samples_->size())
+  {
+   index = 0;
+   current_sample_ = samples_->first();
+  }
+  else
+  {
+   current_sample_ = samples_->at(index);
+  }
+ }
+ else
+ {
+  index = 0;
+  current_sample_ = samples_->first();
+ }
+ QTreeWidgetItem* twi = main_tree_widget_->topLevelItem(index);
+ twi->setExpanded(true);
+
+ int max = qMin(index + 4, samples_->size() - 1);
+
+ QTreeWidgetItem* mtwi = main_tree_widget_->topLevelItem(max);
+
+ main_tree_widget_->scrollToItem(mtwi);
+ main_tree_widget_->scrollToItem(twi);
+
+}
+
+void ScignStage_Tree_Table_Dialog::handle_sample_up()
+{
+ int index;
+ if(current_sample_)
+ {
+  index = current_sample_->index() - 1;
+  main_tree_widget_->topLevelItem(index)->setExpanded(false);
+  if(index == 0)
+  {
+   index = samples_->size() - 1;
+   current_sample_ = samples_->last();
+  }
+  else
+  {
+   --index;
+   current_sample_ = samples_->at(index);
+  }
+ }
+ else
+ {
+  index = samples_->size() - 1;
+  current_sample_ = samples_->last();
+ }
+ QTreeWidgetItem* twi = main_tree_widget_->topLevelItem(index);
+ twi->setExpanded(true);
+
+ int max = qMin(index + 4, samples_->size() - 1);
+
+ QTreeWidgetItem* mtwi = main_tree_widget_->topLevelItem(max);
+
+ main_tree_widget_->scrollToItem(mtwi);
+ main_tree_widget_->scrollToItem(twi);
+}
+
+void ScignStage_Tree_Table_Dialog::handle_sample_first()
+{
+ if(current_sample_)
+ {
+  int index = current_sample_->index() - 1;
+  main_tree_widget_->topLevelItem(index)->setExpanded(false);
+ }
+
+ QTreeWidgetItem* twi = main_tree_widget_->topLevelItem(0);
+ twi->setExpanded(true);
+ main_tree_widget_->scrollToItem(twi);
 }
 
 void ScignStage_Tree_Table_Dialog::handle_take_screenshot_requested()
@@ -304,17 +411,8 @@ bool ScignStage_Tree_Table_Dialog::xpdf_is_ready()
    return xpdf_bridge_->is_ready();
  return false;
 }
-void ScignStage_Tree_Table_Dialog::handle_sample_up()
-{
-
-}
 
 ScignStage_Tree_Table_Dialog::~ScignStage_Tree_Table_Dialog()
-{
-
-}
-
-void ScignStage_Tree_Table_Dialog::handle_sample_down()
 {
 
 }
