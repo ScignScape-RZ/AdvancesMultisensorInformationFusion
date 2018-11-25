@@ -54,6 +54,7 @@ class QMediaPlayer;
 class QProcess;
 class QTcpServer;
 class QTreeWidget;
+class QTreeWidgetItem;
 
 class ScignStage_Clickable_Label;
 
@@ -126,12 +127,18 @@ class ScignStage_Tree_Table_Dialog : public QDialog
 
  bool ask_pdf_proceed(QString name);
 
- void run_tree_context_menu(const QPoint& qp, int col);
+ void highlight(QTreeWidgetItem* twi);
+ void unhighlight(QTreeWidgetItem* twi);
+
+ void highlight(Test_Sample* samp);
+ void unhighlight(Test_Sample* samp);
+
+ void run_tree_context_menu(const QPoint& qp, int col, int row = 0);
  void run_tree_context_menu(const QPoint& qp, int page, int col,
-   std::function<void(int)> pdf_fn, std::function<void(int)> copyc_fn
-//                            ,
-//   std::function<void()> highlight_fn
-                            );
+   std::function<void(int)> pdf_fn, std::function<void(int)> copyc_fn,
+   int row = 0, std::function<void(int)> copyr_fn = nullptr,
+   std::function<void(int)> highlight_fn = nullptr);
+
 
 public:
 

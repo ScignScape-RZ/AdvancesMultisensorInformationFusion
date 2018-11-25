@@ -233,13 +233,8 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
   QModelIndex qmi = main_tree_widget_->indexAt(qp);
   qDebug() << qmi.column();
 
+  run_tree_context_menu(qp, qmi.column(), qmi.row());
 
-  run_tree_context_menu(qp, qmi.column());
-
-  if(twi)
-  {
-   qDebug() << twi->text(1);
-  }
  });
 
  main_tree_widget_->header()->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -295,7 +290,25 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
 
 }
 
-void ScignStage_Tree_Table_Dialog::run_tree_context_menu(const QPoint& qp, int col)
+void ScignStage_Tree_Table_Dialog::highlight(Test_Sample* samp)
+{
+ highlight(main_tree_widget_->topLevelItem(samp->index() - 1));
+}
+
+void ScignStage_Tree_Table_Dialog::unhighlight(Test_Sample* samp)
+{
+ unhighlight(main_tree_widget_->topLevelItem(samp->index() - 1));
+}
+
+void ScignStage_Tree_Table_Dialog::highlight(QTreeWidgetItem* twi)
+{
+ twi->setExpanded(true);
+ for(int i = 0; i < 6; ++i)
+   twi->setForeground(i, QBrush("darkRed"));
+}
+
+void ScignStage_Tree_Table_Dialog::run_tree_context_menu(const QPoint& qp,
+  int col, int row)
 {
  run_tree_context_menu(qp, 0, col,
  [this](int page)
@@ -318,24 +331,53 @@ void ScignStage_Tree_Table_Dialog::run_tree_context_menu(const QPoint& qp, int c
    }
   }
   QApplication::clipboard()->setText(copy);
- }
+ }, row,
+ row? [this](int row)
+ {
+  Test_Sample* samp = samples_->at(row);
+  QString qs = QString("%1 %2 %3 %4 %5")
+    .arg(samp->flow().getDouble())
+    .arg(samp->time_with_flow().getDouble())
+    .arg(samp->time_against_flow().getDouble())
+    .arg(samp->temperature_adj()/100)
+    .arg(samp->oxy());
+  QApplication::clipboard()->setText(qs);
+ }:(std::function<void(int)>)nullptr,
+ row? [this](int row)
+ {
+  if(current_sample_)
+  {
+   unhighlight(current_sample_);
+  }
+  current_sample_ = samples_->at(row);
+  highlight(current_sample_);
+ }:(std::function<void(int)>)nullptr
  );
 }
 
 void ScignStage_Tree_Table_Dialog::run_tree_context_menu(const QPoint& qp,
   int page, int col,
-  std::function<void(int)> pdf_fn, std::function<void(int)> copyc_fn
-//                                                         ,
-//  std::function<void()> highlight_fn
-                                                         )
+  std::function<void(int)> pdf_fn, std::function<void(int)> copyc_fn,
+  int row, std::function<void(int)> copyr_fn,
+  std::function<void(int)> highlight_fn)
 {
  QMenu* qm = new QMenu(this);
  qm->addAction("Show in Document (requires XPDF)",
    [pdf_fn, page](){pdf_fn(page);});
  qm->addAction("Copy Column to Clipboard",
    [copyc_fn, col](){copyc_fn(col);});
-// qm->addAction("Highlight (scroll from here)",
-//   [highlight_fn](){highlight_fn();});
+
+ if(row)
+ {
+  if(copyr_fn)
+    qm->addAction("Copy Row to Clipboard",
+    [copyr_fn, row](){copyr_fn(row);});
+
+  if(highlight_fn)
+    qm->addAction("Highlight (scroll from here)",
+    [highlight_fn, row](){highlight_fn(row);});
+ }
+
  QPoint g = main_tree_widget_->mapToGlobal(qp);
  qm->popup(g);
 }
@@ -358,7 +400,8 @@ void ScignStage_Tree_Table_Dialog::handle_sample_down()
  if(current_sample_)
  {
   index = current_sample_->index() - 1;
-  main_tree_widget_->topLevelItem(index)->setExpanded(false);
+  //main_tree_widget_->topLevelItem(index)->setExpanded(false);
+  unhighlight(main_tree_widget_->topLevelItem(index));
   ++index;
   if(index == samples_->size())
   {
@@ -376,15 +419,20 @@ void ScignStage_Tree_Table_Dialog::handle_sample_down()
   current_sample_ = samples_->first();
  }
  QTreeWidgetItem* twi = main_tree_widget_->topLevelItem(index);
- twi->setExpanded(true);
-
+ highlight(twi);
  int max = qMin(index + 4, samples_->size() - 1);
 
  QTreeWidgetItem* mtwi = main_tree_widget_->topLevelItem(max);
 
  main_tree_widget_->scrollToItem(mtwi);
  main_tree_widget_->scrollToItem(twi);
+}
 
+void ScignStage_Tree_Table_Dialog::unhighlight(QTreeWidgetItem* twi)
+{
+ twi->setExpanded(false);
+ for(int i = 0; i < 6; ++i)
+   twi->setForeground(i, QBrush("black"));
 }
 
 void ScignStage_Tree_Table_Dialog::handle_sample_up()
@@ -393,7 +441,7 @@ void ScignStage_Tree_Table_Dialog::handle_sample_up()
  if(current_sample_)
  {
   index = current_sample_->index() - 1;
-  main_tree_widget_->topLevelItem(index)->setExpanded(false);
+  unhighlight(main_tree_widget_->topLevelItem(index));
   if(index == 0)
   {
    index = samples_->size() - 1;
@@ -411,7 +459,8 @@ void ScignStage_Tree_Table_Dialog::handle_sample_up()
   current_sample_ = samples_->last();
  }
  QTreeWidgetItem* twi = main_tree_widget_->topLevelItem(index);
- twi->setExpanded(true);
+
+ highlight(twi);
 
  int max = qMin(index + 4, samples_->size() - 1);
 
@@ -425,12 +474,11 @@ void ScignStage_Tree_Table_Dialog::handle_sample_first()
 {
  if(current_sample_)
  {
-  int index = current_sample_->index() - 1;
-  main_tree_widget_->topLevelItem(index)->setExpanded(false);
+  unhighlight(current_sample_);
  }
 
  QTreeWidgetItem* twi = main_tree_widget_->topLevelItem(0);
- twi->setExpanded(true);
+ highlight(twi);
  main_tree_widget_->scrollToItem(twi);
 }
 
