@@ -9,8 +9,8 @@
 
 #include <QApplication>
 
-#include <QBar3DSeries>
-#include <Q3DBars>
+#include <QSurface3DSeries>
+#include <Q3DSurface>
 
 using namespace QtDataVisualization;
 
@@ -19,20 +19,24 @@ int main(int argc, char **argv)
 {
 // QGuiApplication app(argc, argv);
 
- QApplication qapp(argc, argv);
+// Q3DSurface surface;
+// surface.setFlags(surface.flags() ^ Qt::FramelessWindowHint);
+// QSurfaceDataArray *data = new QSurfaceDataArray;
+// QSurfaceDataRow *dataRow1 = new QSurfaceDataRow;
+// QSurfaceDataRow *dataRow2 = new QSurfaceDataRow;
 
-// Q3DBars bars;
-// bars.setFlags(bars.flags() ^ Qt::FramelessWindowHint);
-// bars.rowAxis()->setRange(0, 4);
-// bars.columnAxis()->setRange(0, 4);
-// QBar3DSeries *series = new QBar3DSeries;
-// QBarDataRow *data = new QBarDataRow;
-// *data << 1.0f << 3.0f << 7.5f << 5.0f << 2.2f;
-// series->dataProxy()->addRow(data);
-// bars.addSeries(series);
-// bars.show();
+// *dataRow1 << QVector3D(0.0f, 0.1f, 0.5f) << QVector3D(1.0f, 0.5f, 0.5f);
+// *dataRow2 << QVector3D(0.0f, 1.8f, 1.0f) << QVector3D(1.0f, 1.2f, 1.0f);
+// *data << dataRow1 << dataRow2;
+
+// QSurface3DSeries *series = new QSurface3DSeries;
+// series->dataProxy()->resetArray(data);
+// surface.addSeries(series);
+// surface.show();
 
 // return app.exec();
+
+ QApplication qapp(argc, argv);
 
  ScignStage_3d_Chart_Dialog dlg (nullptr);
  dlg.show();
