@@ -44,6 +44,30 @@ int main(int argc, char* argv[])
 
  Test_Sample::write_samples_to_file(DATA_FOLDER "/t1.out.txt", ts);
 
+ QMap<QPair<int, int>, double> qm;
+ for(Test_Sample* samp : ts)
+ {
+  int ta = samp->temperature_adj()/100;
+  int fl = int(samp->flow().getDouble() * 2);
+  qm.insert({ta,fl}, samp->oxy()/10);
+ }
+
+ QVector<QVector<float>*> rows;
+ for(int i = 0; i < 20; ++i)
+ {
+  QVector<float>* r = new QVector<float>;
+  for(int j = 0; j < 10; ++j)
+  {
+   *r << qm.value({j, i}, 0.0f);
+  }
+  rows.push_back(r);
+ }
+
+ for(QVector<float>* qv : rows)
+ {
+
+ }
+
 // Test_Series_Folder tsf(SAMPLES_FOLDER);
 
 // Test_Series ts;

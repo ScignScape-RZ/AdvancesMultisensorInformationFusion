@@ -12,6 +12,15 @@
 #include <QSurface3DSeries>
 #include <Q3DSurface>
 
+#include "dsmain/test-sample.h"
+
+#include "kans.h"
+
+#include <QThread>
+
+
+USING_KANS(DSM)
+
 using namespace QtDataVisualization;
 
 
@@ -36,9 +45,13 @@ int main(int argc, char **argv)
 
 // return app.exec();
 
+
+ QVector<Test_Sample*> ts;
+ Test_Sample::read_samples_from_file(DATA_FOLDER "/t1.txt", ts);
+
  QApplication qapp(argc, argv);
 
- ScignStage_3d_Chart_Dialog dlg (nullptr);
+ ScignStage_3d_Chart_Dialog dlg(&ts, DATA_FOLDER "/t2.txt", nullptr);
  dlg.show();
  return qapp.exec();
 }

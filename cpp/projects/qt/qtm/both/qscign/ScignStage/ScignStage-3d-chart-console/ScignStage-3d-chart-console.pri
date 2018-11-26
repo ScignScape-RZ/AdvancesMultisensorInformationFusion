@@ -38,6 +38,7 @@ DEFINES += DEFAULT_ICON_FOLDER=\\\"$$CPP_ROOT_DIR/assets/icons\\\"
 DEFINES += ABOUT_FILE_FOLDER=\\\"$$CPP_ROOT_DIR/about/about-files\\\"
 
 DEFINES += SAMPLES_FOLDER=\\\"$$DATA_ROOT_DIR/samples\\\"
+DEFINES += DATA_FOLDER=\\\"$$DATA_ROOT_DIR\\\"
 
 
 CONFIG += no_keywords

@@ -13,6 +13,13 @@
 #include <QVBoxLayout>
 #include <QDialogButtonBox>
 
+#include "kans.h"
+
+KANS_CLASS_DECLARE(DSM ,Test_Sample)
+
+
+USING_KANS(DSM)
+
 class ScignStage_3d_Chart_Dialog : public QDialog
 {
  Q_OBJECT
@@ -26,7 +33,8 @@ class ScignStage_3d_Chart_Dialog : public QDialog
 
 public:
 
- ScignStage_3d_Chart_Dialog(QWidget* parent);
+ ScignStage_3d_Chart_Dialog(QVector<Test_Sample*>* samples,
+   QString path, QWidget* parent);
 
  ~ScignStage_3d_Chart_Dialog();
 

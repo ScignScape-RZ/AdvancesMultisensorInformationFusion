@@ -30,7 +30,16 @@ using namespace QtDataVisualization;
 
 #include "styles.h"
 
-ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(QWidget* parent)
+
+#include "dsmain/test-sample.h"
+
+#include "textio.h"
+
+
+USING_KANS(TextIO)
+
+ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(QVector<Test_Sample*>* samples,
+  QString path, QWidget* parent)
  : QDialog(parent)
 {
 
@@ -122,25 +131,99 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(QWidget* parent)
 // bars->show();
 // scatter->show();
 
+// QMap<QPair<double, int>, int> qm;
 
- Q3DSurface* surface = new Q3DSurface;
- QWidget* container = QWidget::createWindowContainer(surface);
+// for(Test_Sample* samp : *samples)
+// {
+//  qm.insert({samp->flow().getDouble(), samp->temperature_adj()}, samp->oxy());
+// }
 
- QSurfaceDataArray *data = new QSurfaceDataArray;
- QSurfaceDataRow *dataRow1 = new QSurfaceDataRow;
- QSurfaceDataRow *dataRow2 = new QSurfaceDataRow;
+// QMap<QPair<int, int>, double> qm;
+// for(Test_Sample* samp : *samples)
+// {
+//  int ta = samp->temperature_adj()/100;
+//  int fl = int(samp->flow().getDouble() * 2);
+//  qm.insert({ta,fl}, samp->oxy()/10);
+// }
 
- *dataRow1 << QVector3D(0.0f, 0.1f, 0.5f) << QVector3D(1.0f, 0.5f, 0.5f);
- *dataRow2 << QVector3D(0.0f, 1.8f, 1.0f) << QVector3D(1.0f, 1.2f, 1.0f);
- *data << dataRow1 << dataRow2;
+ QString rs = load_file(path);
 
- QSurface3DSeries *series = new QSurface3DSeries;
- series->dataProxy()->resetArray(data);
- surface->addSeries(series);
- surface->show();
+ QStringList qsl = rs.split('\n');
 
- container->setMinimumHeight(300);
- container->setMinimumWidth(500);
+ QVector<QVector<float>*> rowsv;
+ for(QString qs : qsl)
+ {
+  QStringList qsl = qs.simplified().split(' ');
+  if(qsl.isEmpty())
+    continue;
+  QVector<float>* qv = new QVector<float>;
+  for(QString qs : qsl)
+  {
+   *qv << qs.toFloat();
+  }
+  rowsv.push_back(qv);
+ }
+
+
+ //  QVector<QBarDataRow*> rows;
+ //  for(int i = 0; i < 20; ++i)
+ //  {
+ //   QBarDataRow* r = new QBarDataRow;
+ //   for(int j = 0; j < 10; ++j)
+ //   {
+ //    *r << qm.value({j, i}, 0.0f);
+ //   }
+ //   rows.push_back(r);
+ //   series->dataProxy()->addRow(r);
+ //  }
+
+  Q3DBars* bars = new Q3DBars;
+  QWidget* container = QWidget::createWindowContainer(bars);
+  //bars->setFlags(bars.flags() ^ Qt::FramelessWindowHint);
+  bars->rowAxis()->setRange(0, 10);
+  bars->columnAxis()->setRange(0, 10);
+  QBar3DSeries *series = new QBar3DSeries;
+
+
+  for(int i = 0; i < rowsv.size(); ++i)
+  {
+   QBarDataRow* r = new QBarDataRow;
+   for(int j = 0; j < rowsv[i]->size(); ++j)
+   {
+    *r << rowsv[i]->at(j);
+   }
+   series->dataProxy()->addRow(r);
+  }
+
+   QLinearGradient barGradient(0, 0, 1, 100);
+   barGradient.setColorAt(1.0, Qt::white);
+   barGradient.setColorAt(0.0, Qt::black);
+
+   series->setBaseGradient(barGradient);
+   series->setColorStyle(Q3DTheme::ColorStyleObjectGradient);
+   series->setMesh(QAbstract3DSeries::MeshCylinder);
+
+//  QVector<QBarDataRow*> rows;
+//  for(int i = 0; i < 20; ++i)
+//  {
+//   QBarDataRow* r = new QBarDataRow;
+//   for(int j = 0; j < 10; ++j)
+//   {
+//    *r << qm.value({j, i}, 0.0f);
+//   }
+//   rows.push_back(r);
+//   series->dataProxy()->addRow(r);
+//  }
+
+//  QBarDataRow *data = new QBarDataRow;
+//  *data << 1.0f << 3.0f << 7.5f << 5.0f << 2.2f;
+//  series->dataProxy()->addRow(data);
+
+  bars->addSeries(series);
+  bars->show();
+
+  container->setMinimumHeight(300);
+  container->setMinimumWidth(500);
 
  main_layout_->addWidget(container);
  main_layout_->addWidget(button_box_);
@@ -155,3 +238,30 @@ ScignStage_3d_Chart_Dialog::~ScignStage_3d_Chart_Dialog()
 }
 
 
+
+//Q3DSurface* surface = new Q3DSurface;
+//QWidget* container = QWidget::createWindowContainer(surface);
+
+//QSurfaceDataArray *data = new QSurfaceDataArray;
+//QSurfaceDataRow *dataRow1 = new QSurfaceDataRow;
+//QSurfaceDataRow *dataRow2 = new QSurfaceDataRow;
+
+
+
+//// *dataRow1 << QVector3D(0.054f, 0.491f, 0.93f)
+////   << QVector3D(10.89f, 0.489f, 0.93f);
+
+//// *dataRow2 << QVector3D(0.0f, 0.0f, 0.0f) << QVector3D(1.0f, 1.2f, 1.0f);
+
+//*dataRow1 << QVector3D(0.0f, 0.1f, 0.5f) << QVector3D(1.0f, 0.5f, 0.5f);
+//*dataRow2 << QVector3D(0.0f, 1.8f, 1.0f) << QVector3D(1.0f, 1.2f, 1.0f);
+
+//*data << dataRow1 << dataRow2;
+
+//QSurface3DSeries *series = new QSurface3DSeries;
+//series->dataProxy()->resetArray(data);
+//surface->addSeries(series);
+//surface->show();
+
+//container->setMinimumHeight(300);
+//container->setMinimumWidth(500);
