@@ -14,6 +14,13 @@
 #include <QDirIterator>
 #include <QGroupBox>
 
+#include <QBar3DSeries>
+#include <Q3DBars>
+
+using namespace QtDataVisualization;
+
+//#include <QtDataVisualization>
+
 #include "styles.h"
 
 ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(QWidget* parent)
@@ -56,6 +63,39 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(QWidget* parent)
 
  main_layout_ = new QVBoxLayout();
 
+// Q3DBars graph;
+// QBar3DSeries *series = new QBar3DSeries;
+//// QLinearGradient barGradient(0, 0, 1, 100);
+//// barGradient.setColorAt(1.0, Qt::white);
+//// barGradient.setColorAt(0.0, Qt::black);
+
+//// series->setBaseGradient(barGradient);
+//// series->setColorStyle(Q3DTheme::ColorStyleObjectGradient);
+//// series->setMesh(QAbstract3DSeries::MeshCylinder);
+
+// QBarDataRow *data = new QBarDataRow;
+// *data << 1.0f << 3.0f << 7.5f << 5.0f << 2.2f;
+// series->dataProxy()->addRow(data);
+
+// graph.addSeries(series);
+// graph.show();
+
+ Q3DBars* bars = new Q3DBars;
+ QWidget* container = QWidget::createWindowContainer(bars);
+ //bars->setFlags(bars.flags() ^ Qt::FramelessWindowHint);
+ bars->rowAxis()->setRange(0, 4);
+ bars->columnAxis()->setRange(0, 4);
+ QBar3DSeries *series = new QBar3DSeries;
+ QBarDataRow *data = new QBarDataRow;
+ *data << 1.0f << 3.0f << 7.5f << 5.0f << 2.2f;
+ series->dataProxy()->addRow(data);
+ bars->addSeries(series);
+ bars->show();
+
+ container->setMinimumHeight(300);
+ container->setMinimumWidth(500);
+
+ main_layout_->addWidget(container);
  main_layout_->addWidget(button_box_);
 
  setLayout(main_layout_);
