@@ -11,6 +11,8 @@
 #include "kans.h"
 #include "accessors.h"
 
+#include <functional>
+
 #include <QVector>
 #include <QString>
 #include <QMap>
@@ -23,18 +25,21 @@ class Test_Sample;
 
 class Test_Series
 {
+ template<typename T1, typename T2>
  struct Cell_Coords {
-   int flow_min;
-   int flow_max;
-   int temperature_min;
-   int temperature_max;
-   float oxy_min;
-   float oxy_max;
+   T1 flow_min;
+   T1 flow_max;
+   T1 temperature_min;
+   T1 temperature_max;
+   T2 oxy_min;
+   T2 oxy_max;
  };
+
+ Cell_Coords<double, int> min_max_;
 
  QVector<Test_Sample*> samples_;
 
- QMap<int, QPair<Cell_Coords,
+ QMap<QPair<int, int>, QPair<Cell_Coords<int, float>,
    QVector<QPair<QPair<int, int>, float>>>> cells_;
 
 public:
@@ -44,8 +49,12 @@ public:
  ACCESSORS__RGET(QVector<Test_Sample*> ,samples)
 
  void parse_data(QString path);
- void init_cells(int res);
+ void init_cells(int fres, int tres);
 
+ void each_sample(std::function<void(Test_Sample*)>);
+
+ void save_cells_to_file(int fres, int tres, QString path);
+ void cells_to_qmap(int fres, int tres, QMap<QPair<int, int>, float>& qm);
 
 };
 

@@ -32,14 +32,15 @@ using namespace QtDataVisualization;
 
 
 #include "dsmain/test-sample.h"
+#include "dsmain/test-series.h"
 
 #include "textio.h"
 
 
 USING_KANS(TextIO)
 
-ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(QVector<Test_Sample*>* samples,
-  QString path, QWidget* parent)
+ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
+  int fres, int tres, double olift, QWidget* parent)
  : QDialog(parent)
 {
 
@@ -79,129 +80,24 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(QVector<Test_Sample*>* sa
 
  main_layout_ = new QVBoxLayout();
 
-// Q3DBars graph;
-// QBar3DSeries *series = new QBar3DSeries;
-//// QLinearGradient barGradient(0, 0, 1, 100);
-//// barGradient.setColorAt(1.0, Qt::white);
-//// barGradient.setColorAt(0.0, Qt::black);
-
-//// series->setBaseGradient(barGradient);
-//// series->setColorStyle(Q3DTheme::ColorStyleObjectGradient);
-//// series->setMesh(QAbstract3DSeries::MeshCylinder);
-
-
-// QBarDataRow *data = new QBarDataRow;
-// *data << 1.0f << 3.0f << 7.5f << 5.0f << 2.2f;
-// series->dataProxy()->addRow(data);
-
-// graph.addSeries(series);
-// graph.show();
-
-// Q3DScatter* scatter = new Q3DScatter;
-// QWidget* container = QWidget::createWindowContainer(scatter);
-// scatter->rowAxis()->setRange(-1, 1);
-// scatter->columnAxis()->setRange(-1, 1);
-// QScatter3DSeries *series = new QScatter3DSeries;
-// QScatterDataArray data;
-// data << QVector3D(0.5f, 0.5f, 0.5f) << QVector3D(-0.3f, -0.5f, -0.4f) << QVector3D(0.0f, -0.3f, 0.2f);
-// series->dataProxy()->addItems(data);
-// scatter->addSeries(series);
-
-
-// Q3DBars* bars = new Q3DBars;
-// QWidget* container = QWidget::createWindowContainer(bars);
-// //bars->setFlags(bars.flags() ^ Qt::FramelessWindowHint);
-// bars->rowAxis()->setRange(0, 4);
-// bars->columnAxis()->setRange(0, 4);
-// QBar3DSeries *series = new QBar3DSeries;
-
-//  QLinearGradient barGradient(0, 0, 1, 100);
-//  barGradient.setColorAt(1.0, Qt::white);
-//  barGradient.setColorAt(0.0, Qt::black);
-
-//  series->setBaseGradient(barGradient);
-//  series->setColorStyle(Q3DTheme::ColorStyleObjectGradient);
-//  series->setMesh(QAbstract3DSeries::MeshCylinder);
-
-
-// QBarDataRow *data = new QBarDataRow;
-// *data << 1.0f << 3.0f << 7.5f << 5.0f << 2.2f;
-// series->dataProxy()->addRow(data);
-// bars->addSeries(series);
-// bars->show();
-// scatter->show();
-
-// QMap<QPair<double, int>, int> qm;
-
-// for(Test_Sample* samp : *samples)
-// {
-//  qm.insert({samp->flow().getDouble(), samp->temperature_adj()}, samp->oxy());
-// }
-
-// QMap<QPair<int, int>, double> qm;
-// for(Test_Sample* samp : *samples)
-// {
-//  int ta = samp->temperature_adj()/100;
-//  int fl = int(samp->flow().getDouble() * 2);
-//  qm.insert({ta,fl}, samp->oxy()/10);
-// }
-
- QString rs = load_file(path);
-
- QStringList qsl = rs.split('\n');
-
- //QVector<QVector<int>*> rowsv;
- //int maxcsz = 0;
-
- QMap<QPair<int, int>, int> qm;
-
- QStringList min_max = qsl.takeFirst().simplified().split(' ');
-
- int fl_min = min_max[0].toInt();
- int fl_max = min_max[1].toInt();
- int ta_min = min_max[2].toInt();
- int ta_max = min_max[3].toInt();
- int oxy_min = min_max[4].toInt();
- int oxy_max = min_max[5].toInt();
-
- for(QString qs : qsl)
- {
-  if(qs.isEmpty())
-    continue;
-  QStringList qsl = qs.simplified().split(' ');
-  if(qsl.isEmpty())
-    continue;
-  qm.insert({qsl[0].toInt(), qsl[1].toInt()}, qsl[2].toInt());
- }
-
-
- //  QVector<QBarDataRow*> rows;
- //  for(int i = 0; i < 20; ++i)
- //  {
- //   QBarDataRow* r = new QBarDataRow;
- //   for(int j = 0; j < 10; ++j)
- //   {
- //    *r << qm.value({j, i}, 0.0f);
- //   }
- //   rows.push_back(r);
- //   series->dataProxy()->addRow(r);
- //  }
-
-
   Q3DBars* bars = new Q3DBars;
   QWidget* container = QWidget::createWindowContainer(bars);
   //bars->setFlags(bars.flags() ^ Qt::FramelessWindowHint);
-  bars->rowAxis()->setRange(0, fl_max);
-  bars->columnAxis()->setRange(0, ta_max);
+  bars->rowAxis()->setRange(0, fres);
+  bars->columnAxis()->setRange(0, tres);
+
+  QMap<QPair<int, int>, float> qm;
+
+  ts->cells_to_qmap(fres, tres, qm);
 
   QBar3DSeries *series = new QBar3DSeries;
-  for(int i = 0; i <= fl_max ; ++i)
+  for(int i = 0; i <= fres; ++i)
   {
    QBarDataRow* r = new QBarDataRow;
-   for(int j = 0; j <= ta_max; ++j)
+   for(int j = 0; j <= tres; ++j)
    {
     if(qm.contains({i, j}))
-      *r << ((float) qm.value({i, j}) + 1)/13;
+      *r << qm[{i, j}] + olift;
     else
       *r << 0;
    }
@@ -294,3 +190,110 @@ ScignStage_3d_Chart_Dialog::~ScignStage_3d_Chart_Dialog()
 //   maxcsz = qv->size();
 //}
 
+// Q3DBars graph;
+// QBar3DSeries *series = new QBar3DSeries;
+//// QLinearGradient barGradient(0, 0, 1, 100);
+//// barGradient.setColorAt(1.0, Qt::white);
+//// barGradient.setColorAt(0.0, Qt::black);
+
+//// series->setBaseGradient(barGradient);
+//// series->setColorStyle(Q3DTheme::ColorStyleObjectGradient);
+//// series->setMesh(QAbstract3DSeries::MeshCylinder);
+
+
+// QBarDataRow *data = new QBarDataRow;
+// *data << 1.0f << 3.0f << 7.5f << 5.0f << 2.2f;
+// series->dataProxy()->addRow(data);
+
+// graph.addSeries(series);
+// graph.show();
+
+// Q3DScatter* scatter = new Q3DScatter;
+// QWidget* container = QWidget::createWindowContainer(scatter);
+// scatter->rowAxis()->setRange(-1, 1);
+// scatter->columnAxis()->setRange(-1, 1);
+// QScatter3DSeries *series = new QScatter3DSeries;
+// QScatterDataArray data;
+// data << QVector3D(0.5f, 0.5f, 0.5f) << QVector3D(-0.3f, -0.5f, -0.4f) << QVector3D(0.0f, -0.3f, 0.2f);
+// series->dataProxy()->addItems(data);
+// scatter->addSeries(series);
+
+
+// Q3DBars* bars = new Q3DBars;
+// QWidget* container = QWidget::createWindowContainer(bars);
+// //bars->setFlags(bars.flags() ^ Qt::FramelessWindowHint);
+// bars->rowAxis()->setRange(0, 4);
+// bars->columnAxis()->setRange(0, 4);
+// QBar3DSeries *series = new QBar3DSeries;
+
+//  QLinearGradient barGradient(0, 0, 1, 100);
+//  barGradient.setColorAt(1.0, Qt::white);
+//  barGradient.setColorAt(0.0, Qt::black);
+
+//  series->setBaseGradient(barGradient);
+//  series->setColorStyle(Q3DTheme::ColorStyleObjectGradient);
+//  series->setMesh(QAbstract3DSeries::MeshCylinder);
+
+
+// QBarDataRow *data = new QBarDataRow;
+// *data << 1.0f << 3.0f << 7.5f << 5.0f << 2.2f;
+// series->dataProxy()->addRow(data);
+// bars->addSeries(series);
+// bars->show();
+// scatter->show();
+
+// QMap<QPair<double, int>, int> qm;
+
+// for(Test_Sample* samp : *samples)
+// {
+//  qm.insert({samp->flow().getDouble(), samp->temperature_adj()}, samp->oxy());
+// }
+
+// QMap<QPair<int, int>, double> qm;
+// for(Test_Sample* samp : *samples)
+// {
+//  int ta = samp->temperature_adj()/100;
+//  int fl = int(samp->flow().getDouble() * 2);
+//  qm.insert({ta,fl}, samp->oxy()/10);
+// }
+
+// QString rs = load_file(path);
+
+// QStringList qsl = rs.split('\n');
+
+// //QVector<QVector<int>*> rowsv;
+// //int maxcsz = 0;
+
+// QMap<QPair<int, int>, int> qm;
+
+// QStringList min_max = qsl.takeFirst().simplified().split(' ');
+
+// int fl_min = min_max[0].toInt();
+// int fl_max = min_max[1].toInt();
+// int ta_min = min_max[2].toInt();
+// int ta_max = min_max[3].toInt();
+// int oxy_min = min_max[4].toInt();
+// int oxy_max = min_max[5].toInt();
+
+// for(QString qs : qsl)
+// {
+//  if(qs.isEmpty())
+//    continue;
+//  QStringList qsl = qs.simplified().split(' ');
+//  if(qsl.isEmpty())
+//    continue;
+//  qm.insert({qsl[0].toInt(), qsl[1].toInt()}, qsl[2].toInt());
+// }
+
+
+// //  QVector<QBarDataRow*> rows;
+// //  for(int i = 0; i < 20; ++i)
+// //  {
+// //   QBarDataRow* r = new QBarDataRow;
+// //   for(int j = 0; j < 10; ++j)
+// //   {
+// //    *r << qm.value({j, i}, 0.0f);
+// //   }
+// //   rows.push_back(r);
+// //   series->dataProxy()->addRow(r);
+// //  }

@@ -13,6 +13,7 @@
 #include <Q3DSurface>
 
 #include "dsmain/test-sample.h"
+#include "dsmain/test-series.h"
 
 #include "kans.h"
 
@@ -46,12 +47,15 @@ int main(int argc, char **argv)
 // return app.exec();
 
 
- QVector<Test_Sample*> ts;
- Test_Sample::read_samples_from_file(DATA_FOLDER "/t1.txt", ts);
-
  QApplication qapp(argc, argv);
 
- ScignStage_3d_Chart_Dialog dlg(&ts, DATA_FOLDER "/t21.txt", nullptr);
+ Test_Series ts;
+ ts.parse_data(DATA_FOLDER "/t1.txt");
+
+ ts.init_cells(25, 25);
+
+ ScignStage_3d_Chart_Dialog dlg(&ts, 25, 25, 1.0f/13, nullptr);
+
  dlg.show();
  return qapp.exec();
 }
