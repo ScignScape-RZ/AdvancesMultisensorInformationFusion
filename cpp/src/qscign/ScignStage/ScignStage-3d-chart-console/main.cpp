@@ -51,7 +51,7 @@ int main(int argc, char **argv)
 
  QApplication qapp(argc, argv);
 
- ScignStage_3d_Chart_Dialog dlg(&ts, DATA_FOLDER "/t2.txt", nullptr);
+ ScignStage_3d_Chart_Dialog dlg(&ts, DATA_FOLDER "/t21.txt", nullptr);
  dlg.show();
  return qapp.exec();
 }

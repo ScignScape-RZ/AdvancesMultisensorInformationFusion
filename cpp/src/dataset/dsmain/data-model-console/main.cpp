@@ -14,6 +14,8 @@
 
 #include "dsmain/test-sample.h"
 
+#include "dsmain/test-series.h"
+
 //#include "dsmain/assessment-scores.h"
 //#include "dsmain/test-series-folder.h"
 //#include "dsmain/test-series.h"
@@ -36,44 +38,184 @@ USING_KANS(DSM)
 // qdb( pri(str) );
 //}
 
+#include "textio.h"
+
+
+
+USING_KANS(DSM)
+USING_KANS(TextIO)
 
 int main(int argc, char* argv[])
 {
- QVector<Test_Sample*> ts;
- Test_Sample::read_samples_from_file(DATA_FOLDER "/t1.txt", ts);
+ Test_Series ts;
+ ts.parse_data(DATA_FOLDER "/t1.txt");
 
- Test_Sample::write_samples_to_file(DATA_FOLDER "/t1.out.txt", ts);
+ ts.init_cells(50);
 
- QMap<QPair<int, int>, double> qm;
+// QVector<Test_Sample*> ts;
+// Test_Sample::read_samples_from_file(DATA_FOLDER "/t1.txt", ts);
+
+ //Test_Sample::write_samples_to_file(DATA_FOLDER "/t1.out.txt", ts);
+}
+
+
+int main1(int argc, char* argv[])
+{
+  QVector<Test_Sample*> ts;
+  Test_Sample::read_samples_from_file(DATA_FOLDER "/t1.txt", ts);
+
+ QMap<QPair<float, int>, int> qm;
  for(Test_Sample* samp : ts)
  {
-  int ta = samp->temperature_adj()/100;
-  int fl = int(samp->flow().getDouble() * 2);
-  qm.insert({ta,fl}, samp->oxy()/10);
+  qm.insert({samp->flow().getDouble(),
+             samp->temperature_adj()}, samp->oxy());
  }
 
- QVector<QVector<float>*> rows;
- for(int i = 0; i < 20; ++i)
+ int max_ta = 0;
+ int min_ta = -1;
+
+ int max_oxy = 0;
+ int min_oxy = -1;
+
+ float max_fl = 0;
+ float min_fl = -1;
+
+ QString text;
+ for(QPair<float, int> pr : qm.keys())
  {
-  QVector<float>* r = new QVector<float>;
-  for(int j = 0; j < 10; ++j)
-  {
-   *r << qm.value({j, i}, 0.0f);
-  }
-  rows.push_back(r);
+  float fl = pr.first;
+  int ta = pr.second;
+  int oxy = qm[pr];
+
+  if(ta > max_ta)
+    max_ta = ta;
+  if((min_ta == -1) || (ta < min_ta))
+    min_ta = ta;
+
+  if(oxy > max_oxy)
+    max_oxy = oxy;
+  if((min_oxy == -1) || (oxy < min_oxy))
+    min_oxy = oxy;
+
+  if(fl > max_fl)
+    max_fl = fl;
+  if((min_fl == -1) || (fl < min_fl))
+    min_fl = fl;
+
+  text += QString("%1 %2 %3\n").arg(fl)
+    .arg(ta).arg(oxy);
  }
 
- for(QVector<float>* qv : rows)
+ QString min_max = QString("%1 %2 %3 %4 %5 %6\n").arg(min_fl)
+   .arg(max_fl).arg(min_ta).arg(max_ta).arg(min_oxy).arg(max_oxy);
+ text.prepend(min_max);
+
+ save_file(DATA_FOLDER "/t11.txt", text);
+
+ text = min_max.replace('.', "");
+
+ min_fl *= 1000;
+ max_fl *= 1000;
+
+ QString text1 = QString("%1 %2 %3 %4 %5 %6\n").arg(min_fl)
+   .arg((int)(max_fl - min_fl)/100)
+   .arg(min_ta/100)
+   .arg((max_ta - min_ta)/100)
+   .arg(min_oxy)
+   .arg(max_oxy - min_oxy);
+
+ QString text2 = QString("%1 %2 %3 %4 %5 %6\n").arg(min_fl)
+   .arg((int)(max_fl - min_fl)/400)
+   .arg(min_ta/400)
+   .arg((max_ta - min_ta)/400)
+   .arg(min_oxy)
+   .arg(max_oxy - min_oxy);
+
+
+ for(QPair<float, int> pr : qm.keys())
  {
+  int fl = (pr.first * 1000.0f) - min_fl;
+  int ta = pr.second - min_ta;
+  int oxy = qm[pr] - min_oxy;
+  text += QString("%1 %2 %3\n").arg(fl)
+    .arg(ta).arg(oxy);
 
+  text1 += QString("%1 %2 %3\n").arg(fl/100)
+    .arg(ta/100).arg(oxy);
+
+  text2 += QString("%1 %2 %3\n").arg(fl/400)
+    .arg(ta/400).arg(oxy);
  }
 
-// Test_Series_Folder tsf(SAMPLES_FOLDER);
 
-// Test_Series ts;
-// tsf.read_files(ts);
+ save_file(DATA_FOLDER "/t12.txt", text);
+ save_file(DATA_FOLDER "/t13.txt", text1);
+ save_file(DATA_FOLDER "/t21.txt", text2);
+
  return 0;
 }
+
+// int max_ta = 0;
+// int min_ta = -1;
+
+// int max_fl = 0;
+// int min_fl = -1;
+
+// QMap<QPair<int, int>, double> qm;
+// for(Test_Sample* samp : ts)
+// {
+//  int ta = samp->temperature_adj()/10;
+//  int fl = int(samp->flow().getDouble() * 20);
+
+//  if(ta > max_ta)
+//    max_ta = ta;
+
+//  if((min_ta == -1) || (ta < min_ta))
+//    min_ta = ta;
+
+//  if(fl > max_fl)
+//    max_fl = fl;
+//  if((min_fl == -1) || (fl < min_fl))
+//    min_fl = fl;
+
+//  qm.insert({ta,fl}, (double)samp->oxy()/10);
+////  int ta = samp->temperature_adj()/400;
+////  int fl = int(samp->flow().getDouble() * 2);
+////  qm.insert({ta,fl}, (double)samp->oxy()/10);
+// }
+
+
+
+// QVector<QVector<float>*> rows;
+// for(int i = min_fl; i < max_fl; ++i)
+// {
+//  QVector<float>* r = new QVector<float>;
+//  for(int j = min_ta; j < max_ta; ++j)
+//  {
+//   *r << qm.value({i, j}, 0.0f);
+//  }
+//  rows.push_back(r);
+// }
+
+// QString text;
+
+// for(QVector<float>* qv : rows)
+// {
+//  for(float fl : *qv)
+//  {
+//   text += QString::number(fl) + ' ';
+//  }
+//  text += '\n';
+// }
+
+// save_file(DATA_FOLDER "/t3.txt", text);
+
+//// Test_Series_Folder tsf(SAMPLES_FOLDER);
+
+//// Test_Series ts;
+//// tsf.read_files(ts);
+// return 0;
+//}
 
 //int mainx(int argc, char* argv[])
 //{

@@ -150,18 +150,28 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(QVector<Test_Sample*>* sa
 
  QStringList qsl = rs.split('\n');
 
- QVector<QVector<float>*> rowsv;
+ //QVector<QVector<int>*> rowsv;
+ //int maxcsz = 0;
+
+ QMap<QPair<int, int>, int> qm;
+
+ QStringList min_max = qsl.takeFirst().simplified().split(' ');
+
+ int fl_min = min_max[0].toInt();
+ int fl_max = min_max[1].toInt();
+ int ta_min = min_max[2].toInt();
+ int ta_max = min_max[3].toInt();
+ int oxy_min = min_max[4].toInt();
+ int oxy_max = min_max[5].toInt();
+
  for(QString qs : qsl)
  {
+  if(qs.isEmpty())
+    continue;
   QStringList qsl = qs.simplified().split(' ');
   if(qsl.isEmpty())
     continue;
-  QVector<float>* qv = new QVector<float>;
-  for(QString qs : qsl)
-  {
-   *qv << qs.toFloat();
-  }
-  rowsv.push_back(qv);
+  qm.insert({qsl[0].toInt(), qsl[1].toInt()}, qsl[2].toInt());
  }
 
 
@@ -177,20 +187,23 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(QVector<Test_Sample*>* sa
  //   series->dataProxy()->addRow(r);
  //  }
 
+
   Q3DBars* bars = new Q3DBars;
   QWidget* container = QWidget::createWindowContainer(bars);
   //bars->setFlags(bars.flags() ^ Qt::FramelessWindowHint);
-  bars->rowAxis()->setRange(0, 10);
-  bars->columnAxis()->setRange(0, 10);
+  bars->rowAxis()->setRange(0, fl_max);
+  bars->columnAxis()->setRange(0, ta_max);
+
   QBar3DSeries *series = new QBar3DSeries;
-
-
-  for(int i = 0; i < rowsv.size(); ++i)
+  for(int i = 0; i <= fl_max ; ++i)
   {
    QBarDataRow* r = new QBarDataRow;
-   for(int j = 0; j < rowsv[i]->size(); ++j)
+   for(int j = 0; j <= ta_max; ++j)
    {
-    *r << rowsv[i]->at(j);
+    if(qm.contains({i, j}))
+      *r << ((float) qm.value({i, j}) + 1)/13;
+    else
+      *r << 0;
    }
    series->dataProxy()->addRow(r);
   }
@@ -265,3 +278,19 @@ ScignStage_3d_Chart_Dialog::~ScignStage_3d_Chart_Dialog()
 
 //container->setMinimumHeight(300);
 //container->setMinimumWidth(500);
+
+//for(QString qs : qsl)
+//{
+// QStringList qsl = qs.simplified().split(' ');
+// if(qsl.isEmpty())
+//   continue;
+// QVector<float>* qv = new QVector<float>;
+// for(QString qs : qsl)
+// {
+//  *qv << qs.toFloat();
+// }
+// rowsv.push_back(qv);
+// if(qv->size() > maxcsz)
+//   maxcsz = qv->size();
+//}
+

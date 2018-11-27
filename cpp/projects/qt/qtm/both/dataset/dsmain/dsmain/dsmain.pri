@@ -42,12 +42,12 @@ HEADERS += \
   $$SRC_DIR/pri.h \
   $$SRC_DIR/precon.h \
   $$SRC_DIR/test-sample.h \
-
+  $$SRC_DIR/test-series.h \
 
 
 SOURCES += \
   $$SRC_DIR/test-sample.cpp \
-
+  $$SRC_DIR/test-series.cpp \
 
 message(choice: $$CPP_ROOT_DIR/targets/$$CHOICE_CODE/$$PROJECT_SET--$$PROJECT_GROUP--$$PROJECT_NAME)
 mkpath($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/$$PROJECT_SET--$$PROJECT_GROUP--$$PROJECT_NAME)
