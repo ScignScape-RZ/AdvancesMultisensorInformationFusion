@@ -21,7 +21,18 @@ KANS_(DSM)
 
 class Test_Sample;
 
+struct Cell_Info
+{
+ Test_Sample* sample;
 
+ int fmacro;
+ int tmacro;
+
+ double oxy;
+
+ double fmicro;
+ double tmicro;
+};
 
 class Test_Series
 {
@@ -40,7 +51,7 @@ class Test_Series
  QVector<Test_Sample*> samples_;
 
  QMap<QPair<int, int>, QPair<Cell_Coords<int, float>,
-   QVector<QPair<QPair<int, int>, float>>>> cells_;
+   QVector<Cell_Info*>>> cells_;
 
 public:
 
@@ -54,7 +65,8 @@ public:
  void each_sample(std::function<void(Test_Sample*)>);
 
  void save_cells_to_file(int fres, int tres, QString path);
- void cells_to_qmap(int fres, int tres, QMap<QPair<int, int>, float>& qm);
+ void cells_to_qmap(int fres, int tres, QMap<QPair<int, int>,
+   QPair<Test_Sample*, double>>& qm);
 
 };
 

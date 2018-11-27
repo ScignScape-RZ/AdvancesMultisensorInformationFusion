@@ -86,7 +86,8 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
   bars->rowAxis()->setRange(0, fres);
   bars->columnAxis()->setRange(0, tres);
 
-  QMap<QPair<int, int>, float> qm;
+  QMap<QPair<int, int>, QPair<Test_Sample*, double>> qm;
+
 
   ts->cells_to_qmap(fres, tres, qm);
 
@@ -97,7 +98,10 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
    for(int j = 0; j <= tres; ++j)
    {
     if(qm.contains({i, j}))
-      *r << qm[{i, j}] + olift;
+    {
+     sample_map_[{i, j}] = qm[{i, j}].first;
+     *r << qm[{i, j}].second + olift;
+    }
     else
       *r << 0;
    }

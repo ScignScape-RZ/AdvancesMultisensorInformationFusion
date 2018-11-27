@@ -12,6 +12,7 @@
 #include <QVector>
 #include <QVBoxLayout>
 #include <QDialogButtonBox>
+#include <QMap>
 
 #include "kans.h"
 
@@ -29,6 +30,8 @@ class ScignStage_3d_Chart_Dialog : public QDialog
  QPushButton* button_ok_;
  QPushButton* button_cancel_;
  QVBoxLayout* main_layout_;
+
+ QMap<QPair<int, int>, Test_Sample*> sample_map_;
 
 
 public:
