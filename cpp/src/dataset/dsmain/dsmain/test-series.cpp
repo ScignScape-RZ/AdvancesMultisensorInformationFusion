@@ -54,8 +54,6 @@ void Test_Series::parse_data(QString path)
     min_max_.oxy_max = oxy;
   if((min_max_.oxy_min == -1) || (oxy < min_max_.oxy_min))
     min_max_.oxy_min = oxy;
-
-
  });
 }
 
@@ -79,14 +77,13 @@ void Test_Series::init_cells(int fres, int tres)
   double tmacmic = (double)fres * (ta - min_max_.temperature_min) / trange;
   double oval = double(oxy - min_max_.oxy_min) / oran;
 
-
-
   Cell_Info* ci = new Cell_Info;
   ci->fmacro = (int) fmacmic;
   ci->fmicro = fmacmic - ci->fmacro;
   ci->tmacro = (int) tmacmic;
   ci->tmicro = tmacmic - ci->tmacro;
   ci->oxy = oval;
+  ci->sample = samp;
   //ci->fmicro = (frange/fres) *;
 
   qv.push_back(ci);
@@ -96,13 +93,13 @@ void Test_Series::init_cells(int fres, int tres)
 }
 
 void Test_Series::cells_to_qmap(int fres, int tres,
-  QMap<QPair<int, int>, QPair<Test_Sample*, double>>& qm)
+  QMap<QPair<int, int>, QList<QPair<Cell_Info*, double>>>& qm)
 {
  QVector<Cell_Info*>& qv = cells_[{fres, tres}].second;
 
  for(Cell_Info* ci : qv)
  {
-  qm[{ci->fmacro, ci->tmacro}] = {ci->sample, ci->oxy};
+  qm[{ci->fmacro, ci->tmacro}].push_back({ci, ci->oxy});
  }
 }
 
@@ -115,7 +112,7 @@ void Test_Series::save_cells_to_file(int fres, int tres, QString path)
 
  QString text;
 
- QMap<QPair<int, int>, QPair<Test_Sample*, double>> qm;
+ QMap<QPair<int, int>, QList<QPair<Cell_Info*, double>>> qm;
 
  cells_to_qmap(fres, tres, qm);
 
@@ -124,7 +121,7 @@ void Test_Series::save_cells_to_file(int fres, int tres, QString path)
   for(int j = 0; j < tres; ++j)
   {
    text += QString("%1 ").arg(qm.value({i, j},
-     {nullptr, -1}).second).leftJustified(12);
+     {{nullptr, -1}}).first().second).leftJustified(12);
   }
   text += '\n';
  }

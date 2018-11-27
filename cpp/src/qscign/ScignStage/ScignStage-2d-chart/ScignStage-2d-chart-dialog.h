@@ -14,12 +14,26 @@
 #include <QDialogButtonBox>
 #include <QMap>
 
+class QGraphicsItem;
+//class QGraphicsSceneHoverEvent;
+
 #include "kans.h"
 
 KANS_CLASS_DECLARE(DSM ,Test_Sample)
 KANS_CLASS_DECLARE(DSM ,Test_Series)
 
 USING_KANS(DSM)
+
+//struct Clickable_Graphics_Item : public QGraphicsRectItem
+//{
+// // Q_DECLARE_OVERRIDE
+// Clickable_Graphics_Item();
+
+// void hoverEnterEvent(QGraphicsSceneHoverEvent* event) Q_DECL_OVERRIDE;
+// void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) Q_DECL_OVERRIDE;
+// void mousePressEvent(QGraphicsSceneMouseEvent* event) Q_DECL_OVERRIDE;
+//};
+
 
 class ScignStage_2d_Chart_Dialog : public QDialog
 {
@@ -31,7 +45,9 @@ class ScignStage_2d_Chart_Dialog : public QDialog
  QPushButton* button_cancel_;
  QVBoxLayout* main_layout_;
 
- QMap<QPair<int, int>, Test_Sample*> sample_map_;
+ QMap<QGraphicsItem*, Test_Sample*> sample_map_;
+
+ QGraphicsItem* last_selected_item_;
 
 
 public:

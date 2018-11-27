@@ -66,7 +66,7 @@ public:
 
  void save_cells_to_file(int fres, int tres, QString path);
  void cells_to_qmap(int fres, int tres, QMap<QPair<int, int>,
-   QPair<Test_Sample*, double>>& qm);
+   QList<QPair<Cell_Info*, double>>>& qm);
 
 };
 

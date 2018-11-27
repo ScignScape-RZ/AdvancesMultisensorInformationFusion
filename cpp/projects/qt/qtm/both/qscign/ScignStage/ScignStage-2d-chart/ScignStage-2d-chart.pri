@@ -6,9 +6,8 @@
 
 
 
-QT += widgets multimedia
+QT += widgets
 
-QT += datavisualization
 
 
 INCLUDEPATH += $$SRC_DIR $$SRC_GROUP_DIR

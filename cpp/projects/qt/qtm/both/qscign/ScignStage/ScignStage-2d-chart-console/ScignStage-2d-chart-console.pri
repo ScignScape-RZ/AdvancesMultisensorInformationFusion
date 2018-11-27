@@ -9,8 +9,6 @@ include(../build-group.pri)
 
 QT += widgets
 
-QT += datavisualization
-
 
 TEMPLATE = app
 

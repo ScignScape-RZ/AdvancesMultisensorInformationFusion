@@ -14,19 +14,12 @@
 #include <QDirIterator>
 #include <QGroupBox>
 
-#include <QScatter3DSeries>
-#include <Q3DScatter>
 
-#include <QBar3DSeries>
-#include <Q3DBars>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QGraphicsRectItem>
 
-#include <QSurface3DSeries>
-#include <Q3DSurface>
-
-
-using namespace QtDataVisualization;
-
-//#include <QtDataVisualization>
+#include <QDebug>
 
 #include "styles.h"
 
@@ -41,7 +34,7 @@ USING_KANS(TextIO)
 
 ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
   int fres, int tres, double olift, QWidget* parent)
- : QDialog(parent)
+ : QDialog(parent), last_selected_item_(nullptr)
 {
 
  button_box_ = new QDialogButtonBox(this);
@@ -80,8 +73,92 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
 
  main_layout_ = new QVBoxLayout();
 
+ int max_w = 800;
+ int max_h = 800;
 
-// main_layout_->addWidget(container);
+ int cell_w = max_w / fres;
+ int cell_h = max_h / tres;
+
+ QGraphicsScene* scene = new QGraphicsScene;
+
+ for(int i = 0; i <= fres; ++i)
+ {
+  scene->addLine(i * cell_w, 0, i * cell_w, max_h);
+ }
+
+ for(int j = 0; j <= tres; ++j)
+ {
+  scene->addLine(0, j * cell_h, max_w, j * cell_h);
+ }
+
+ QMap<QPair<int, int>, QList<QPair<Cell_Info*, double>>> qm;
+ ts->cells_to_qmap(fres, tres, qm);
+
+ for(int i = 0; i <= fres; ++i)
+ {
+  for(int j = 0; j <= tres; ++j)
+  {
+   int rank = 0;
+
+   QStringList brcodes = {"b", "r", "g", "bg", "rg"};
+
+   for(QPair<Cell_Info*, double> pr : qm.value({i, j}, {}))
+   {
+
+    int c = pr.first->fmacro;
+    int r = pr.first->tmacro;
+    double cmi = pr.first->fmicro;
+    double rmi = pr.first->tmicro;
+
+    double cc = (double(c) + cmi) * cell_w;
+    double rr = (double(r) + rmi) * cell_h;
+
+    qreal rectw = cell_w / 4;
+    qreal recth = cell_h / 4;
+
+    int col = (pr.second * 225) + 30;
+
+    int red = brcodes[rank].contains('r')? 255 : col;
+    int green = brcodes[rank].contains('g')? 255 : col;
+    int blue = brcodes[rank].contains('b')? 255 : col;
+
+    if(rank < brcodes.size() - 1)
+     ++rank;
+
+    QBrush qbr(QColor(red, green, blue, 200));
+
+    QGraphicsRectItem* qgri = scene->addRect(cc - rectw, rr - recth, rectw*2, recth*2,
+      QPen(), qbr);
+
+    qgri->setFlag(QGraphicsItem::ItemIsSelectable);
+
+    sample_map_[qgri] = pr.first->sample;
+   }
+  }
+ }
+
+ connect(scene, &QGraphicsScene::selectionChanged,
+  [this, scene]
+ {
+  QList<QGraphicsItem*> sis = scene->selectedItems();
+  if(sis.size() == 1)
+  {
+   QGraphicsItem* qgi = sis.first();
+   Test_Sample* samp = sample_map_.value(qgi);
+   if(samp)
+   {
+    qDebug() << QString("%1: %2 %3 %4").arg(samp->index())
+      .arg(samp->flow().getDouble())  .arg(samp->temperature_adj())
+      .arg(samp->oxy());
+   }
+  }
+ });
+
+
+ QGraphicsView* view = new QGraphicsView(scene);
+
+
+ main_layout_->addWidget(view);
  main_layout_->addWidget(button_box_);
 
  setLayout(main_layout_);

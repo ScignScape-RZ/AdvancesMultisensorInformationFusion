@@ -87,8 +87,6 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
   bars->columnAxis()->setRange(0, tres);
 
   QMap<QPair<int, int>, QPair<Test_Sample*, double>> qm;
-
-
   ts->cells_to_qmap(fres, tres, qm);
 
   QBar3DSeries *series = new QBar3DSeries;

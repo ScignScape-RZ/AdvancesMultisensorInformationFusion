@@ -9,9 +9,6 @@
 
 #include <QApplication>
 
-#include <QSurface3DSeries>
-#include <Q3DSurface>
-
 #include "dsmain/test-sample.h"
 #include "dsmain/test-series.h"
 
@@ -21,8 +18,6 @@
 
 
 USING_KANS(DSM)
-
-using namespace QtDataVisualization;
 
 
 int main(int argc, char **argv)
