@@ -132,7 +132,9 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
 
     qgri->setFlag(QGraphicsItem::ItemIsSelectable);
 
-    sample_map_[qgri] = pr.first->sample;
+    sample_map_[pr.first->sample] = qgri;
+    QVariant qvar = QVariant::fromValue((void*) pr.first->sample);
+    qgri->setData(1, qvar);
    }
   }
  }
@@ -144,12 +146,13 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
   if(sis.size() == 1)
   {
    QGraphicsItem* qgi = sis.first();
-   Test_Sample* samp = sample_map_.value(qgi);
+   Test_Sample* samp = (Test_Sample*) qgi->data(1).value<void*>();//sample_map_.value(qgi);
    if(samp)
    {
     qDebug() << QString("%1: %2 %3 %4").arg(samp->index())
       .arg(samp->flow().getDouble())  .arg(samp->temperature_adj())
       .arg(samp->oxy());
+    Q_EMIT(sample_selected(samp));
    }
   }
  });

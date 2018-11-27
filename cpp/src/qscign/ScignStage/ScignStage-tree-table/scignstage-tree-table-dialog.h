@@ -133,6 +133,9 @@ class ScignStage_Tree_Table_Dialog : public QDialog
  void highlight(Test_Sample* samp);
  void unhighlight(Test_Sample* samp);
 
+ void highlight_scroll_to_sample(Test_Sample* samp);
+
+
  void run_tree_context_menu(const QPoint& qp, int col, int row = 0);
  void run_tree_context_menu(const QPoint& qp, int page, int col,
    std::function<void(int)> pdf_fn, std::function<void(int)> copyc_fn,
@@ -162,6 +165,8 @@ Q_SIGNALS:
  void take_screenshot_requested();
 
 public Q_SLOTS:
+
+ void browse_to_selected_sample(Test_Sample* samp);
 
  void handle_xpdf_is_ready();
  void handle_take_screenshot_requested();

@@ -45,7 +45,7 @@ class ScignStage_2d_Chart_Dialog : public QDialog
  QPushButton* button_cancel_;
  QVBoxLayout* main_layout_;
 
- QMap<QGraphicsItem*, Test_Sample*> sample_map_;
+ QMap<Test_Sample*, QGraphicsItem*> sample_map_;
 
  QGraphicsItem* last_selected_item_;
 
@@ -59,6 +59,9 @@ public:
 
 public Q_SLOTS:
 
+Q_SIGNALS:
+
+ void sample_selected(Test_Sample* samp);
 
 
 };

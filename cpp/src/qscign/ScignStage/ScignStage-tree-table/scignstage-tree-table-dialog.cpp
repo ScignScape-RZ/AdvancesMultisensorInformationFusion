@@ -290,6 +290,28 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
 
 }
 
+void ScignStage_Tree_Table_Dialog::browse_to_selected_sample(Test_Sample* samp)
+{
+ if(current_sample_)
+   unhighlight(current_sample_);
+ highlight_scroll_to_sample(samp);
+ current_sample_ = samp;
+}
+
+void ScignStage_Tree_Table_Dialog::highlight_scroll_to_sample(Test_Sample* samp)
+{
+ int index = samp->index() - 1;
+ QTreeWidgetItem* twi = main_tree_widget_->topLevelItem(index);
+ highlight(twi);
+ int max = qMin(index + 4, samples_->size() - 1);
+
+ QTreeWidgetItem* mtwi = main_tree_widget_->topLevelItem(max);
+
+ main_tree_widget_->scrollToItem(mtwi);
+ main_tree_widget_->scrollToItem(twi);
+}
+
+
 void ScignStage_Tree_Table_Dialog::highlight(Test_Sample* samp)
 {
  highlight(main_tree_widget_->topLevelItem(samp->index() - 1));

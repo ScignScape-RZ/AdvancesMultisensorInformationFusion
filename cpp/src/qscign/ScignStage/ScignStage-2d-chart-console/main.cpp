@@ -7,6 +7,9 @@
 
 #include "ScignStage-2d-chart/ScignStage-2d-chart-dialog.h"
 
+#include "ScignStage-tree-table/scignstage-tree-table-dialog.h"
+
+
 #include <QApplication>
 
 #include "dsmain/test-sample.h"
@@ -49,8 +52,15 @@ int main(int argc, char **argv)
 
  ts.init_cells(25, 25);
 
- ScignStage_2d_Chart_Dialog dlg(&ts, 25, 25, 1.0f/13, nullptr);
+ ScignStage_2d_Chart_Dialog dlg2d(&ts, 25, 25, 1.0f/13, nullptr);
 
+ dlg2d.show();
+
+ ScignStage_Tree_Table_Dialog dlg (nullptr, &ts.samples());
  dlg.show();
+
+ QApplication::connect(&dlg2d, SIGNAL(sample_selected(Test_Sample*)),
+   &dlg, SLOT(browse_to_selected_sample(Test_Sample*)));
+
  return qapp.exec();
 }
