@@ -62,5 +62,9 @@ int main(int argc, char **argv)
  QApplication::connect(&dlg2d, SIGNAL(sample_selected(Test_Sample*)),
    &dlg, SLOT(browse_to_selected_sample(Test_Sample*)));
 
+ QApplication::connect(&dlg, SIGNAL(sample_highlighted(Test_Sample*)),
+   &dlg2d, SLOT(highlight_selected_sample(Test_Sample*)));
+
+
  return qapp.exec();
 }

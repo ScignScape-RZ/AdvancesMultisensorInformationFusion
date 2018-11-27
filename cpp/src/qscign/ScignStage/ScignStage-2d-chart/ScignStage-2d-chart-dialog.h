@@ -59,6 +59,8 @@ public:
 
 public Q_SLOTS:
 
+ void highlight_selected_sample(Test_Sample* samp);
+
 Q_SIGNALS:
 
  void sample_selected(Test_Sample* samp);

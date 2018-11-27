@@ -158,11 +158,14 @@ public:
  // //  Kernel Application Interface
  void test_msgbox(QString msg);
 
+ void emit_highlight();
+
 
 Q_SIGNALS:
  void canceled(QDialog*);
  void accepted(QDialog*);
  void take_screenshot_requested();
+ void sample_highlighted(Test_Sample* samp);
 
 public Q_SLOTS:
 

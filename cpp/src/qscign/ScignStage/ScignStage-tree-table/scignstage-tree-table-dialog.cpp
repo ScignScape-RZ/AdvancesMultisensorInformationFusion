@@ -440,6 +440,7 @@ void ScignStage_Tree_Table_Dialog::handle_sample_down()
   index = 0;
   current_sample_ = samples_->first();
  }
+ emit_highlight();
  QTreeWidgetItem* twi = main_tree_widget_->topLevelItem(index);
  highlight(twi);
  int max = qMin(index + 4, samples_->size() - 1);
@@ -448,6 +449,11 @@ void ScignStage_Tree_Table_Dialog::handle_sample_down()
 
  main_tree_widget_->scrollToItem(mtwi);
  main_tree_widget_->scrollToItem(twi);
+}
+
+void ScignStage_Tree_Table_Dialog::emit_highlight()
+{
+ Q_EMIT(sample_highlighted(current_sample_));
 }
 
 void ScignStage_Tree_Table_Dialog::unhighlight(QTreeWidgetItem* twi)
@@ -480,6 +486,7 @@ void ScignStage_Tree_Table_Dialog::handle_sample_up()
   index = samples_->size() - 1;
   current_sample_ = samples_->last();
  }
+ emit_highlight();
  QTreeWidgetItem* twi = main_tree_widget_->topLevelItem(index);
 
  highlight(twi);
@@ -498,6 +505,8 @@ void ScignStage_Tree_Table_Dialog::handle_sample_first()
  {
   unhighlight(current_sample_);
  }
+ current_sample_ = samples_->first();
+ emit_highlight();
 
  QTreeWidgetItem* twi = main_tree_widget_->topLevelItem(0);
  highlight(twi);

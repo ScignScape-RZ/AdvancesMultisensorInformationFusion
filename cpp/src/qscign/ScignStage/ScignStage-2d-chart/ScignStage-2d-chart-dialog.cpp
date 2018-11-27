@@ -100,7 +100,7 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
   {
    int rank = 0;
 
-   QStringList brcodes = {"b", "r", "g", "bg", "rg"};
+   //QStringList brcodes = {"b", "r", "g", "bg", "rg"};
 
    for(QPair<Cell_Info*, double> pr : qm.value({i, j}, {}))
    {
@@ -113,22 +113,28 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
     double cc = (double(c) + cmi) * cell_w;
     double rr = (double(r) + rmi) * cell_h;
 
-    qreal rectw = cell_w / 4;
-    qreal recth = cell_h / 4;
+    qreal rectw = cell_w / 6;
+    qreal recth = cell_h / 6;
 
     int col = (pr.second * 225) + 30;
 
-    int red = brcodes[rank].contains('r')? 255 : col;
-    int green = brcodes[rank].contains('g')? 255 : col;
-    int blue = brcodes[rank].contains('b')? 255 : col;
+//    int red = brcodes[rank].contains('r')? 255 : col;
+//    int green = brcodes[rank].contains('g')? 255 : col;
+//    int blue = brcodes[rank].contains('b')? 255 : col;
 
-    if(rank < brcodes.size() - 1)
-     ++rank;
+//    if(rank < brcodes.size() - 1)
+//     ++rank;
 
-    QBrush qbr(QColor(red, green, blue, 200));
+    QColor clr1 = QColor(col, 255 - col, 0);
+    QColor clr2 = QColor(0, 0, 255, 180);
+
+    QPen qpen(clr2);
+    qpen.setWidth(3);
+
+    QBrush qbr(clr1);
 
     QGraphicsRectItem* qgri = scene->addRect(cc - rectw, rr - recth, rectw*2, recth*2,
-      QPen(), qbr);
+      qpen, qbr);
 
     qgri->setFlag(QGraphicsItem::ItemIsSelectable);
 
@@ -166,6 +172,19 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
 
  setLayout(main_layout_);
  //fore_panel_
+}
+
+void ScignStage_2d_Chart_Dialog::highlight_selected_sample(Test_Sample* samp)
+{
+ QGraphicsRectItem* qgri = qgraphicsitem_cast<QGraphicsRectItem*>
+   (sample_map_.value(samp));
+
+ if(qgri)
+ {
+  QPen pen = qgri->pen();
+  pen.setColor(QColor(255, 255, 0));
+  qgri->setPen(pen);
+ }
 }
 
 ScignStage_2d_Chart_Dialog::~ScignStage_2d_Chart_Dialog()
