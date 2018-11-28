@@ -60,6 +60,7 @@ HEADERS += \
   $$SRC_DIR/scignstage-tree-table-dialog.h \
   $$SRC_DIR/nav-protocols/nav-tree-table-1d-panel.h \
   $$SRC_DIR/subwindows/scignstage-clickable-label.h \
+  $$SRC_DIR/subwindows/series-treewidget.h \
   $$SRC_DIR/xpdf-bridge.h \
 
 
@@ -67,6 +68,7 @@ SOURCES += \
   $$SRC_DIR/scignstage-tree-table-dialog.cpp \
   $$SRC_DIR/nav-protocols/nav-tree-table-1d-panel.cpp \
   $$SRC_DIR/subwindows/scignstage-clickable-label.cpp \
+  $$SRC_DIR/subwindows/series-treewidget.cpp \
   $$SRC_DIR/xpdf-bridge.cpp \
 
 

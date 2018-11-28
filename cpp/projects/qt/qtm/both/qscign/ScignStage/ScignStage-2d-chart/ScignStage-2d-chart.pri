@@ -49,7 +49,6 @@ SOURCES += \
   $$SRC_DIR/scignstage-2d-chart-dialog.cpp \
 
 
-
 LIBS += -L$$TARGETSDIR -ldsmain -lposit-lib
 
 

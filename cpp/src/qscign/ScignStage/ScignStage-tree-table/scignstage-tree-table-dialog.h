@@ -57,6 +57,7 @@ class QTcpServer;
 class QTreeWidget;
 class QTreeWidgetItem;
 
+class Series_TreeWidget;
 
 class XPDF_Bridge;
 
@@ -90,7 +91,11 @@ class ScignStage_Tree_Table_Dialog : public QDialog
 
  QPushButton* take_screenshot_button_;
 
- QTreeWidget* main_tree_widget_;
+ QTabWidget* main_tab_widget_;
+ Series_TreeWidget* main_tree_widget_;
+ Series_TreeWidget* flow_tree_widget_;
+ Series_TreeWidget* temperature_tree_widget_;
+ Series_TreeWidget* oxy_tree_widget_;
 
  NAV_Tree_Table1D_Panel* nav_panel_;
 

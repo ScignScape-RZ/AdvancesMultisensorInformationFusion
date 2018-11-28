@@ -55,18 +55,37 @@ class Test_Series
  QMap<QPair<int, int>, QPair<Cell_Coords<int, float, double>,
    QVector<Cell_Info*>>> cells_;
 
+ QVector<quint16> flow_ranks_;
+ QVector<quint16> temperature_ranks_;
+ QVector<quint16> oxy_ranks_;
+
+ QVector<quint16> inv_flow_ranks_;
+ QVector<quint16> inv_temperature_ranks_;
+ QVector<quint16> inv_oxy_ranks_;
+
 public:
 
  Test_Series();
 
  ACCESSORS__RGET(QVector<Test_Sample*> ,samples)
 
+ void samples_by_flow_rank(QVector<Test_Sample*>& result);
+ void samples_by_oxy_rank(QVector<Test_Sample*>& result);
+ void samples_by_temperature_rank(QVector<Test_Sample*>& result);
+
+
  void parse_data(QString path);
  void init_cells(int fres, int tres);
+
+ void init_ranks();
 
  void each_sample(std::function<void(Test_Sample*)>);
 
  void save_cells_to_file(int fres, int tres, QString path);
+
+ void save_ranks_to_file(QString path);
+ void read_ranks_from_file(QString path);
+
  void cells_to_qmap(int fres, int tres, QMap<QPair<int, int>,
    QList<QPair<Cell_Info*, double>>>& qm);
 
@@ -77,6 +96,10 @@ public:
  double get_flow_as_percentage(Test_Sample& samp);
  double get_temperature_as_percentage(Test_Sample& samp);
  double get_oxy_as_percentage(Test_Sample& samp);
+
+ qint16 get_flow_rank(Test_Sample& samp);
+ qint16 get_temperature_rank(Test_Sample& samp);
+ qint16 get_oxy_rank(Test_Sample& samp);
 
 };
 

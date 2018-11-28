@@ -12,6 +12,8 @@
 
 #include <QDebug>
 
+#include <QDataStream>
+
 
 USING_KANS(DSM)
 USING_KANS(TextIO)
@@ -132,6 +134,152 @@ double Test_Series::get_oxy_as_percentage(Test_Sample& samp)
  return result;
 }
 
+void Test_Series::init_ranks()
+{
+ if(flow_ranks_.isEmpty())
+ {
+  auto copy = samples_;
+  qSort(copy.begin(), copy.end(),
+    [](const Test_Sample* const lhs, const Test_Sample* const rhs)
+  {
+   if(lhs->flow() < rhs->flow())
+     return true;
+   if(lhs->flow() > rhs->flow())
+     return false;
+   if(lhs->oxy() < rhs->oxy())
+     return true;
+   if(lhs->oxy() > rhs->oxy())
+     return false;
+   if(lhs->temperature_adj() < rhs->temperature_adj())
+     return true;
+   if(lhs->temperature_adj() > rhs->temperature_adj())
+     return false;
+   return lhs->index() < rhs->index();
+  });
+  flow_ranks_.resize(copy.size());
+  inv_flow_ranks_.resize(copy.size());
+  for(int i = 0; i < copy.size(); ++i)
+  {
+   inv_flow_ranks_[i] = copy[i]->index();
+   flow_ranks_[copy[i]->index()-1] = i;
+  }
+ }
+
+ if(temperature_ranks_.isEmpty())
+ {
+  auto copy = samples_;
+  qSort(copy.begin(), copy.end(),
+    [](const Test_Sample* const lhs, const Test_Sample* const rhs)
+  {
+   if(lhs->temperature_adj() < rhs->temperature_adj())
+     return true;
+   if(lhs->temperature_adj() > rhs->temperature_adj())
+     return false;
+   if(lhs->flow() < rhs->flow())
+     return true;
+   if(lhs->flow() > rhs->flow())
+     return false;
+   if(lhs->oxy() < rhs->oxy())
+     return true;
+   if(lhs->oxy() > rhs->oxy())
+     return false;
+   return lhs->index() < rhs->index();
+  });
+  temperature_ranks_.resize(copy.size());
+  inv_temperature_ranks_.resize(copy.size());
+  for(int i = 0; i < copy.size(); ++i)
+  {
+   inv_temperature_ranks_[i] = copy[i]->index();
+   temperature_ranks_[copy[i]->index()-1] = i;
+  }
+ }
+
+ if(oxy_ranks_.isEmpty())
+ {
+  auto copy = samples_;
+  qSort(copy.begin(), copy.end(),
+    [](const Test_Sample* const lhs, const Test_Sample* const rhs)
+  {
+   if(lhs->oxy() < rhs->oxy())
+     return true;
+   if(lhs->oxy() > rhs->oxy())
+     return false;
+   if(lhs->flow() < rhs->flow())
+     return true;
+   if(lhs->flow() > rhs->flow())
+     return false;
+   if(lhs->temperature_adj() < rhs->temperature_adj())
+     return true;
+   if(lhs->temperature_adj() > rhs->temperature_adj())
+     return false;
+   return lhs->index() < rhs->index();
+  });
+  oxy_ranks_.resize(copy.size());
+  inv_oxy_ranks_.resize(copy.size());
+  for(int i = 0; i < copy.size(); ++i)
+  {
+   inv_oxy_ranks_[i] = copy[i]->index();
+   oxy_ranks_[copy[i]->index()-1] = i;
+  }
+ }
+}
+
+void Test_Series::save_ranks_to_file(QString path)
+{
+ QByteArray qba;
+ QDataStream qds(&qba, QIODevice::WriteOnly);
+ qds << flow_ranks_;
+ qds << temperature_ranks_;
+ qds << oxy_ranks_;
+ save_file(path, qba);
+}
+
+void Test_Series::read_ranks_from_file(QString path)
+{
+
+}
+
+void Test_Series::samples_by_flow_rank(QVector<Test_Sample*>& result)
+{
+ result.reserve(samples_.size());
+ for(quint16 i : inv_flow_ranks_)
+ {
+  result.push_back(samples_.at(i - 1));
+ }
+}
+
+void Test_Series::samples_by_temperature_rank(QVector<Test_Sample*>& result)
+{
+ result.reserve(samples_.size());
+ for(quint16 i : inv_temperature_ranks_)
+ {
+  result.push_back(samples_.at(i - 1));
+ }
+}
+
+void Test_Series::samples_by_oxy_rank(QVector<Test_Sample*>& result)
+{
+ result.reserve(samples_.size());
+ for(quint16 i : inv_oxy_ranks_)
+ {
+  result.push_back(samples_.at(i - 1));
+ }
+}
+
+qint16 Test_Series::get_flow_rank(Test_Sample& samp)
+{
+ return flow_ranks_.value(samp.index() - 1, -1) + 1;
+}
+
+qint16 Test_Series::get_temperature_rank(Test_Sample& samp)
+{
+ return temperature_ranks_.value(samp.index() - 1, -1) + 1;
+}
+
+qint16 Test_Series::get_oxy_rank(Test_Sample& samp)
+{
+ return oxy_ranks_.value(samp.index() - 1, -1) + 1;
+}
 
 void Test_Series::get_cell_coords(int fres, int tres,
   double& flow_min, double& flow_span,

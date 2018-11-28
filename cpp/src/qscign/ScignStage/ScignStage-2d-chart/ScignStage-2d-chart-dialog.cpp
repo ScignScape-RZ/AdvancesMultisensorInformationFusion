@@ -164,11 +164,12 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
  QMap<QPair<int, int>, QList<QPair<Cell_Info*, double>>> qm;
  ts->cells_to_qmap(fres, tres, qm);
 
+
  for(int i = 0; i <= fres; ++i)
  {
   for(int j = 0; j <= tres; ++j)
   {
-   int rank = 0;
+   //int rank = 0;
 
    //QStringList brcodes = {"b", "r", "g", "bg", "rg"};
 

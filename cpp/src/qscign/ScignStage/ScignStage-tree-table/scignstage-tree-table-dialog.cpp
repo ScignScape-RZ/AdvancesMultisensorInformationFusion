@@ -78,6 +78,8 @@
 #include "kauvir-code-model/kcm-channel-group.h"
 #include "kauvir-code-model/kauvir-code-model.h"
 
+#include "subwindows/series-treewidget.h"
+
 #include "textio.h"
 
 USING_KANS(TextIO)
@@ -159,89 +161,19 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
 
  // //   Foreground
 
+ main_tab_widget_ = new QTabWidget(this);
 
- main_tree_widget_ = new QTreeWidget(this);
+ main_tree_widget_ = new Series_TreeWidget(series_,
+   Series_TreeWidget::Sort_Options::Index, this);
 
- QVector<Test_Sample*>* samples = series_?&series_->samples():nullptr;
- if(samples)
- {
+ flow_tree_widget_ = new Series_TreeWidget(series_,
+   Series_TreeWidget::Sort_Options::Flow, this);
 
-  int r = 0;
+ temperature_tree_widget_ = new Series_TreeWidget(series_,
+   Series_TreeWidget::Sort_Options::Temperature, this);
 
-  QStringList headers {
-   "Index",
-   "Flow",
-   "Time With\n / Average",
-   "Time Against\n / Delta",
-   "Temperature C\u00b0\n / K\u00b0",
-   "Oxygen \n (calculated)"
-  };
-
-  main_tree_widget_->setColumnCount(6);
-  main_tree_widget_->setHeaderLabels(headers);
-
-  main_tree_widget_->setColumnWidth(0, 50);
-  main_tree_widget_->setColumnWidth(1, 65);
-  main_tree_widget_->setColumnWidth(2, 105);
-  main_tree_widget_->setColumnWidth(3, 105);
-  main_tree_widget_->setColumnWidth(4, 135);
-  main_tree_widget_->setColumnWidth(5, 65);
-
-  main_tree_widget_->header()->setStretchLastSection(false);
-  main_tree_widget_->header()->setSectionResizeMode(5, QHeaderView::Stretch);
-
-  int c = 0;
-  for(Test_Sample* samp : *samples)
-  {
-   ++c;
-
-   QStringList qsl;
-
-   qsl.push_back(QString::number(samp->index()));
-   qsl.push_back(QString::number(samp->flow().getDouble()));
-   qsl.push_back(QString::number(samp->time_with_flow().getDouble()));
-   qsl.push_back(QString::number(samp->time_against_flow().getDouble()));
-
-   QString s = QString::number(samp->temperature_adj());
-   s.insert(s.size() - 2, '.');
-   qsl.push_back(s);
-
-   QTreeWidgetItem* twi = new QTreeWidgetItem((QTreeWidget*) nullptr,
-     qsl);
-
-   QStringList sqsl {{"", ""}};
-
-   sqsl.push_back(" " + QString::number(samp->average_time().getDouble()));
-   sqsl.push_back(" " + QString::number(samp->delta_time().getDouble()));
-   sqsl.push_back(" " + QString::number(samp->temperature_kelvin().getDouble()));
-   sqsl.push_back(" " + QString::number(samp->oxy()));
-
-   QTreeWidgetItem* stwi = new QTreeWidgetItem((QTreeWidget*) nullptr,
-     sqsl);
-
-   twi->addChild(stwi);
-
-   QStringList pqsl {{"%"}};
-
-   pqsl.push_back(QString::number(series_->get_flow_as_percentage(*samp)));
-   pqsl.push_back("");
-   pqsl.push_back("");
-   pqsl.push_back(QString::number(series_->get_temperature_as_percentage(*samp)));
-   pqsl.push_back(QString::number(series_->get_oxy_as_percentage(*samp)));
-
-   QTreeWidgetItem* ptwi = new QTreeWidgetItem((QTreeWidget*) nullptr,
-     pqsl);
-
-   twi->addChild(ptwi);
-
-
-
-
-   main_tree_widget_->addTopLevelItem(twi);
-
-   //twi->setData(0, Qt::UserRole, QVariant::fromValue(group)
-  }
- }
+ oxy_tree_widget_ = new Series_TreeWidget(series_,
+   Series_TreeWidget::Sort_Options::Oxy, this);
 
  main_tree_widget_->setContextMenuPolicy(Qt::CustomContextMenu);
  connect(main_tree_widget_, &QTreeWidget::customContextMenuRequested, [this](const QPoint& qp)
@@ -266,8 +198,15 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
 
  });
 
+ main_tab_widget_->addTab(main_tree_widget_, "Main");
+ main_tab_widget_->addTab(flow_tree_widget_, "Flow");
+ main_tab_widget_->addTab(temperature_tree_widget_, "Temperature");
+ main_tab_widget_->addTab(oxy_tree_widget_, "Oxygen");
 
- middle_layout_->addWidget(main_tree_widget_);
+ main_tab_widget_->setStyleSheet(tab_style_sheet_());
+
+ middle_layout_->addWidget(main_tab_widget_);
+
 
  main_layout_->addLayout(middle_layout_);
 

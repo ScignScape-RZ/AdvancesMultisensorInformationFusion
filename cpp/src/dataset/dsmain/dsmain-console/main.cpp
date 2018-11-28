@@ -33,6 +33,8 @@
 
 
 #include "dsmain/test-sample.h"
+#include "dsmain/test-series.h"
+
 
 //#include "ScignStage-audio/xpdf-bridge.h"
 
@@ -66,8 +68,12 @@ int main(int argc, char **argv)
 {
  QApplication qapp(argc, argv);
 
- QVector<Test_Sample*> ts;
- Test_Sample::read_samples_from_file(DATA_FOLDER "/t1.txt", ts);
+ Test_Series ts;
+ ts.parse_data(DATA_FOLDER "/t1.txt");
+
+ ts.init_cells(25, 25);
+
+ ts.init_ranks();
 
 #ifdef USING_XPDF
  XPDF_Bridge xpdf_bridge(argc, argv);
