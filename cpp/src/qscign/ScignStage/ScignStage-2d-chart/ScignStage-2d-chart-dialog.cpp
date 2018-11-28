@@ -81,14 +81,56 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
 
  QGraphicsScene* scene = new QGraphicsScene;
 
+ QPen grey_pen = QPen(QColor(180,180,190));
+ grey_pen.setWidth(2);
+
+ QPen red_pen = QPen(QColor(190,80,20));
+ QPen brown_pen = QPen(QColor(130,80,20));
+
+ //grey_pen.setWidth(2);
+
+ double flow_min, flow_cell_span, temperature_min, temperature_cell_span;
+
+ ts->get_cell_coords(fres, tres, flow_min,
+   flow_cell_span, temperature_min, temperature_cell_span);
+
  for(int i = 0; i <= fres; ++i)
  {
-  scene->addLine(i * cell_w, 0, i * cell_w, max_h);
+  scene->addLine(i * cell_w, 0, i * cell_w, max_h, grey_pen);
+
+  QGraphicsSimpleTextItem* qgsti = scene->addSimpleText(QString::number(i));
+  qgsti->setPen(brown_pen);
+  if(i < 10)
+    qgsti->setX(i * cell_w - 4);
+  else
+    qgsti->setX(i * cell_w - 8);
+  qgsti->setY(-15);
+
+  QGraphicsSimpleTextItem* qgsti1 = scene->addSimpleText(
+    QString::number(flow_min + (i * flow_cell_span)).leftJustified(5,
+    '_', true));
+  qgsti1->setPen(red_pen);
+  qgsti1->setY(-30);
+  qgsti1->setX(i * cell_w - 12);
+
  }
 
  for(int j = 0; j <= tres; ++j)
  {
-  scene->addLine(0, j * cell_h, max_w, j * cell_h);
+  scene->addLine(0, j * cell_h, max_w, j * cell_h, grey_pen);
+
+  QGraphicsSimpleTextItem* qgsti = scene->addSimpleText(QString::number(j));
+  qgsti->setPen(brown_pen);
+  qgsti->setX(-15);
+  qgsti->setY(j * cell_h - 7);
+
+  QGraphicsSimpleTextItem* qgsti1 = scene->addSimpleText(
+    QString::number(temperature_min + (j * temperature_cell_span)).leftJustified(5,
+    '_', true));
+  qgsti1->setPen(red_pen);
+  qgsti1->setX(-60);
+  qgsti1->setY(j * cell_h - 7);
+
  }
 
  QMap<QPair<int, int>, QList<QPair<Cell_Info*, double>>> qm;
@@ -113,8 +155,8 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
     double cc = (double(c) + cmi) * cell_w;
     double rr = (double(r) + rmi) * cell_h;
 
-    qreal rectw = cell_w / 6;
-    qreal recth = cell_h / 6;
+    qreal rectw = cell_w / 5;
+    qreal recth = cell_h / 5;
 
     int col = (pr.second * 225) + 30;
 
@@ -125,11 +167,11 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
 //    if(rank < brcodes.size() - 1)
 //     ++rank;
 
-    QColor clr1 = QColor(col, 255 - col, 0);
-    QColor clr2 = QColor(0, 0, 255, 180);
+    QColor clr1 = QColor(col, 255 - col, 0, 200);
+    QColor clr2 = QColor(90, 90, 255, 100);
 
     QPen qpen(clr2);
-    qpen.setWidth(3);
+    qpen.setWidth(6);
 
     QBrush qbr(clr1);
 
@@ -182,7 +224,7 @@ void ScignStage_2d_Chart_Dialog::highlight_selected_sample(Test_Sample* samp)
  if(qgri)
  {
   QPen pen = qgri->pen();
-  pen.setColor(QColor(255, 255, 0));
+  pen.setColor(QColor(255, 255, 0, 255));
   qgri->setPen(pen);
  }
 }

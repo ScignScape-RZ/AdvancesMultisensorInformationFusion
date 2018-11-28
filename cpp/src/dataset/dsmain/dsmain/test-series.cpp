@@ -17,7 +17,7 @@ USING_KANS(DSM)
 USING_KANS(TextIO)
 
 Test_Series::Test_Series()
-  : min_max_{-1,0,-1,0,-1,0}
+  : min_max_{-1,0,-1,0,-1,0,0,0}
 {
 
 }
@@ -55,13 +55,18 @@ void Test_Series::parse_data(QString path)
   if((min_max_.oxy_min == -1) || (oxy < min_max_.oxy_min))
     min_max_.oxy_min = oxy;
  });
+
+ min_max_.flow_span = min_max_.flow_max - min_max_.flow_min;
+ min_max_.temperature_span = min_max_.temperature_max - min_max_.temperature_min;
 }
 
 void Test_Series::init_cells(int fres, int tres)
 {
- double frange = min_max_.flow_max - min_max_.flow_min;
- double trange = min_max_.temperature_max - min_max_.temperature_min;
+ double frange = min_max_.flow_span;
+ double trange = min_max_.temperature_span;
  int oran = min_max_.oxy_max - min_max_.oxy_min;
+
+ cells_[{fres, tres}].first = {0, fres, 0, tres, 0, 1, frange/fres, trange/tres};
 
  each_sample ([this, frange, trange, oran, fres, tres](Test_Sample* samp)
  {
@@ -103,6 +108,16 @@ void Test_Series::cells_to_qmap(int fres, int tres,
  }
 }
 
+void Test_Series::get_cell_coords(int fres, int tres,
+  double& flow_min, double& flow_span,
+  double& temperature_min, double& temperature_span)
+{
+ Cell_Coords<int, float, double>& cc = cells_[{fres, tres}].first;
+ flow_min = min_max_.flow_min;
+ flow_span = cc.flow_span;
+ temperature_min = min_max_.temperature_min;
+ temperature_span = cc.temperature_span;
+}
 
 void Test_Series::save_cells_to_file(int fres, int tres, QString path)
 {

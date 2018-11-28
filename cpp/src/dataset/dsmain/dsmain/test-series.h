@@ -36,7 +36,7 @@ struct Cell_Info
 
 class Test_Series
 {
- template<typename T1, typename T2>
+ template<typename T1, typename T2, typename T3>
  struct Cell_Coords {
    T1 flow_min;
    T1 flow_max;
@@ -44,13 +44,15 @@ class Test_Series
    T1 temperature_max;
    T2 oxy_min;
    T2 oxy_max;
+   T3 flow_span;
+   T3 temperature_span;
  };
 
- Cell_Coords<double, int> min_max_;
+ Cell_Coords<double, int, double> min_max_;
 
  QVector<Test_Sample*> samples_;
 
- QMap<QPair<int, int>, QPair<Cell_Coords<int, float>,
+ QMap<QPair<int, int>, QPair<Cell_Coords<int, float, double>,
    QVector<Cell_Info*>>> cells_;
 
 public:
@@ -67,6 +69,10 @@ public:
  void save_cells_to_file(int fres, int tres, QString path);
  void cells_to_qmap(int fres, int tres, QMap<QPair<int, int>,
    QList<QPair<Cell_Info*, double>>>& qm);
+
+ void get_cell_coords(int fres, int tres,
+   double& flow_min, double& flow_span,
+   double& temperature_min, double& temperature_span);
 
 };
 
