@@ -113,6 +113,21 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
   qgsti1->setY(-30);
   qgsti1->setX(i * cell_w - 12);
 
+  QGraphicsSimpleTextItem* qgstib = scene->addSimpleText(QString::number(i));
+  qgstib->setPen(brown_pen);
+  if(i < 10)
+    qgstib->setX(i * cell_w - 4);
+  else
+    qgstib->setX(i * cell_w - 8);
+  qgstib->setY(max_h + 15);
+
+  QGraphicsSimpleTextItem* qgstib1 = scene->addSimpleText(
+    QString::number(flow_min + (i * flow_cell_span)).leftJustified(5,
+    '_', true));
+  qgstib1->setPen(red_pen);
+  qgstib1->setY(max_h + 30);
+  qgstib1->setX(i * cell_w - 12);
+
  }
 
  for(int j = 0; j <= tres; ++j)
@@ -121,15 +136,28 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
 
   QGraphicsSimpleTextItem* qgsti = scene->addSimpleText(QString::number(j));
   qgsti->setPen(brown_pen);
-  qgsti->setX(-15);
+  qgsti->setX(-25);
   qgsti->setY(j * cell_h - 7);
 
   QGraphicsSimpleTextItem* qgsti1 = scene->addSimpleText(
     QString::number(temperature_min + (j * temperature_cell_span)).leftJustified(5,
-    '_', true));
+    '0', true));
   qgsti1->setPen(red_pen);
-  qgsti1->setX(-60);
-  qgsti1->setY(j * cell_h - 7);
+  qgsti1->setX(-40);
+  qgsti1->setY(j * cell_h + 4);
+
+  QGraphicsSimpleTextItem* qgstir = scene->addSimpleText(QString::number(j));
+  qgstir->setPen(brown_pen);
+  qgstir->setX(max_w + 15);
+  qgstir->setY(j * cell_h - 7);
+
+  QGraphicsSimpleTextItem* qgstir1 = scene->addSimpleText(
+    QString::number(temperature_min + (j * temperature_cell_span)).leftJustified(5,
+    '0', true));
+  qgstir1->setPen(red_pen);
+  qgstir1->setX(max_w + 15);
+  qgstir1->setY(j * cell_h + 4);
+
 
  }
 
