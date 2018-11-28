@@ -108,6 +108,31 @@ void Test_Series::cells_to_qmap(int fres, int tres,
  }
 }
 
+double Test_Series::get_flow_as_percentage(Test_Sample& samp)
+{
+ double result = samp.flow().getDouble();
+ result -= min_max_.flow_min;
+ result /= min_max_.flow_span;
+ return result;
+}
+
+double Test_Series::get_temperature_as_percentage(Test_Sample& samp)
+{
+ double result = (double) samp.temperature_adj();
+ result -= min_max_.temperature_min;
+ result /= min_max_.temperature_span;
+ return result;
+}
+
+double Test_Series::get_oxy_as_percentage(Test_Sample& samp)
+{
+ double result = samp.oxy();
+ result -= min_max_.oxy_min;
+ result /= min_max_.oxy_max - min_max_.oxy_min;
+ return result;
+}
+
+
 void Test_Series::get_cell_coords(int fres, int tres,
   double& flow_min, double& flow_span,
   double& temperature_min, double& temperature_span)

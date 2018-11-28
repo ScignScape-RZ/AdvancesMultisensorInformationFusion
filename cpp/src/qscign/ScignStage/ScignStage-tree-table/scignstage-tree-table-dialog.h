@@ -31,6 +31,7 @@
 #include "kans.h"
 
 KANS_CLASS_DECLARE(DSM ,Test_Sample)
+KANS_CLASS_DECLARE(DSM ,Test_Series)
 
 
 USING_KANS(DSM)
@@ -56,7 +57,6 @@ class QTcpServer;
 class QTreeWidget;
 class QTreeWidgetItem;
 
-class ScignStage_Clickable_Label;
 
 class XPDF_Bridge;
 
@@ -96,7 +96,7 @@ class ScignStage_Tree_Table_Dialog : public QDialog
 
  XPDF_Bridge* xpdf_bridge_;
 
- QVector<Test_Sample*>* samples_;
+ Test_Series* series_;
 
  QTcpServer* tcp_server_;
 
@@ -148,7 +148,7 @@ public:
 
 
  ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bridge,
-   QVector<Test_Sample*>* samples, QWidget* parent = nullptr);
+   Test_Series* series, QWidget* parent = nullptr);
 
  ~ScignStage_Tree_Table_Dialog();
 

@@ -66,7 +66,7 @@
 #include <QListWidget>
 
 #include "dsmain/test-sample.h"
-
+#include "dsmain/test-series.h"
 
 #include "xpdf-bridge.h"
 
@@ -88,9 +88,9 @@ USING_KANS(Phaon)
 
 
 ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bridge,
-  QVector<Test_Sample*>* samples, QWidget* parent)
+  Test_Series* series, QWidget* parent)
   : QDialog(parent), xpdf_bridge_(xpdf_bridge),
-    samples_(samples), tcp_server_(nullptr),
+    series_(series), tcp_server_(nullptr),
     phr_(nullptr), phr_init_function_(nullptr),
     screenshot_function_(nullptr), current_sample_(nullptr)
 {
@@ -162,6 +162,7 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
 
  main_tree_widget_ = new QTreeWidget(this);
 
+ QVector<Test_Sample*>* samples = series_?&series_->samples():nullptr;
  if(samples)
  {
 
@@ -190,7 +191,7 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
   main_tree_widget_->header()->setSectionResizeMode(5, QHeaderView::Stretch);
 
   int c = 0;
-  for(Test_Sample* samp : *samples_)
+  for(Test_Sample* samp : *samples)
   {
    ++c;
 
@@ -219,6 +220,22 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
      sqsl);
 
    twi->addChild(stwi);
+
+   QStringList pqsl {{"%"}};
+
+   pqsl.push_back(QString::number(series_->get_flow_as_percentage(*samp)));
+   pqsl.push_back("");
+   pqsl.push_back("");
+   pqsl.push_back(QString::number(series_->get_temperature_as_percentage(*samp)));
+   pqsl.push_back(QString::number(series_->get_oxy_as_percentage(*samp)));
+
+   QTreeWidgetItem* ptwi = new QTreeWidgetItem((QTreeWidget*) nullptr,
+     pqsl);
+
+   twi->addChild(ptwi);
+
+
+
 
    main_tree_widget_->addTopLevelItem(twi);
 
@@ -303,7 +320,7 @@ void ScignStage_Tree_Table_Dialog::highlight_scroll_to_sample(Test_Sample* samp)
  int index = samp->index() - 1;
  QTreeWidgetItem* twi = main_tree_widget_->topLevelItem(index);
  highlight(twi);
- int max = qMin(index + 4, samples_->size() - 1);
+ int max = qMin(index + 4, series_->samples().size() - 1);
 
  QTreeWidgetItem* mtwi = main_tree_widget_->topLevelItem(max);
 
@@ -340,7 +357,7 @@ void ScignStage_Tree_Table_Dialog::run_tree_context_menu(const QPoint& qp,
  [this](int col)
  {
   QString copy;
-  for(Test_Sample* samp : *samples_)
+  for(Test_Sample* samp : series_->samples())
   {
    switch (col)
    {
@@ -356,7 +373,7 @@ void ScignStage_Tree_Table_Dialog::run_tree_context_menu(const QPoint& qp,
  }, row,
  row? [this](int row)
  {
-  Test_Sample* samp = samples_->at(row);
+  Test_Sample* samp = series_->samples().at(row);
   QString qs = QString("%1 %2 %3 %4 %5")
     .arg(samp->flow().getDouble())
     .arg(samp->time_with_flow().getDouble())
@@ -371,7 +388,7 @@ void ScignStage_Tree_Table_Dialog::run_tree_context_menu(const QPoint& qp,
   {
    unhighlight(current_sample_);
   }
-  current_sample_ = samples_->at(row);
+  current_sample_ = series_->samples().at(row);
   highlight(current_sample_);
  }:(std::function<void(int)>)nullptr
  );
@@ -425,25 +442,25 @@ void ScignStage_Tree_Table_Dialog::handle_sample_down()
   //main_tree_widget_->topLevelItem(index)->setExpanded(false);
   unhighlight(main_tree_widget_->topLevelItem(index));
   ++index;
-  if(index == samples_->size())
+  if(index == series_->samples().size())
   {
    index = 0;
-   current_sample_ = samples_->first();
+   current_sample_ = series_->samples().first();
   }
   else
   {
-   current_sample_ = samples_->at(index);
+   current_sample_ = series_->samples().at(index);
   }
  }
  else
  {
   index = 0;
-  current_sample_ = samples_->first();
+  current_sample_ = series_->samples().first();
  }
  emit_highlight();
  QTreeWidgetItem* twi = main_tree_widget_->topLevelItem(index);
  highlight(twi);
- int max = qMin(index + 4, samples_->size() - 1);
+ int max = qMin(index + 4, series_->samples().size() - 1);
 
  QTreeWidgetItem* mtwi = main_tree_widget_->topLevelItem(max);
 
@@ -472,26 +489,26 @@ void ScignStage_Tree_Table_Dialog::handle_sample_up()
   unhighlight(main_tree_widget_->topLevelItem(index));
   if(index == 0)
   {
-   index = samples_->size() - 1;
-   current_sample_ = samples_->last();
+   index = series_->samples().size() - 1;
+   current_sample_ = series_->samples().last();
   }
   else
   {
    --index;
-   current_sample_ = samples_->at(index);
+   current_sample_ = series_->samples().at(index);
   }
  }
  else
  {
-  index = samples_->size() - 1;
-  current_sample_ = samples_->last();
+  index = series_->samples().size() - 1;
+  current_sample_ = series_->samples().last();
  }
  emit_highlight();
  QTreeWidgetItem* twi = main_tree_widget_->topLevelItem(index);
 
  highlight(twi);
 
- int max = qMin(index + 4, samples_->size() - 1);
+ int max = qMin(index + 4, series_->samples().size() - 1);
 
  QTreeWidgetItem* mtwi = main_tree_widget_->topLevelItem(max);
 
@@ -505,7 +522,7 @@ void ScignStage_Tree_Table_Dialog::handle_sample_first()
  {
   unhighlight(current_sample_);
  }
- current_sample_ = samples_->first();
+ current_sample_ = series_->samples().first();
  emit_highlight();
 
  QTreeWidgetItem* twi = main_tree_widget_->topLevelItem(0);

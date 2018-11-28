@@ -74,6 +74,10 @@ public:
    double& flow_min, double& flow_span,
    double& temperature_min, double& temperature_span);
 
+ double get_flow_as_percentage(Test_Sample& samp);
+ double get_temperature_as_percentage(Test_Sample& samp);
+ double get_oxy_as_percentage(Test_Sample& samp);
+
 };
 
 

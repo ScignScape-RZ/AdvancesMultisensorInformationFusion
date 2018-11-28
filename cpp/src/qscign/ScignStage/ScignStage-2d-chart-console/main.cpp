@@ -56,7 +56,7 @@ int main(int argc, char **argv)
 
  dlg2d.show();
 
- ScignStage_Tree_Table_Dialog dlg (nullptr, &ts.samples());
+ ScignStage_Tree_Table_Dialog dlg (nullptr, &ts);
  dlg.show();
 
  QApplication::connect(&dlg2d, SIGNAL(sample_selected(Test_Sample*)),
