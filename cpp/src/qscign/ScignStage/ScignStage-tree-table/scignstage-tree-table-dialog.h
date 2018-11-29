@@ -188,6 +188,13 @@ public Q_SLOTS:
  void handle_peer_down();
  void handle_peer_up();
 
+ void handle_flow_down();
+ void handle_flow_up();
+ void handle_temperature_down();
+ void handle_temperature_up();
+ void handle_oxy_down();
+ void handle_oxy_up();
+
  void accept();
  void cancel();
 

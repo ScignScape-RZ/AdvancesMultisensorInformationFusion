@@ -20,34 +20,32 @@
 Series_TreeWidget::Series_TreeWidget(Test_Series* ts, Sort_Options so, QWidget* parent)
   : QTreeWidget(parent)
 {
- QVector<Test_Sample*>* samples;
-
  if(ts)
  {
   switch(so)
   {
   case Sort_Options::Index:
-   samples = &ts->samples();
+   samples_ = &ts->samples();
    break;
   case Sort_Options::Flow:
-   samples = new QVector<Test_Sample*>;
-   ts->samples_by_flow_rank(*samples);
+   samples_ = new QVector<Test_Sample*>;
+   ts->samples_by_flow_rank(*samples_);
    break;
   case Sort_Options::Temperature:
-   samples = new QVector<Test_Sample*>;
-   ts->samples_by_temperature_rank(*samples);
+   samples_ = new QVector<Test_Sample*>;
+   ts->samples_by_temperature_rank(*samples_);
    break;
   case Sort_Options::Oxy:
-   samples = new QVector<Test_Sample*>;
-   ts->samples_by_oxy_rank(*samples);
+   samples_ = new QVector<Test_Sample*>;
+   ts->samples_by_oxy_rank(*samples_);
    break;
   }
  }
  else
-   samples = nullptr;
+   samples_ = nullptr;
 
 
- if(samples)
+ if(samples_)
  {
 
   int r = 0;
@@ -75,7 +73,7 @@ Series_TreeWidget::Series_TreeWidget(Test_Series* ts, Sort_Options so, QWidget* 
   this->header()->setSectionResizeMode(5, QHeaderView::Stretch);
 
   int c = 0;
-  for(Test_Sample* samp : *samples)
+  for(Test_Sample* samp : *samples_)
   {
    ++c;
 

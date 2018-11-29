@@ -10,7 +10,7 @@
 
 #include <QTreeWidget>
 
-#include "qsns.h"
+#include "accessors.h"
 
 #include "kans.h"
 
@@ -27,9 +27,13 @@ class Series_TreeWidget : public QTreeWidget
 {
  Q_OBJECT
 
+ QVector<Test_Sample*>* samples_;
+
 public:
 
  enum class Sort_Options { Index, Flow, Temperature, Oxy };
+
+ ACCESSORS(QVector<Test_Sample*>* ,samples)
 
  Series_TreeWidget(Test_Series* ts, Sort_Options so, QWidget* parent = nullptr);
  ~Series_TreeWidget();
