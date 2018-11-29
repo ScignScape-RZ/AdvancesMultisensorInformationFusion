@@ -12,6 +12,8 @@
 #include <QSurface3DSeries>
 #include <Q3DSurface>
 
+#include "ScignStage-tree-table/scignstage-tree-table-dialog.h"
+
 #include "dsmain/test-sample.h"
 #include "dsmain/test-series.h"
 
@@ -53,13 +55,27 @@ int main(int argc, char **argv)
  ts.parse_data(DATA_FOLDER "/t1.txt");
 
  ts.init_cells(25, 25);
+ ts.init_ranks();
 
- ScignStage_3d_Chart_Dialog dlg(&ts, 25, 25, [](double dbl) //1.0f/13,
-  {
-   //qDebug() << dbl;
-   return dbl + 1.0f/13;
-  }, nullptr);
+ ScignStage_3d_Chart_Dialog dlg3d(&ts, 25, 25, nullptr);
+
+
+ dlg3d.show();
+
+ ScignStage_Tree_Table_Dialog dlg (nullptr, &ts);
 
  dlg.show();
+
+
+// dlg3d.connect(&dlg3d, SIGNAL(sample_selected(Test_Sample*)),
+//  &dlg, SLOT(browse_to_selected_sample(Test_Sample*)));
+
+
+ dlg3d.cb = [&dlg](Test_Sample* samp)
+ {
+  qDebug() << "samp: " << samp->index();
+  dlg.browse_to_selected_sample(samp);
+ };
+
  return qapp.exec();
 }

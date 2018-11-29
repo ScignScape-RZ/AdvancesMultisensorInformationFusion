@@ -40,7 +40,7 @@ using namespace QtDataVisualization;
 USING_KANS(TextIO)
 
 ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
-  int fres, int tres, double (*olift)(double), QWidget* parent)
+  int fres, int tres, QWidget* parent)
  : QDialog(parent)
 {
 
@@ -102,8 +102,11 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
    {
     sample_map_[{i, j}] = qm[{i, j}].first().first->sample;
 
-    qDebug() << "s: " << qm[{i, j}].first().second;
-    (*r)[j].setValue(qm[{i, j}].first().second);
+//    qDebug() << "s: " << qm[{i, j}].first().second;
+//    (*r)[j].setValue(qm[{i, j}].first().second);
+
+    (*r)[j].setValue(0.5);
+
     //*r << qm[{i, j}].first().second;// + 2.0f;
    }
    else
@@ -119,7 +122,6 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
 
  series->setBaseGradient(bar_gradient);
 
- series->setSingleHighlightColor(Qt::gray);
 
  //series->setColorStyle(Q3DTheme::ColorStyleRangeGradient);
 
@@ -133,6 +135,7 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
  //series->setItemLabelFormat(QStringLiteral("@valueTitle for (@rowLabel, @colLabel): %.1f"));
  //series->setMesh(QAbstract3DSeries::MeshCylinder);
 
+#ifdef SER2
  QBar3DSeries* series1 = new QBar3DSeries;
  for(int i = 0; i <= fres; ++i)
  {
@@ -169,15 +172,22 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
  //
  //series1->setMesh(QAbstract3DSeries::MeshCube);
  //series1->setMeshAngle(25);
+#endif
 
  bars->addSeries(series);
- bars->addSeries(series1);
 
-// connect(series, &QBar3DSeries::selectedBarChanged, []
-//   (const QPoint &qp)
-// {
-//  qDebug() << qp;
-// });
+//? bars->addSeries(series1);
+
+ connect(series, &QBar3DSeries::selectedBarChanged, [this]
+   (const QPoint &qp)
+ {
+    Q_EMIT( sample_selected(sample_map_[{qp.x(), qp.y()}]) );
+
+  //QPair<int, int> pr = {qp.x(), qp.y()};
+       //Q_EMIT( sample_selected(sample_map_[{qp.x(), qp.y()}]) );
+  //qDebug() << qp;
+  cb(sample_map_[{qp.x(), qp.y()}]);
+ });
 
 
 #ifdef EXTRA_GRAPHICS_FEATURES

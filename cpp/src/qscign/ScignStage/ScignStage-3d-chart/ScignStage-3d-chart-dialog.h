@@ -14,6 +14,8 @@
 #include <QDialogButtonBox>
 #include <QMap>
 
+#include <functional>
+
 #include "kans.h"
 
 KANS_CLASS_DECLARE(DSM ,Test_Sample)
@@ -36,12 +38,19 @@ class ScignStage_3d_Chart_Dialog : public QDialog
 
 public:
 
+ std::function<void (Test_Sample*)> cb;
+
  ScignStage_3d_Chart_Dialog(Test_Series* ts,
-   int fres, int tres, double (*olift)(double), QWidget* parent);
+   int fres, int tres, QWidget* parent);
 
  ~ScignStage_3d_Chart_Dialog();
 
-public Q_SLOTS:
+Q_SIGNALS:
+//signals:
+
+ void sample_selected(Test_Sample*);
+
+//public Q_SLOTS:
 
 
 
