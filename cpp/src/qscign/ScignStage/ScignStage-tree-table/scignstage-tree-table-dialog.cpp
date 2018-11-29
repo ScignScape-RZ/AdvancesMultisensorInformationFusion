@@ -178,24 +178,15 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
  main_tree_widget_->setContextMenuPolicy(Qt::CustomContextMenu);
  connect(main_tree_widget_, &QTreeWidget::customContextMenuRequested, [this](const QPoint& qp)
  {
-  QTreeWidgetItem* twi = main_tree_widget_->itemAt(qp);
   QModelIndex qmi = main_tree_widget_->indexAt(qp);
-  qDebug() << qmi.column();
-
   run_tree_context_menu(qp, qmi.column(), qmi.row());
-
  });
 
  main_tree_widget_->header()->setContextMenuPolicy(Qt::CustomContextMenu);
  connect(main_tree_widget_->header(), &QTreeWidget::customContextMenuRequested, [this](const QPoint& qp)
  {
-//  QModelIndex qmi = main_tree_widget_->indexAt(qp);
-//  qDebug() << qmi.column();
-
   int col = main_tree_widget_->header()->logicalIndexAt(qp);
-
   run_tree_context_menu(qp, col);
-
  });
 
  main_tab_widget_->addTab(main_tree_widget_, "Main");
@@ -258,31 +249,40 @@ void ScignStage_Tree_Table_Dialog::highlight_scroll_to_sample(Test_Sample* samp)
 {
  int index = samp->index() - 1;
  QTreeWidgetItem* twi = main_tree_widget_->topLevelItem(index);
- highlight(twi);
- int max = qMin(index + 4, series_->samples().size() - 1);
-
- QTreeWidgetItem* mtwi = main_tree_widget_->topLevelItem(max);
-
- main_tree_widget_->scrollToItem(mtwi);
- main_tree_widget_->scrollToItem(twi);
+ highlight(samp);
 }
 
 
 void ScignStage_Tree_Table_Dialog::highlight(Test_Sample* samp)
 {
- highlight(main_tree_widget_->topLevelItem(samp->index() - 1));
+ highlight(main_tree_widget_, samp->index() - 1, 4);
+ highlight(flow_tree_widget_, series_->get_flow_rank(*samp) - 1, 4);
+ highlight(temperature_tree_widget_, series_->get_temperature_rank(*samp) - 1, 4);
+ highlight(oxy_tree_widget_, series_->get_oxy_rank(*samp) - 1, 4);
 }
 
 void ScignStage_Tree_Table_Dialog::unhighlight(Test_Sample* samp)
 {
- unhighlight(main_tree_widget_->topLevelItem(samp->index() - 1));
+ unhighlight(main_tree_widget_, samp->index() - 1);
+ unhighlight(flow_tree_widget_, series_->get_flow_rank(*samp) - 1);
+ unhighlight(temperature_tree_widget_, series_->get_temperature_rank(*samp) - 1);
+ unhighlight(oxy_tree_widget_, series_->get_oxy_rank(*samp) - 1);
 }
 
-void ScignStage_Tree_Table_Dialog::highlight(QTreeWidgetItem* twi)
+void ScignStage_Tree_Table_Dialog::highlight(QTreeWidget* qtw, int index, int down)
 {
+ QTreeWidgetItem* twi = qtw->topLevelItem(index);
  twi->setExpanded(true);
  for(int i = 0; i < 6; ++i)
    twi->setForeground(i, QBrush("darkRed"));
+
+ if(down != -1)
+ {
+  int max = qMin(index + 4, series_->samples().size() - 1);
+  QTreeWidgetItem* mtwi = main_tree_widget_->topLevelItem(max);
+  qtw->scrollToItem(mtwi);
+  qtw->scrollToItem(twi);
+ }
 }
 
 void ScignStage_Tree_Table_Dialog::run_tree_context_menu(const QPoint& qp,
@@ -379,7 +379,7 @@ void ScignStage_Tree_Table_Dialog::handle_sample_down()
  {
   index = current_sample_->index() - 1;
   //main_tree_widget_->topLevelItem(index)->setExpanded(false);
-  unhighlight(main_tree_widget_->topLevelItem(index));
+  unhighlight(main_tree_widget_, index);
   ++index;
   if(index == series_->samples().size())
   {
@@ -398,7 +398,10 @@ void ScignStage_Tree_Table_Dialog::handle_sample_down()
  }
  emit_highlight();
  QTreeWidgetItem* twi = main_tree_widget_->topLevelItem(index);
- highlight(twi);
+
+ //highlight(main_tree_widget_, index);
+ highlight(current_sample_);
+
  int max = qMin(index + 4, series_->samples().size() - 1);
 
  QTreeWidgetItem* mtwi = main_tree_widget_->topLevelItem(max);
@@ -412,8 +415,9 @@ void ScignStage_Tree_Table_Dialog::emit_highlight()
  Q_EMIT(sample_highlighted(current_sample_));
 }
 
-void ScignStage_Tree_Table_Dialog::unhighlight(QTreeWidgetItem* twi)
+void ScignStage_Tree_Table_Dialog::unhighlight(QTreeWidget* qtw, int index)
 {
+ QTreeWidgetItem* twi = qtw->topLevelItem(index);
  twi->setExpanded(false);
  for(int i = 0; i < 6; ++i)
    twi->setForeground(i, QBrush("black"));
@@ -425,7 +429,7 @@ void ScignStage_Tree_Table_Dialog::handle_sample_up()
  if(current_sample_)
  {
   index = current_sample_->index() - 1;
-  unhighlight(main_tree_widget_->topLevelItem(index));
+  unhighlight(current_sample_);
   if(index == 0)
   {
    index = series_->samples().size() - 1;
@@ -445,7 +449,7 @@ void ScignStage_Tree_Table_Dialog::handle_sample_up()
  emit_highlight();
  QTreeWidgetItem* twi = main_tree_widget_->topLevelItem(index);
 
- highlight(twi);
+ highlight(current_sample_);
 
  int max = qMin(index + 4, series_->samples().size() - 1);
 
@@ -465,7 +469,7 @@ void ScignStage_Tree_Table_Dialog::handle_sample_first()
  emit_highlight();
 
  QTreeWidgetItem* twi = main_tree_widget_->topLevelItem(0);
- highlight(twi);
+ highlight(current_sample_);
  main_tree_widget_->scrollToItem(twi);
 }
 

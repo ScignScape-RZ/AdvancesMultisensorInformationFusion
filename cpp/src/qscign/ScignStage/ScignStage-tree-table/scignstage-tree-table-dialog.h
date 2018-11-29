@@ -132,8 +132,8 @@ class ScignStage_Tree_Table_Dialog : public QDialog
 
  bool ask_pdf_proceed(QString name);
 
- void highlight(QTreeWidgetItem* twi);
- void unhighlight(QTreeWidgetItem* twi);
+ void highlight(QTreeWidget* qtw, int index, int down = -1);
+ void unhighlight(QTreeWidget* qtw, int index);
 
  void highlight(Test_Sample* samp);
  void unhighlight(Test_Sample* samp);
