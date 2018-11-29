@@ -259,6 +259,9 @@ void ScignStage_Tree_Table_Dialog::highlight(Test_Sample* samp)
  highlight(flow_tree_widget_, series_->get_flow_rank(*samp) - 1, 4, 2);
  highlight(temperature_tree_widget_, series_->get_temperature_rank(*samp) - 1, 4, 2);
  highlight(oxy_tree_widget_, series_->get_oxy_rank(*samp) - 1, 4, 2);
+
+// QTreeWidgetItem* twi = main_tree_widget_->topLevelItem(0);
+// main_tree_widget_->scrollToItem(twi);
 }
 
 void ScignStage_Tree_Table_Dialog::unhighlight(Test_Sample* samp)
@@ -290,7 +293,7 @@ void ScignStage_Tree_Table_Dialog::highlight(QTreeWidget* qtw, int index,
   int max = qMax(index - up, 0);
   QTreeWidgetItem* mtwi = qtw->topLevelItem(max);
   qtw->scrollToItem(mtwi);
-  qtw->scrollToItem(twi);
+  //qtw->scrollToItem(twi);
  }
 }
 
@@ -388,7 +391,7 @@ void ScignStage_Tree_Table_Dialog::handle_sample_down()
  {
   index = current_sample_->index() - 1;
   //main_tree_widget_->topLevelItem(index)->setExpanded(false);
-  unhighlight(main_tree_widget_, index);
+  unhighlight(current_sample_);
   ++index;
   if(index == series_->samples().size())
   {
@@ -406,17 +409,17 @@ void ScignStage_Tree_Table_Dialog::handle_sample_down()
   current_sample_ = series_->samples().first();
  }
  emit_highlight();
- QTreeWidgetItem* twi = main_tree_widget_->topLevelItem(index);
+ //QTreeWidgetItem* twi = main_tree_widget_->topLevelItem(index);
 
  //highlight(main_tree_widget_, index);
  highlight(current_sample_);
 
- int max = qMin(index + 4, series_->samples().size() - 1);
+// int max = qMin(index + 4, series_->samples().size() - 1);
 
- QTreeWidgetItem* mtwi = main_tree_widget_->topLevelItem(max);
+// QTreeWidgetItem* mtwi = main_tree_widget_->topLevelItem(max);
 
- main_tree_widget_->scrollToItem(mtwi);
- main_tree_widget_->scrollToItem(twi);
+// main_tree_widget_->scrollToItem(mtwi);
+// main_tree_widget_->scrollToItem(twi);
 }
 
 void ScignStage_Tree_Table_Dialog::emit_highlight()
