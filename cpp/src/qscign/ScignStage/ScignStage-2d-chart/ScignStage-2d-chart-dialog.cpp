@@ -34,7 +34,7 @@ USING_KANS(TextIO)
 
 ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
   int fres, int tres, double olift, QWidget* parent)
- : QDialog(parent), last_selected_item_(nullptr)
+ : QDialog(parent), last_selected_item_(nullptr), current_z_value_(1)
 {
 
  button_box_ = new QDialogButtonBox(this);
@@ -250,11 +250,22 @@ void ScignStage_2d_Chart_Dialog::highlight_selected_sample(Test_Sample* samp)
  QGraphicsRectItem* qgri = qgraphicsitem_cast<QGraphicsRectItem*>
    (sample_map_.value(samp));
 
+ if(last_selected_item_)
+ {
+  last_selected_item_->setPen(last_pen_);
+ }
+
  if(qgri)
  {
-  QPen pen = qgri->pen();
-  pen.setColor(QColor(255, 255, 0, 255));
+  last_selected_item_ = qgri;
+  last_pen_ = qgri->pen();
+  QPen pen;
+  pen.setWidth(10);
+  pen.setColor(QColor(255, 255, 0, 105));
   qgri->setPen(pen);
+  qgri->setZValue(current_z_value_);
+  qgri->ensureVisible();
+  current_z_value_ += 0.1f;
  }
 }
 

@@ -80,61 +80,84 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
 
  main_layout_ = new QVBoxLayout();
 
-  Q3DBars* bars = new Q3DBars;
-  QWidget* container = QWidget::createWindowContainer(bars);
+ Q3DBars* bars = new Q3DBars;
+ QWidget* container = QWidget::createWindowContainer(bars);
   //bars->setFlags(bars.flags() ^ Qt::FramelessWindowHint);
-  bars->rowAxis()->setRange(0, fres);
-  bars->columnAxis()->setRange(0, tres);
+ bars->rowAxis()->setRange(0, fres);
+ bars->columnAxis()->setRange(0, tres);
 
-  QMap<QPair<int, int>, QPair<Test_Sample*, double>> qm;
-  ts->cells_to_qmap(fres, tres, qm);
+  //QMap<QPair<int, int>, QPair<Test_Sample*, double>> qm;
+ QMap<QPair<int, int>, QList<QPair<Cell_Info*, double>>> qm;
 
-  QBar3DSeries *series = new QBar3DSeries;
-  for(int i = 0; i <= fres; ++i)
+ ts->cells_to_qmap(fres, tres, qm);
+
+ QBar3DSeries* series = new QBar3DSeries;
+ for(int i = 0; i <= fres; ++i)
+ {
+  QBarDataRow* r = new QBarDataRow;
+  for(int j = 0; j <= tres; ++j)
   {
-   QBarDataRow* r = new QBarDataRow;
-   for(int j = 0; j <= tres; ++j)
+   if(qm.contains({i, j}))
    {
-    if(qm.contains({i, j}))
-    {
-     sample_map_[{i, j}] = qm[{i, j}].first;
-     *r << qm[{i, j}].second + olift;
-    }
-    else
-      *r << 0;
+    sample_map_[{i, j}] = qm[{i, j}].first().first->sample;
+    *r << qm[{i, j}].first().second + olift;
    }
-   series->dataProxy()->addRow(r);
+   else
+     *r << 0;
   }
+  series->dataProxy()->addRow(r);
+ }
 
-   QLinearGradient barGradient(0, 0, 1, 100);
-   barGradient.setColorAt(1.0, Qt::white);
-   barGradient.setColorAt(0.0, Qt::black);
+ QLinearGradient bar_gradient(0, 0, 1, 100);
+ bar_gradient.setColorAt(1.0, Qt::red);
+ bar_gradient.setColorAt(0.0, Qt::green);
 
-   series->setBaseGradient(barGradient);
-   series->setColorStyle(Q3DTheme::ColorStyleObjectGradient);
-   series->setMesh(QAbstract3DSeries::MeshCylinder);
+ series->setBaseGradient(bar_gradient);
+ series->setColorStyle(Q3DTheme::ColorStyleObjectGradient);
 
-//  QVector<QBarDataRow*> rows;
-//  for(int i = 0; i < 20; ++i)
-//  {
-//   QBarDataRow* r = new QBarDataRow;
-//   for(int j = 0; j < 10; ++j)
-//   {
-//    *r << qm.value({j, i}, 0.0f);
-//   }
-//   rows.push_back(r);
-//   series->dataProxy()->addRow(r);
-//  }
+ //series->setItemLabelFormat(QStringLiteral("@valueTitle for (@rowLabel, @colLabel): %.1f"));
+ //series->setMesh(QAbstract3DSeries::MeshCylinder);
 
-//  QBarDataRow *data = new QBarDataRow;
-//  *data << 1.0f << 3.0f << 7.5f << 5.0f << 2.2f;
-//  series->dataProxy()->addRow(data);
+ QBar3DSeries* series1 = new QBar3DSeries;
+ for(int i = 0; i <= fres; ++i)
+ {
+  QBarDataRow* r = new QBarDataRow;
+  for(int j = 0; j <= tres; ++j)
+  {
+   if(qm.contains({i, j}))
+   {
+    //sample_map_[{i, j}] = qm[{i, j}].first().first->sample;
+    *r << qm[{i, j}].last().second + olift;
+   }
+   else
+     *r << 0;
+  }
+  series1->dataProxy()->addRow(r);
+ }
 
-  bars->addSeries(series);
-  bars->show();
+ QLinearGradient bar_gradient1(0, 0, 1, 100);
+ bar_gradient1.setColorAt(0.0, Qt::blue);
+ bar_gradient1.setColorAt(1.0, Qt::yellow);
 
-  container->setMinimumHeight(300);
-  container->setMinimumWidth(500);
+ series1->setBaseGradient(bar_gradient1);
+ series1->setColorStyle(Q3DTheme::ColorStyleObjectGradient);
+ series1->setMesh(QAbstract3DSeries::MeshCylinder);
+ //
+ //series1->setMesh(QAbstract3DSeries::MeshCube);
+ //series1->setMeshAngle(25);
+
+ bars->addSeries(series);
+ bars->addSeries(series1);
+
+ QCategory3DAxis* rax = new QCategory3DAxis;
+ rax->setTitle("Flow");
+
+ bars->setRowAxis(rax);
+
+ bars->show();
+
+ container->setMinimumHeight(300);
+ container->setMinimumWidth(500);
 
  main_layout_->addWidget(container);
  main_layout_->addWidget(button_box_);
@@ -194,11 +217,11 @@ ScignStage_3d_Chart_Dialog::~ScignStage_3d_Chart_Dialog()
 
 // Q3DBars graph;
 // QBar3DSeries *series = new QBar3DSeries;
-//// QLinearGradient barGradient(0, 0, 1, 100);
-//// barGradient.setColorAt(1.0, Qt::white);
-//// barGradient.setColorAt(0.0, Qt::black);
+//// QLinearGradient bar_gradient(0, 0, 1, 100);
+//// bar_gradient.setColorAt(1.0, Qt::white);
+//// bar_gradient.setColorAt(0.0, Qt::black);
 
-//// series->setBaseGradient(barGradient);
+//// series->setBaseGradient(bar_gradient);
 //// series->setColorStyle(Q3DTheme::ColorStyleObjectGradient);
 //// series->setMesh(QAbstract3DSeries::MeshCylinder);
 
@@ -228,11 +251,11 @@ ScignStage_3d_Chart_Dialog::~ScignStage_3d_Chart_Dialog()
 // bars->columnAxis()->setRange(0, 4);
 // QBar3DSeries *series = new QBar3DSeries;
 
-//  QLinearGradient barGradient(0, 0, 1, 100);
-//  barGradient.setColorAt(1.0, Qt::white);
-//  barGradient.setColorAt(0.0, Qt::black);
+//  QLinearGradient bar_gradient(0, 0, 1, 100);
+//  bar_gradient.setColorAt(1.0, Qt::white);
+//  bar_gradient.setColorAt(0.0, Qt::black);
 
-//  series->setBaseGradient(barGradient);
+//  series->setBaseGradient(bar_gradient);
 //  series->setColorStyle(Q3DTheme::ColorStyleObjectGradient);
 //  series->setMesh(QAbstract3DSeries::MeshCylinder);
 

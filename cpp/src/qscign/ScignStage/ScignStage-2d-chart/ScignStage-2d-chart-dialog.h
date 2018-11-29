@@ -14,7 +14,11 @@
 #include <QDialogButtonBox>
 #include <QMap>
 
+#include <QPen>
+
+class QGraphicsRectItem;
 class QGraphicsItem;
+
 //class QGraphicsSceneHoverEvent;
 
 #include "kans.h"
@@ -47,8 +51,11 @@ class ScignStage_2d_Chart_Dialog : public QDialog
 
  QMap<Test_Sample*, QGraphicsItem*> sample_map_;
 
- QGraphicsItem* last_selected_item_;
+ QGraphicsRectItem* last_selected_item_;
 
+ QPen last_pen_;
+
+ qreal current_z_value_;
 
 public:
 
