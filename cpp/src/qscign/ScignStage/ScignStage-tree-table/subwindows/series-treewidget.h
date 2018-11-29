@@ -27,13 +27,24 @@ class Series_TreeWidget : public QTreeWidget
 {
  Q_OBJECT
 
+public:
+  enum class Sort_Options { Index = 0, Flow = 1,
+    Temperature = 2, Oxy = 3 };
+
+private:
+
  QVector<Test_Sample*>* samples_;
+
+ Sort_Options sorted_by_;
 
 public:
 
- enum class Sort_Options { Index, Flow, Temperature, Oxy };
-
  ACCESSORS(QVector<Test_Sample*>* ,samples)
+
+ void highlight_3rd_line(int index);
+ void highlight_3rd_line(int index, QColor clr);
+ void unhighlight_3rd_line(int index);
+
 
  Series_TreeWidget(Test_Series* ts, Sort_Options so, QWidget* parent = nullptr);
  ~Series_TreeWidget();

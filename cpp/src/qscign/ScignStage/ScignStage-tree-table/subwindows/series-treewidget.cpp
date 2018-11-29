@@ -18,7 +18,7 @@
 
 
 Series_TreeWidget::Series_TreeWidget(Test_Series* ts, Sort_Options so, QWidget* parent)
-  : QTreeWidget(parent)
+  : QTreeWidget(parent), sorted_by_(so)
 {
  if(ts)
  {
@@ -134,7 +134,27 @@ Series_TreeWidget::Series_TreeWidget(Test_Series* ts, Sort_Options so, QWidget* 
    //twi->setData(0, Qt::UserRole, QVariant::fromValue(group)
   }
  }
+}
 
+void Series_TreeWidget::unhighlight_3rd_line(int index)
+{
+ highlight_3rd_line(index, "black");
+}
+
+void Series_TreeWidget::highlight_3rd_line(int index)
+{
+ highlight_3rd_line(index, "darkRed");
+}
+
+void Series_TreeWidget::highlight_3rd_line(int index, QColor clr)
+{
+ QTreeWidgetItem* twi = topLevelItem(index);
+ QTreeWidgetItem* ptwi = twi->child(2);
+ static quint8 cols [4] = {0, 1, 4, 5};
+
+ // // exclude column 0
+ if(quint8 col = cols[(quint8)sorted_by_])
+   ptwi->setForeground(col, QBrush(clr));
 }
 
 Series_TreeWidget::~Series_TreeWidget() {}

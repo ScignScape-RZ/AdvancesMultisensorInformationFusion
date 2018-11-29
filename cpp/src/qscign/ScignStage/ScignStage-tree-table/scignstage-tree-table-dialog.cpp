@@ -280,6 +280,11 @@ void ScignStage_Tree_Table_Dialog::highlight(QTreeWidget* qtw, int index,
  for(int i = 0; i < 6; ++i)
    twi->setForeground(i, QBrush("darkRed"));
 
+ if(Series_TreeWidget* w = qobject_cast<Series_TreeWidget*>(qtw))
+ {
+  w->highlight_3rd_line(index);
+ }
+
  if(down != -1)
  {
   int max = qMin(index + 4, series_->samples().size() - 1);
@@ -597,6 +602,11 @@ void ScignStage_Tree_Table_Dialog::unhighlight(QTreeWidget* qtw, int index)
  twi->setExpanded(false);
  for(int i = 0; i < 6; ++i)
    twi->setForeground(i, QBrush("black"));
+
+ if(Series_TreeWidget* w = qobject_cast<Series_TreeWidget*>(qtw))
+ {
+  w->highlight_3rd_line(index);
+ }
 }
 
 void ScignStage_Tree_Table_Dialog::handle_sample_up()
