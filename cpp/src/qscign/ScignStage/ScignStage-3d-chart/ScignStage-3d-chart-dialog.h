@@ -23,6 +23,9 @@ KANS_CLASS_DECLARE(DSM ,Test_Series)
 
 USING_KANS(DSM)
 
+namespace QtDataVisualization { class QBar3DSeries; }
+
+
 class ScignStage_3d_Chart_Dialog : public QDialog
 {
  Q_OBJECT
@@ -33,15 +36,26 @@ class ScignStage_3d_Chart_Dialog : public QDialog
  QPushButton* button_cancel_;
  QVBoxLayout* main_layout_;
 
- QMap<QPair<int, int>, Test_Sample*> sample_map_;
+ QMap<QPair<int, int>, QPair<Test_Sample*, Test_Sample*>> sample_map_;
+ QMap<QPair<int, Test_Sample*>, QPair<int, int>> inv_sample_map_;
 
+ QtDataVisualization::QBar3DSeries* series_;
+
+//#define SER2
+#ifdef SER2
+ QtDataVisualization::QBar3DSeries* less_series_;
+#endif
+
+ void handle_selection_change(int series, const QPoint &qp);
 
 public:
 
- std::function<void (Test_Sample*)> cb;
+ std::function<void (Test_Sample*)> selected_cb;
 
  ScignStage_3d_Chart_Dialog(Test_Series* ts,
    int fres, int tres, QWidget* parent);
+
+ Test_Sample* held_external_selected_;
 
  ~ScignStage_3d_Chart_Dialog();
 
@@ -50,8 +64,9 @@ Q_SIGNALS:
 
  void sample_selected(Test_Sample*);
 
-//public Q_SLOTS:
+public Q_SLOTS:
 
+ void external_selected(Test_Sample* samp);
 
 
 };

@@ -41,9 +41,8 @@ USING_KANS(TextIO)
 
 ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
   int fres, int tres, QWidget* parent)
- : QDialog(parent)
+ : QDialog(parent), selected_cb(nullptr), held_external_selected_(nullptr)
 {
-
  button_box_ = new QDialogButtonBox(this);
 
  //?url_label_ = new QLabel(this);
@@ -91,7 +90,7 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
 
  ts->cells_to_qmap(fres, tres, qm);
 
- QBar3DSeries* series = new QBar3DSeries;
+ series_ = new QBar3DSeries;
  for(int i = 0; i <= fres; ++i)
  {
   QBarDataRow* r = new QBarDataRow;
@@ -100,94 +99,97 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
   {
    if(qm.contains({i, j}))
    {
-    sample_map_[{i, j}] = qm[{i, j}].first().first->sample;
+    Test_Sample* samp = qm[{i, j}].first().first->sample;
+    sample_map_[{i, j}] = {samp, nullptr};
+    inv_sample_map_[{0, samp}] = {i, j};
 
-//    qDebug() << "s: " << qm[{i, j}].first().second;
-//    (*r)[j].setValue(qm[{i, j}].first().second);
+    //(*r)[j].setValue(0.5f);
+    (*r)[j].setValue(qm[{i, j}].first().second);
 
-    (*r)[j].setValue(0.5);
-
-    //*r << qm[{i, j}].first().second;// + 2.0f;
    }
    else
      (*r)[j].setValue(0);
      //*r << 0;
   }
-  series->dataProxy()->addRow(r);
+  series_->dataProxy()->addRow(r);
  }
 
  QLinearGradient bar_gradient(0, 0, 1, 100);
  bar_gradient.setColorAt(1.0, Qt::red);
  bar_gradient.setColorAt(0.0, Qt::green);
 
- series->setBaseGradient(bar_gradient);
+ series_->setBaseGradient(bar_gradient);
 
 
  //series->setColorStyle(Q3DTheme::ColorStyleRangeGradient);
 
 #ifdef EXTRA_GRAPHICS_FEATURES
- series->setColorStyle(Q3DTheme::ColorStyleRangeGradient);
+ series_->setColorStyle(Q3DTheme::ColorStyleRangeGradient);
 #else
- series->setColorStyle(Q3DTheme::ColorStyleObjectGradient);
+ series_->setColorStyle(Q3DTheme::ColorStyleObjectGradient);
 #endif
 
-
- //series->setItemLabelFormat(QStringLiteral("@valueTitle for (@rowLabel, @colLabel): %.1f"));
- //series->setMesh(QAbstract3DSeries::MeshCylinder);
-
 #ifdef SER2
- QBar3DSeries* series1 = new QBar3DSeries;
+ less_series_ = new QBar3DSeries;
  for(int i = 0; i <= fres; ++i)
  {
   QBarDataRow* r = new QBarDataRow;
   r->resize(tres + 1);
   for(int j = 0; j <= tres; ++j)
   {
-   if(qm.contains({i, j}))
+   if(qm.contains({i, j}) && qm[{i, j}].size() > 1)
    {
-    //qDebug() << "s1: " << qm[{i, j}].last().second;
-    //sample_map_[{i, j}] = qm[{i, j}].first().first->sample;
-    //*r << qm[{i, j}].last().second;// + 2.0f;
+    Test_Sample* samp = qm[{i, j}].first().first->sample;
+    sample_map_[{i, j}].second = samp;
+    inv_sample_map_[{1, samp}] = {i, j};
     (*r)[j].setValue(qm[{i, j}].last().second);
    }
    else
      (*r)[j].setValue(0);
   }
-  series1->dataProxy()->addRow(r);
+  less_series_->dataProxy()->addRow(r);
  }
 
  QLinearGradient bar_gradient1(0, 0, 1, 100);
  bar_gradient1.setColorAt(0.0, Qt::blue);
  bar_gradient1.setColorAt(1.0, Qt::yellow);
 
- series1->setBaseGradient(bar_gradient1);
+ less_series_->setBaseGradient(bar_gradient1);
 
 #ifdef EXTRA_GRAPHICS_FEATURES
- series1->setColorStyle(Q3DTheme::ColorStyleRangeGradient);
+ less_series_->setColorStyle(Q3DTheme::ColorStyleRangeGradient);
 #else
- series1->setColorStyle(Q3DTheme::ColorStyleObjectGradient);
+ less_series_->setColorStyle(Q3DTheme::ColorStyleObjectGradient);
 #endif
 
- series1->setMesh(QAbstract3DSeries::MeshCylinder);
+ less_series_->setMesh(QAbstract3DSeries::MeshCylinder);
  //
  //series1->setMesh(QAbstract3DSeries::MeshCube);
  //series1->setMeshAngle(25);
 #endif
 
- bars->addSeries(series);
+ bars->addSeries(series_);
 
-//? bars->addSeries(series1);
+#ifdef SER2
+ bars->addSeries(less_series_);
+#endif
 
- connect(series, &QBar3DSeries::selectedBarChanged, [this]
+ connect(series_, &QBar3DSeries::selectedBarChanged, [this]
    (const QPoint &qp)
  {
-    Q_EMIT( sample_selected(sample_map_[{qp.x(), qp.y()}]) );
-
-  //QPair<int, int> pr = {qp.x(), qp.y()};
-       //Q_EMIT( sample_selected(sample_map_[{qp.x(), qp.y()}]) );
-  //qDebug() << qp;
-  cb(sample_map_[{qp.x(), qp.y()}]);
+  handle_selection_change(0, qp);
  });
+
+
+#ifdef SER2
+ connect(less_series_, &QBar3DSeries::selectedBarChanged, [this]
+   (const QPoint &qp)
+ {
+  handle_selection_change(1, qp);
+ });
+#endif
+
+
 
 
 #ifdef EXTRA_GRAPHICS_FEATURES
@@ -212,6 +214,43 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
  setLayout(main_layout_);
  //fore_panel_
 }
+
+
+void ScignStage_3d_Chart_Dialog::handle_selection_change(int series,
+  const QPoint &qp)
+{
+ Test_Sample* samp = series?sample_map_[{qp.x(), qp.y()}].second:
+   sample_map_[{qp.x(), qp.y()}].first;
+ if(held_external_selected_)
+ {
+  if(samp == held_external_selected_)
+  {
+   held_external_selected_ = nullptr;
+   return;
+  }
+  held_external_selected_ = nullptr;
+ }
+ if(samp)
+   selected_cb(samp);
+}
+
+void ScignStage_3d_Chart_Dialog::external_selected(Test_Sample* samp)
+{
+ if(inv_sample_map_.contains({0,samp}))
+ {
+  held_external_selected_ = samp;
+  series_->setSelectedBar(
+  {inv_sample_map_[{0,samp}].first, inv_sample_map_[{0,samp}].second});
+ }
+ else if(inv_sample_map_.contains({1,samp}))
+ {
+//  held_external_selected_ = samp;
+//  series_->setSelectedBar(
+//  {inv_sample_map_[samp].first, inv_sample_map_[samp].second});
+ }
+}
+
+
 
 ScignStage_3d_Chart_Dialog::~ScignStage_3d_Chart_Dialog()
 {
