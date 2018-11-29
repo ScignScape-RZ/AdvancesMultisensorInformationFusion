@@ -255,10 +255,10 @@ void ScignStage_Tree_Table_Dialog::highlight_scroll_to_sample(Test_Sample* samp)
 
 void ScignStage_Tree_Table_Dialog::highlight(Test_Sample* samp)
 {
- highlight(main_tree_widget_, samp->index() - 1, 4);
- highlight(flow_tree_widget_, series_->get_flow_rank(*samp) - 1, 4);
- highlight(temperature_tree_widget_, series_->get_temperature_rank(*samp) - 1, 4);
- highlight(oxy_tree_widget_, series_->get_oxy_rank(*samp) - 1, 4);
+ highlight(main_tree_widget_, samp->index() - 1, 4, 2);
+ highlight(flow_tree_widget_, series_->get_flow_rank(*samp) - 1, 4, 2);
+ highlight(temperature_tree_widget_, series_->get_temperature_rank(*samp) - 1, 4, 2);
+ highlight(oxy_tree_widget_, series_->get_oxy_rank(*samp) - 1, 4, 2);
 }
 
 void ScignStage_Tree_Table_Dialog::unhighlight(Test_Sample* samp)
@@ -269,7 +269,8 @@ void ScignStage_Tree_Table_Dialog::unhighlight(Test_Sample* samp)
  unhighlight(oxy_tree_widget_, series_->get_oxy_rank(*samp) - 1);
 }
 
-void ScignStage_Tree_Table_Dialog::highlight(QTreeWidget* qtw, int index, int down)
+void ScignStage_Tree_Table_Dialog::highlight(QTreeWidget* qtw, int index,
+  int down, int up)
 {
  QTreeWidgetItem* twi = qtw->topLevelItem(index);
  twi->setExpanded(true);
@@ -279,7 +280,15 @@ void ScignStage_Tree_Table_Dialog::highlight(QTreeWidget* qtw, int index, int do
  if(down != -1)
  {
   int max = qMin(index + 4, series_->samples().size() - 1);
-  QTreeWidgetItem* mtwi = main_tree_widget_->topLevelItem(max);
+  QTreeWidgetItem* mtwi = qtw->topLevelItem(max);
+  qtw->scrollToItem(mtwi);
+  qtw->scrollToItem(twi);
+ }
+
+ if(up != -1)
+ {
+  int max = qMax(index - up, 0);
+  QTreeWidgetItem* mtwi = qtw->topLevelItem(max);
   qtw->scrollToItem(mtwi);
   qtw->scrollToItem(twi);
  }
