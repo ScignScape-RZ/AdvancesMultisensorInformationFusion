@@ -54,7 +54,11 @@ int main(int argc, char **argv)
 
  ts.init_cells(25, 25);
 
- ScignStage_3d_Chart_Dialog dlg(&ts, 25, 25, 1.0f/13, nullptr);
+ ScignStage_3d_Chart_Dialog dlg(&ts, 25, 25, [](double dbl) //1.0f/13,
+  {
+   //qDebug() << dbl;
+   return dbl + 1.0f/13;
+  }, nullptr);
 
  dlg.show();
  return qapp.exec();

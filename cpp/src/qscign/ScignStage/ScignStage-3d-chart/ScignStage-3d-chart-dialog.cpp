@@ -40,7 +40,7 @@ using namespace QtDataVisualization;
 USING_KANS(TextIO)
 
 ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
-  int fres, int tres, double olift, QWidget* parent)
+  int fres, int tres, double (*olift)(double), QWidget* parent)
  : QDialog(parent)
 {
 
@@ -95,15 +95,20 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
  for(int i = 0; i <= fres; ++i)
  {
   QBarDataRow* r = new QBarDataRow;
+  r->resize(tres + 1);
   for(int j = 0; j <= tres; ++j)
   {
    if(qm.contains({i, j}))
    {
     sample_map_[{i, j}] = qm[{i, j}].first().first->sample;
-    *r << qm[{i, j}].first().second + olift;
+
+    qDebug() << "s: " << qm[{i, j}].first().second;
+    (*r)[j].setValue(qm[{i, j}].first().second);
+    //*r << qm[{i, j}].first().second;// + 2.0f;
    }
    else
-     *r << 0;
+     (*r)[j].setValue(0);
+     //*r << 0;
   }
   series->dataProxy()->addRow(r);
  }
@@ -113,7 +118,17 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
  bar_gradient.setColorAt(0.0, Qt::green);
 
  series->setBaseGradient(bar_gradient);
+
+ series->setSingleHighlightColor(Qt::gray);
+
+ //series->setColorStyle(Q3DTheme::ColorStyleRangeGradient);
+
+#ifdef EXTRA_GRAPHICS_FEATURES
+ series->setColorStyle(Q3DTheme::ColorStyleRangeGradient);
+#else
  series->setColorStyle(Q3DTheme::ColorStyleObjectGradient);
+#endif
+
 
  //series->setItemLabelFormat(QStringLiteral("@valueTitle for (@rowLabel, @colLabel): %.1f"));
  //series->setMesh(QAbstract3DSeries::MeshCylinder);
@@ -122,15 +137,18 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
  for(int i = 0; i <= fres; ++i)
  {
   QBarDataRow* r = new QBarDataRow;
+  r->resize(tres + 1);
   for(int j = 0; j <= tres; ++j)
   {
    if(qm.contains({i, j}))
    {
+    //qDebug() << "s1: " << qm[{i, j}].last().second;
     //sample_map_[{i, j}] = qm[{i, j}].first().first->sample;
-    *r << qm[{i, j}].last().second + olift;
+    //*r << qm[{i, j}].last().second;// + 2.0f;
+    (*r)[j].setValue(qm[{i, j}].last().second);
    }
    else
-     *r << 0;
+     (*r)[j].setValue(0);
   }
   series1->dataProxy()->addRow(r);
  }
@@ -140,7 +158,13 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
  bar_gradient1.setColorAt(1.0, Qt::yellow);
 
  series1->setBaseGradient(bar_gradient1);
+
+#ifdef EXTRA_GRAPHICS_FEATURES
+ series1->setColorStyle(Q3DTheme::ColorStyleRangeGradient);
+#else
  series1->setColorStyle(Q3DTheme::ColorStyleObjectGradient);
+#endif
+
  series1->setMesh(QAbstract3DSeries::MeshCylinder);
  //
  //series1->setMesh(QAbstract3DSeries::MeshCube);
@@ -149,10 +173,23 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
  bars->addSeries(series);
  bars->addSeries(series1);
 
+// connect(series, &QBar3DSeries::selectedBarChanged, []
+//   (const QPoint &qp)
+// {
+//  qDebug() << qp;
+// });
+
+
+#ifdef EXTRA_GRAPHICS_FEATURES
  QCategory3DAxis* rax = new QCategory3DAxis;
  rax->setTitle("Flow");
-
+ rax->setTitleVisible(true);
  bars->setRowAxis(rax);
+
+ series->setItemLabelFormat(QStringLiteral("Flow - @colLabel @rowLabel: @valueLabel"));
+
+#endif
+
 
  bars->show();
 

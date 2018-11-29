@@ -35,6 +35,8 @@ DEFINES += ABOUT_FILE_FOLDER=\\\"$$CPP_ROOT_DIR/about/about-files\\\"
 
 DEFINES += SAMPLES_FOLDER=\\\"$$DATA_ROOT_DIR/samples\\\"
 
+#DEFINES += EXTRA_GRAPHICS_FEATURES
+
 
 CONFIG += no_keywords
 

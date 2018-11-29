@@ -29,6 +29,7 @@ struct Cell_Info
  int tmacro;
 
  double oxy;
+ int oxy_adj;
 
  double fmicro;
  double tmicro;
