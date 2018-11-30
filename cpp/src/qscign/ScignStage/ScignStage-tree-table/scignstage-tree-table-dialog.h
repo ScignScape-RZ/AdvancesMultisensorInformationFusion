@@ -151,10 +151,10 @@ class ScignStage_Tree_Table_Dialog : public QDialog
    Series_TreeWidget::Sort_Options so,
    const QPoint& qp, int page, int col,
    std::function<void(int)> pdf_fn,
-   std::function<void(int, QVector<Test_Sample*>& samps)> copyc_fn,
+   std::function<void(int, QVector<Test_Sample*>& samps, bool)> copyc_fn,
    int row = 0,
-   std::function<void(int)> copyr_fn = nullptr,
-   std::function<void(int)> highlight_fn = nullptr);
+   std::function<void(int, QVector<Test_Sample*>& samps)> copyr_fn = nullptr,
+   std::function<void(int, QVector<Test_Sample*>& samps)> highlight_fn = nullptr);
 
 public:
 

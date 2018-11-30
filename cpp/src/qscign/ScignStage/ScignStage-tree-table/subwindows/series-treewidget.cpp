@@ -141,6 +141,16 @@ Series_TreeWidget::Series_TreeWidget(Test_Series* ts, Sort_Options so, QWidget* 
   int col = header()->logicalIndexAt(qp);
   Q_EMIT( column_context_menu_requested(qp, col) );
  });
+
+ setContextMenuPolicy(Qt::CustomContextMenu);
+ connect(this, &QTreeWidget::customContextMenuRequested, [this](const QPoint& qp)
+ {
+  QModelIndex qmi = indexAt(qp);
+  Q_EMIT( row_context_menu_requested(qp, qmi.row(), qmi.column()) );
+ });
+
+
+
 }
 
 void Series_TreeWidget::unhighlight_3rd_line(int index)

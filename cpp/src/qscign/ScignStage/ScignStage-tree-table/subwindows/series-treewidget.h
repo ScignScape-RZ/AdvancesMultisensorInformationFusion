@@ -53,7 +53,7 @@ public:
 Q_SIGNALS:
 
  void column_context_menu_requested(const QPoint& qp, int col);
-
+ void row_context_menu_requested(const QPoint& qp, int row, int col);
 
 };
 

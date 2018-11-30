@@ -95,7 +95,6 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
     phr_(nullptr), phr_init_function_(nullptr),
     screenshot_function_(nullptr), current_sample_(nullptr)
 {
- // // setup RZW
 
  button_box_ = new QDialogButtonBox(this);
 
@@ -196,6 +195,12 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
     [this, stw](const QPoint& qp, int col)
   {
    run_tree_context_menu(stw->samples(), stw->sorted_by(), qp, col);
+  });
+
+  connect(stw, &Series_TreeWidget::row_context_menu_requested,
+    [this, stw](const QPoint& qp, int row, int col)
+  {
+   run_tree_context_menu(stw->samples(), stw->sorted_by(), qp, col, row);
   });
  }
 
@@ -326,15 +331,19 @@ void ScignStage_Tree_Table_Dialog::run_tree_context_menu(
  {
 
  },
- [this](int col, QVector<Test_Sample*>& samps)
+ [this](int col, QVector<Test_Sample*>& samps, bool by_rank)
  {
   QString copy;
   for(Test_Sample* samp : samps)
   {
    switch (col)
    {
+   case 0:
+    copy += QString("%1\n").arg(samp->index());
+    break;
    case 1:
-    copy += QString("%1\n").arg(samp->flow().getDouble());
+    copy += QString("%1\n").arg(by_rank?
+      series_->get_flow_rank(*samp) : samp->flow().getDouble() );
     break;
    case 2:
     copy += QString("%1\n").arg(samp->time_with_flow().getDouble());
@@ -343,10 +352,12 @@ void ScignStage_Tree_Table_Dialog::run_tree_context_menu(
     copy += QString("%1\n").arg(samp->time_against_flow().getDouble());
     break;
    case 4:
-    copy += QString("%1\n").arg(samp->temperature_adj());
+    copy += QString("%1\n").arg(by_rank?
+      series_->get_temperature_rank(*samp) : samp->temperature_adj() );
     break;
    case 5:
-    copy += QString("%1\n").arg(samp->oxy());
+    copy += QString("%1\n").arg(by_rank?
+      series_->get_oxy_rank(*samp) : samp->oxy() );
     break;
    default:
     break;
@@ -354,26 +365,27 @@ void ScignStage_Tree_Table_Dialog::run_tree_context_menu(
   }
   QApplication::clipboard()->setText(copy);
  }, row,
- row? [this](int row)
+ row? [this](int row, QVector<Test_Sample*>& samps)
  {
-  Test_Sample* samp = series_->samples().at(row);
-  QString qs = QString("%1 %2 %3 %4 %5")
+  Test_Sample* samp = samps.at(row);
+  QString qs = QString("%1 %2 %3 %4 %5 %6")
+    .arg(samp->index())
     .arg(samp->flow().getDouble())
     .arg(samp->time_with_flow().getDouble())
     .arg(samp->time_against_flow().getDouble())
     .arg(samp->temperature_adj()/100)
     .arg(samp->oxy());
   QApplication::clipboard()->setText(qs);
- }:(std::function<void(int)>)nullptr,
- row? [this](int row)
+ }:(std::function<void(int, QVector<Test_Sample*>& samps)>)nullptr,
+ row? [this](int row, QVector<Test_Sample*>& samps)
  {
   if(current_sample_)
   {
    unhighlight(current_sample_);
   }
-  current_sample_ = series_->samples().at(row);
+  current_sample_ = samps.at(row);
   highlight(current_sample_);
- }:(std::function<void(int)>)nullptr
+ }:(std::function<void(int, QVector<Test_Sample*>& samps)>)nullptr
  );
 }
 
@@ -383,25 +395,51 @@ void ScignStage_Tree_Table_Dialog::run_tree_context_menu(
   const QPoint& qp,
   int page, int col,
   std::function<void(int)> pdf_fn,
-  std::function<void(int, QVector<Test_Sample*>&)> copyc_fn,
-  int row, std::function<void(int)> copyr_fn,
-  std::function<void(int)> highlight_fn)
+  std::function<void(int, QVector<Test_Sample*>&, bool)> copyc_fn,
+  int row,
+  std::function<void(int, QVector<Test_Sample*>& samps)> copyr_fn,
+  std::function<void(int, QVector<Test_Sample*>& samps)> highlight_fn)
 {
  QMenu* qm = new QMenu(this);
  qm->addAction("Show in Document (requires XPDF)",
    [pdf_fn, page](){pdf_fn(page);});
- qm->addAction("Copy Column to Clipboard",
-   [copyc_fn, col, samps](){copyc_fn(col, *samps);});
+
+ if(!(
+     (so == Series_TreeWidget::Sort_Options::Index) &&
+     (col == 0) ))
+   qm->addAction("Copy Column to Clipboard (values)",
+     [copyc_fn, col, samps](){copyc_fn(col, *samps, false);});
+
+ static QSet<QPair<quint8, quint8>> ranks_ok {
+
+  {(quint8)Series_TreeWidget::Sort_Options::Index, 1},
+  {(quint8)Series_TreeWidget::Sort_Options::Index, 4},
+  {(quint8)Series_TreeWidget::Sort_Options::Index, 5},
+
+  {(quint8)Series_TreeWidget::Sort_Options::Flow, 0},
+  {(quint8)Series_TreeWidget::Sort_Options::Flow, 4},
+  {(quint8)Series_TreeWidget::Sort_Options::Flow, 5},
+  {(quint8)Series_TreeWidget::Sort_Options::Temperature, 0},
+  {(quint8)Series_TreeWidget::Sort_Options::Temperature, 1},
+  {(quint8)Series_TreeWidget::Sort_Options::Temperature, 5},
+  {(quint8)Series_TreeWidget::Sort_Options::Oxy, 0},
+  {(quint8)Series_TreeWidget::Sort_Options::Oxy, 1},
+  {(quint8)Series_TreeWidget::Sort_Options::Oxy, 4}
+ };
+
+ if(ranks_ok.contains({(quint8)so, col}))
+   qm->addAction("Copy Column to Clipboard (ranks)",
+     [copyc_fn, col, samps](){copyc_fn(col, *samps, true);});
 
  if(row)
  {
   if(copyr_fn)
     qm->addAction("Copy Row to Clipboard",
-    [copyr_fn, row](){copyr_fn(row);});
+    [copyr_fn, row, samps](){copyr_fn(row, *samps);});
 
   if(highlight_fn)
     qm->addAction("Highlight (scroll from here)",
-    [highlight_fn, row](){highlight_fn(row);});
+    [highlight_fn, row, samps](){highlight_fn(row, *samps);});
  }
 
  QPoint g = main_tree_widget_->mapToGlobal(qp);
