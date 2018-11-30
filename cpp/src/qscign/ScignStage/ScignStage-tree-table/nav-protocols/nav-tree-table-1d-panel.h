@@ -43,6 +43,8 @@ class QGroupBox;
 class QScrollArea;
 class QGridLayout;
 
+class QCheckBox;
+
 
 //?QSNS_(ScignStage)
 //namespace QScign { namespace ScignStage {
@@ -64,12 +66,14 @@ class NAV_Tree_Table1D_Panel : public QFrame
  QPushButton* sample_up_button_;
  QPushButton* sample_down_button_;
 
-
  QPushButton* peer_up_button_;
  QPushButton* peer_down_button_;
 
  QLabel* sample_first_label_;
  QPushButton* sample_first_button_;
+
+ QPushButton* deco_button_;
+ QHBoxLayout* deco_hlayout_;
 
  QGroupBox* sample_up_down_group_box_;
  QButtonGroup* sample_up_down_button_group_;
@@ -82,6 +86,15 @@ class NAV_Tree_Table1D_Panel : public QFrame
 
  QHBoxLayout* first_hlayout_;
  QVBoxLayout* first_vlayout_;
+
+ QGridLayout* ckb_layout_;
+ QCheckBox* ckb_2d_25_;
+ QCheckBox* ckb_3d_25_;
+ QCheckBox* ckb_2d_10_;
+ QCheckBox* ckb_3d_10_;
+
+ QGroupBox* ckbs_group_box_;
+
 
 public:
 

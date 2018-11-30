@@ -17,6 +17,7 @@
 #include <QSlider>
 #include <QButtonGroup>
 #include <QGroupBox>
+#include <QCheckBox>
 
 USING_QSNS(ScignStage)
 
@@ -94,20 +95,65 @@ NAV_Tree_Table1D_Panel::NAV_Tree_Table1D_Panel(QWidget* parent)
 
  first_hlayout_ = new QHBoxLayout;
  first_vlayout_ = new QVBoxLayout;
+
  sample_first_label_ = new QLabel("First", this);
- first_hlayout_->addStretch();
+
  first_hlayout_->addWidget(sample_first_label_);
  first_hlayout_->addWidget(sample_first_button_);
  first_hlayout_->addStretch();
 
- first_vlayout_->addStretch();
  first_vlayout_->addLayout(first_hlayout_);
 
+ deco_button_ = new QPushButton("DECO", this);
+ deco_button_->setCheckable(true);
+ deco_button_->setChecked(false);
+ deco_button_->setStyleSheet(colorful_toggle_button_style_sheet_());
+
+ deco_hlayout_ = new QHBoxLayout;
+ QSpacerItem* sp00 = new QSpacerItem(10, 0, QSizePolicy::Maximum, QSizePolicy::Fixed);
+ deco_hlayout_->addSpacerItem(sp00);
+ deco_hlayout_->addStretch();
+ deco_hlayout_->addWidget(deco_button_);
+
+
+ first_vlayout_->addLayout(first_hlayout_);
+
+ QSpacerItem* sp0 = new QSpacerItem(0, 35, QSizePolicy::Fixed, QSizePolicy::Maximum);
+ first_vlayout_->addSpacerItem(sp0);
+ first_vlayout_->addLayout(deco_hlayout_);
  first_vlayout_->addStretch();
 
- navigation_layout_->addLayout(first_vlayout_);
+ ckb_layout_ = new QGridLayout;
+ ckb_2d_25_ = new QCheckBox("2D 25x25", this);
+ ckb_3d_25_ = new QCheckBox("3D 25x25", this);
+ ckb_2d_10_ = new QCheckBox("2D 10x10", this);
+ ckb_3d_10_ = new QCheckBox("3D 10x10", this);
 
- QSpacerItem* sp = new QSpacerItem(0, 5, QSizePolicy::Maximum, QSizePolicy::Minimum);
+ ckb_layout_->addWidget(ckb_2d_25_, 0, 0);
+ ckb_layout_->addWidget(ckb_3d_25_, 0, 1);
+ ckb_layout_->addWidget(ckb_2d_10_, 1, 0);
+ ckb_layout_->addWidget(ckb_3d_10_, 1, 1);
+
+ ckb_layout_->setColumnStretch(2, 1);
+ ckb_layout_->setRowStretch(2, 1);
+
+ ckbs_group_box_ = new QGroupBox("Graphics", this);
+ ckbs_group_box_->setLayout(ckb_layout_);
+
+ //first_vlayout_->addWidget(ckbs_group_box_);
+ QSpacerItem* sp1 = new QSpacerItem(5, 0, QSizePolicy::Fixed, QSizePolicy::Fixed);
+ QSpacerItem* sp2 = new QSpacerItem(5, 0, QSizePolicy::Fixed, QSizePolicy::Fixed);
+ QSpacerItem* sp3 = new QSpacerItem(25, 0, QSizePolicy::Maximum, QSizePolicy::Fixed);
+
+ navigation_layout_->addSpacerItem(sp1);
+ navigation_layout_->addLayout(first_vlayout_);
+ navigation_layout_->addSpacerItem(sp2);
+ navigation_layout_->addSpacerItem(sp3);
+// navigation_layout_->addStretch();
+ navigation_layout_->addWidget(ckbs_group_box_);
+ navigation_layout_->addStretch();
+
+ QSpacerItem* sp = new QSpacerItem(0, 2, QSizePolicy::Fixed, QSizePolicy::Maximum);
 
  main_layout_->addSpacerItem(sp);
  main_layout_->addLayout(navigation_layout_);
