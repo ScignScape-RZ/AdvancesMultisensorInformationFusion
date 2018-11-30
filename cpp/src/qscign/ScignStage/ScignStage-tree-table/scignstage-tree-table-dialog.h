@@ -166,6 +166,8 @@ public:
  ACCESSORS__SET(std::function<void(Phaon_Runner&)>, phr_init_function)
  ACCESSORS__SET(std::function<void()> ,screenshot_function)
 
+ ACCESSORS(Test_Series* ,series)
+
  // //  Kernel Application Interface
  void test_msgbox(QString msg);
 

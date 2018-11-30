@@ -84,7 +84,7 @@ int main(int argc, char **argv)
  ScignStage_Tree_Table_Dialog dlg (nullptr, &ts);
 #endif
 
- Graphic_Dialog_Container gdc;
+ Graphic_Dialog_Container gdc(&dlg);
 
 
  QApplication::connect(&dlg,

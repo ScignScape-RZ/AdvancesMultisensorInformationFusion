@@ -50,6 +50,9 @@ SOURCES += \
 
 
 LIBS += -L$$TARGETSDIR -ldsmain  -lScignStage-tree-table \
+    -lScignStage-2d-chart  \
+
+
 
 exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/external--xpdf--xpdf) \#/
 {

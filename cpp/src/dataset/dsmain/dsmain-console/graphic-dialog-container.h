@@ -10,13 +10,26 @@
 
 #include <QObject>
 
+class ScignStage_2d_Chart_Dialog;
+class ScignStage_3d_Chart_Dialog;
+
+class ScignStage_Tree_Table_Dialog;
+
 class Graphic_Dialog_Container : public QObject
 {
  Q_OBJECT
 
+ ScignStage_2d_Chart_Dialog* graphic_2d_25x25_;
+ ScignStage_3d_Chart_Dialog* graphic_3d_25x25_;
+
+ ScignStage_2d_Chart_Dialog* graphic_2d_10x10_;
+ ScignStage_3d_Chart_Dialog* graphic_3d_10x10_;
+
+ ScignStage_Tree_Table_Dialog* parent_dialog_;
+
 public:
 
- Graphic_Dialog_Container();
+ Graphic_Dialog_Container(ScignStage_Tree_Table_Dialog* parent_dialog);
  ~Graphic_Dialog_Container();
 
 
