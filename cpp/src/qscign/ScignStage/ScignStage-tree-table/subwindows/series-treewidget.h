@@ -40,6 +40,7 @@ private:
 public:
 
  ACCESSORS(QVector<Test_Sample*>* ,samples)
+ ACCESSORS(Sort_Options ,sorted_by)
 
  void highlight_3rd_line(int index);
  void highlight_3rd_line(int index, QColor clr);
@@ -48,6 +49,10 @@ public:
 
  Series_TreeWidget(Test_Series* ts, Sort_Options so, QWidget* parent = nullptr);
  ~Series_TreeWidget();
+
+Q_SIGNALS:
+
+ void column_context_menu_requested(const QPoint& qp, int col);
 
 
 };

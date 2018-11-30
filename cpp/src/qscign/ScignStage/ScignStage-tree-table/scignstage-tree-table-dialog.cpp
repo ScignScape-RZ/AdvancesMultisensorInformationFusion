@@ -88,7 +88,6 @@ USING_KANS(Phaon)
 
 //USING_QSNS(ScignStage)
 
-
 ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bridge,
   Test_Series* series, QWidget* parent)
   : QDialog(parent), xpdf_bridge_(xpdf_bridge),
@@ -175,19 +174,37 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
  oxy_tree_widget_ = new Series_TreeWidget(series_,
    Series_TreeWidget::Sort_Options::Oxy, this);
 
- main_tree_widget_->setContextMenuPolicy(Qt::CustomContextMenu);
- connect(main_tree_widget_, &QTreeWidget::customContextMenuRequested, [this](const QPoint& qp)
- {
-  QModelIndex qmi = main_tree_widget_->indexAt(qp);
-  run_tree_context_menu(qp, qmi.column(), qmi.row());
- });
+// main_tree_widget_->setContextMenuPolicy(Qt::CustomContextMenu);
+// connect(main_tree_widget_, &QTreeWidget::customContextMenuRequested, [this](const QPoint& qp)
+// {
+//  QModelIndex qmi = main_tree_widget_->indexAt(qp);
+//  run_tree_context_menu(qp, qmi.column(), qmi.row());
+// });
 
- main_tree_widget_->header()->setContextMenuPolicy(Qt::CustomContextMenu);
- connect(main_tree_widget_->header(), &QTreeWidget::customContextMenuRequested, [this](const QPoint& qp)
+// main_tree_widget_->setContextMenuPolicy(Qt::CustomContextMenu);
+// connect(main_tree_widget_, &Series_TreeWidget::column_context_menu_requested,
+//   [this](const QPoint& qp, int col)
+// {
+//  run_tree_context_menu(qp, col);
+// });
+
+
+ for(Series_TreeWidget* stw :
+   {main_tree_widget_, flow_tree_widget_, temperature_tree_widget_, oxy_tree_widget_})
  {
-  int col = main_tree_widget_->header()->logicalIndexAt(qp);
-  run_tree_context_menu(qp, col);
- });
+  connect(stw, &Series_TreeWidget::column_context_menu_requested,
+    [this, stw](const QPoint& qp, int col)
+  {
+   run_tree_context_menu(stw->sorted_by(), qp, col);
+  });
+ }
+
+// main_tree_widget_->header()->setContextMenuPolicy(Qt::CustomContextMenu);
+// connect(main_tree_widget_->header(), &QTreeWidget::customContextMenuRequested, [this](const QPoint& qp)
+// {
+//  int col = main_tree_widget_->header()->logicalIndexAt(qp);
+//  run_tree_context_menu(qp, col);
+// });
 
  main_tab_widget_->addTab(main_tree_widget_, "Main");
  main_tab_widget_->addTab(flow_tree_widget_, "Flow");
@@ -197,7 +214,6 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
  main_tab_widget_->setStyleSheet(tab_style_sheet_());
 
  middle_layout_->addWidget(main_tab_widget_);
-
 
  main_layout_->addLayout(middle_layout_);
 
@@ -219,8 +235,6 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
    this, SLOT(handle_peer_down()));
 
  main_layout_->addWidget(nav_panel_);
-
-
 
  main_layout_->addWidget(button_box_);
 
@@ -302,26 +316,38 @@ void ScignStage_Tree_Table_Dialog::highlight(QTreeWidget* qtw, int index,
  }
 }
 
-void ScignStage_Tree_Table_Dialog::run_tree_context_menu(const QPoint& qp,
+void ScignStage_Tree_Table_Dialog::run_tree_context_menu(
+  Series_TreeWidget::Sort_Options so, const QPoint& qp,
   int col, int row)
 {
- run_tree_context_menu(qp, 0, col,
+ run_tree_context_menu(so, qp, 0, col,
  [this](int page)
  {
 
  },
- [this](int col)
+ [this](int col, Series_TreeWidget::Sort_Options so)
  {
   QString copy;
   for(Test_Sample* samp : series_->samples())
   {
    switch (col)
    {
-   case 0:
+   case 1:
     copy += QString("%1\n").arg(samp->flow().getDouble());
     break;
-   case 1:
+   case 2:
     copy += QString("%1\n").arg(samp->time_with_flow().getDouble());
+    break;
+   case 3:
+    copy += QString("%1\n").arg(samp->time_against_flow().getDouble());
+    break;
+   case 4:
+    copy += QString("%1\n").arg(samp->temperature_adj());
+    break;
+   case 5:
+    copy += QString("%1\n").arg(samp->oxy());
+    break;
+   default:
     break;
    }
   }
@@ -350,9 +376,12 @@ void ScignStage_Tree_Table_Dialog::run_tree_context_menu(const QPoint& qp,
  );
 }
 
-void ScignStage_Tree_Table_Dialog::run_tree_context_menu(const QPoint& qp,
+void ScignStage_Tree_Table_Dialog::run_tree_context_menu(
+  Series_TreeWidget::Sort_Options so,
+  const QPoint& qp,
   int page, int col,
-  std::function<void(int)> pdf_fn, std::function<void(int)> copyc_fn,
+  std::function<void(int)> pdf_fn,
+  std::function<void(int, Series_TreeWidget::Sort_Options)> copyc_fn,
   int row, std::function<void(int)> copyr_fn,
   std::function<void(int)> highlight_fn)
 {
@@ -360,7 +389,7 @@ void ScignStage_Tree_Table_Dialog::run_tree_context_menu(const QPoint& qp,
  qm->addAction("Show in Document (requires XPDF)",
    [pdf_fn, page](){pdf_fn(page);});
  qm->addAction("Copy Column to Clipboard",
-   [copyc_fn, col](){copyc_fn(col);});
+   [copyc_fn, col, so](){copyc_fn(col, so);});
 
  if(row)
  {

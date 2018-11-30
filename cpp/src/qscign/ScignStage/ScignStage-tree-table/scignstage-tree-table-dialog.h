@@ -26,6 +26,8 @@
 
 #include "nav-protocols/nav-tree-table-1d-panel.h"
 
+#include "subwindows/series-treewidget.h"
+
 #include <functional>
 
 #include "kans.h"
@@ -57,7 +59,6 @@ class QTcpServer;
 class QTreeWidget;
 class QTreeWidgetItem;
 
-class Series_TreeWidget;
 
 class XPDF_Bridge;
 
@@ -142,16 +143,17 @@ class ScignStage_Tree_Table_Dialog : public QDialog
  void highlight_scroll_to_sample(Test_Sample* samp);
 
 
- void run_tree_context_menu(const QPoint& qp, int col, int row = 0);
- void run_tree_context_menu(const QPoint& qp, int page, int col,
-   std::function<void(int)> pdf_fn, std::function<void(int)> copyc_fn,
-   int row = 0, std::function<void(int)> copyr_fn = nullptr,
+ void run_tree_context_menu(Series_TreeWidget::Sort_Options so,
+   const QPoint& qp, int col, int row = 0);
+ void run_tree_context_menu(Series_TreeWidget::Sort_Options so,
+   const QPoint& qp, int page, int col,
+   std::function<void(int)> pdf_fn,
+   std::function<void(int, Series_TreeWidget::Sort_Options)> copyc_fn,
+   int row = 0,
+   std::function<void(int)> copyr_fn = nullptr,
    std::function<void(int)> highlight_fn = nullptr);
 
-
 public:
-
-
 
  ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bridge,
    Test_Series* series, QWidget* parent = nullptr);
