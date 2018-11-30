@@ -40,11 +40,13 @@ INCLUDEPATH += $$POSIT_SRC_GROUP_DIR
 
 HEADERS += \
   $$SRC_DIR/test-functions.h \
+  $$SRC_DIR/graphic-dialog-container.h
 
 
 SOURCES += \
   $$SRC_DIR/main.cpp \
   $$SRC_DIR/test-functions.cpp \
+  $$SRC_DIR/graphic-dialog-container.cpp
 
 
 LIBS += -L$$TARGETSDIR -ldsmain  -lScignStage-tree-table \

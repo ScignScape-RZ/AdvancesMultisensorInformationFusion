@@ -131,8 +131,8 @@ NAV_Tree_Table1D_Panel::NAV_Tree_Table1D_Panel(QWidget* parent)
  ckb_layout_->addWidget(ckb_2d_10_, 1, 0);
  ckb_layout_->addWidget(ckb_3d_10_, 1, 1);
 
- quint8 dims [4][3] {{2, 25, 25}, {1, 25, 25},
-   {2, 10, 10}, {1, 10, 10}};
+ quint8 dims [4][3] {{2, 25, 25}, {3, 25, 25},
+   {2, 10, 10}, {3, 10, 10}};
  int i = 0;
  for(QCheckBox* ckb :
    {ckb_2d_25_, ckb_3d_25_, ckb_2d_10_, ckb_3d_10_})

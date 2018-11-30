@@ -177,8 +177,8 @@ Q_SIGNALS:
  void take_screenshot_requested();
  void sample_highlighted(Test_Sample* samp);
 
- void reemit_graphic_open_requested(quint8,quint8,quint8);
- void reemit_graphic_close_requested(quint8,quint8,quint8);
+ void reemit_graphic_open_requested(quint8, quint8, quint8);
+ void reemit_graphic_close_requested(quint8, quint8, quint8);
 
 
 public Q_SLOTS:

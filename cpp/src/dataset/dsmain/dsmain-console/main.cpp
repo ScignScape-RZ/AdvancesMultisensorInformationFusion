@@ -51,6 +51,8 @@
 #include "PhaonLib/phaon-symbol-scope.h"
 #include "test-functions.h"
 
+#include "graphic-dialog-container.h"
+
 #include "kans.h"
 
 #include <QThread>
@@ -82,12 +84,12 @@ int main(int argc, char **argv)
  ScignStage_Tree_Table_Dialog dlg (nullptr, &ts);
 #endif
 
+ Graphic_Dialog_Container gdc;
+
+
  QApplication::connect(&dlg,
-   &ScignStage_Tree_Table_Dialog::reemit_graphic_open_requested,
-   [](quint8 d, quint8 r, quint8 c)
- {
-  qDebug() << d << r << c;
- });
+   SIGNAL(reemit_graphic_open_requested(quint8,quint8,quint8)),
+   &gdc, SLOT(handle_graphic_open_requested(quint8,quint8,quint8)));
 
 #ifdef USING_KPH
  dlg.set_phr_init_function([&dlg](Phaon_Runner& phr)
