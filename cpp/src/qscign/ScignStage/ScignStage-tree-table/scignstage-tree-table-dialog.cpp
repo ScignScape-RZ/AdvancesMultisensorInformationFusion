@@ -195,7 +195,7 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
   connect(stw, &Series_TreeWidget::column_context_menu_requested,
     [this, stw](const QPoint& qp, int col)
   {
-   run_tree_context_menu(stw->sorted_by(), qp, col);
+   run_tree_context_menu(stw->samples(), stw->sorted_by(), qp, col);
   });
  }
 
@@ -317,18 +317,19 @@ void ScignStage_Tree_Table_Dialog::highlight(QTreeWidget* qtw, int index,
 }
 
 void ScignStage_Tree_Table_Dialog::run_tree_context_menu(
+  QVector<Test_Sample*>* samps,
   Series_TreeWidget::Sort_Options so, const QPoint& qp,
   int col, int row)
 {
- run_tree_context_menu(so, qp, 0, col,
+ run_tree_context_menu(samps, so, qp, 0, col,
  [this](int page)
  {
 
  },
- [this](int col, Series_TreeWidget::Sort_Options so)
+ [this](int col, QVector<Test_Sample*>& samps)
  {
   QString copy;
-  for(Test_Sample* samp : series_->samples())
+  for(Test_Sample* samp : samps)
   {
    switch (col)
    {
@@ -377,11 +378,12 @@ void ScignStage_Tree_Table_Dialog::run_tree_context_menu(
 }
 
 void ScignStage_Tree_Table_Dialog::run_tree_context_menu(
+  QVector<Test_Sample*>* samps,
   Series_TreeWidget::Sort_Options so,
   const QPoint& qp,
   int page, int col,
   std::function<void(int)> pdf_fn,
-  std::function<void(int, Series_TreeWidget::Sort_Options)> copyc_fn,
+  std::function<void(int, QVector<Test_Sample*>&)> copyc_fn,
   int row, std::function<void(int)> copyr_fn,
   std::function<void(int)> highlight_fn)
 {
@@ -389,7 +391,7 @@ void ScignStage_Tree_Table_Dialog::run_tree_context_menu(
  qm->addAction("Show in Document (requires XPDF)",
    [pdf_fn, page](){pdf_fn(page);});
  qm->addAction("Copy Column to Clipboard",
-   [copyc_fn, col, so](){copyc_fn(col, so);});
+   [copyc_fn, col, samps](){copyc_fn(col, *samps);});
 
  if(row)
  {

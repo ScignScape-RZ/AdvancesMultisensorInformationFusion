@@ -143,12 +143,15 @@ class ScignStage_Tree_Table_Dialog : public QDialog
  void highlight_scroll_to_sample(Test_Sample* samp);
 
 
- void run_tree_context_menu(Series_TreeWidget::Sort_Options so,
+ void run_tree_context_menu(QVector<Test_Sample*>* samps,
+   Series_TreeWidget::Sort_Options so,
    const QPoint& qp, int col, int row = 0);
- void run_tree_context_menu(Series_TreeWidget::Sort_Options so,
+
+ void run_tree_context_menu(QVector<Test_Sample*>* samps,
+   Series_TreeWidget::Sort_Options so,
    const QPoint& qp, int page, int col,
    std::function<void(int)> pdf_fn,
-   std::function<void(int, Series_TreeWidget::Sort_Options)> copyc_fn,
+   std::function<void(int, QVector<Test_Sample*>& samps)> copyc_fn,
    int row = 0,
    std::function<void(int)> copyr_fn = nullptr,
    std::function<void(int)> highlight_fn = nullptr);
