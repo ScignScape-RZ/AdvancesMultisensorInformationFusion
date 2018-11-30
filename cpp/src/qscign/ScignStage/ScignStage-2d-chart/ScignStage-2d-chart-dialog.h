@@ -60,7 +60,7 @@ class ScignStage_2d_Chart_Dialog : public QDialog
 public:
 
  ScignStage_2d_Chart_Dialog(Test_Series* ts,
-   int fres, int tres, double olift, QWidget* parent);
+   int fres, int tres, QWidget* parent);
 
  ~ScignStage_2d_Chart_Dialog();
 

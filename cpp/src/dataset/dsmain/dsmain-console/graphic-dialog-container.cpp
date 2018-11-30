@@ -8,12 +8,19 @@
 #include "graphic-dialog-container.h"
 
 #include "ScignStage-2d-chart/ScignStage-2d-chart-dialog.h"
+
+#include "ScignStage-3d-chart/ScignStage-3d-chart-dialog.h"
+
 #include "ScignStage-tree-table/ScignStage-tree-table-dialog.h"
+
 
 #include "dsmain/test-sample.h"
 #include "dsmain/test-series.h"
 
 #include <QDebug>
+
+
+using namespace QtDataVisualization;
 
 Graphic_Dialog_Container::Graphic_Dialog_Container(ScignStage_Tree_Table_Dialog* parent_dialog)
   :  parent_dialog_(parent_dialog),
@@ -40,7 +47,7 @@ void Graphic_Dialog_Container::handle_graphic_open_requested(quint8 d, quint8 r,
   if(!graphic_2d_25x25_)
   {
    graphic_2d_25x25_ = new ScignStage_2d_Chart_Dialog(
-     parent_dialog_->series(), 25, 25, 0, parent_dialog_);
+     parent_dialog_->series(), 25, 25, parent_dialog_);
 
    connect(graphic_2d_25x25_, SIGNAL(sample_selected(Test_Sample*)),
      parent_dialog_, SLOT(browse_to_selected_sample(Test_Sample*)));
@@ -48,8 +55,27 @@ void Graphic_Dialog_Container::handle_graphic_open_requested(quint8 d, quint8 r,
    connect(parent_dialog_, SIGNAL(sample_highlighted(Test_Sample*)),
      graphic_2d_25x25_, SLOT(highlight_selected_sample(Test_Sample*)));
   }
-
   graphic_2d_25x25_->show();
+  break;
+ case 3025025:
+  if(!graphic_3d_25x25_)
+  {
+   graphic_3d_25x25_ = new ScignStage_3d_Chart_Dialog(
+     parent_dialog_->series(), 25, 25, parent_dialog_);
+
+   connect(parent_dialog_, SIGNAL(sample_highlighted(Test_Sample*)),
+     graphic_3d_25x25_, SLOT(external_selected(Test_Sample*)));
+
+   graphic_3d_25x25_->selected_cb = [this](Test_Sample* samp)
+   {
+    qDebug() << "samp: " << samp->index();
+    parent_dialog_->browse_to_selected_sample(samp);
+   };
+  }
+  graphic_3d_25x25_->show();
+  break;
+ default:
+  break;
  }
 
 }

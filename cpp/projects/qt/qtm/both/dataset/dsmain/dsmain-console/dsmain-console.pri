@@ -50,7 +50,7 @@ SOURCES += \
 
 
 LIBS += -L$$TARGETSDIR -ldsmain  -lScignStage-tree-table \
-    -lScignStage-2d-chart  \
+    -lScignStage-2d-chart  -lScignStage-3d-chart  \
 
 
 
