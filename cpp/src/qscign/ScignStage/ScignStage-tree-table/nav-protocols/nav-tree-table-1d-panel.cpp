@@ -115,9 +115,6 @@ NAV_Tree_Table1D_Panel::NAV_Tree_Table1D_Panel(QWidget* parent)
  deco_hlayout_->addStretch();
  deco_hlayout_->addWidget(deco_button_);
 
-
- first_vlayout_->addLayout(first_hlayout_);
-
  QSpacerItem* sp0 = new QSpacerItem(0, 35, QSizePolicy::Fixed, QSizePolicy::Maximum);
  first_vlayout_->addSpacerItem(sp0);
  first_vlayout_->addLayout(deco_hlayout_);
@@ -133,6 +130,23 @@ NAV_Tree_Table1D_Panel::NAV_Tree_Table1D_Panel(QWidget* parent)
  ckb_layout_->addWidget(ckb_3d_25_, 0, 1);
  ckb_layout_->addWidget(ckb_2d_10_, 1, 0);
  ckb_layout_->addWidget(ckb_3d_10_, 1, 1);
+
+ quint8 dims [4][3] {{2, 25, 25}, {1, 25, 25},
+   {2, 10, 10}, {1, 10, 10}};
+ int i = 0;
+ for(QCheckBox* ckb :
+   {ckb_2d_25_, ckb_3d_25_, ckb_2d_10_, ckb_3d_10_})
+ {
+  connect(ckb, &QCheckBox::toggled,
+    [this, ckb, dims, i](bool checked)
+  {
+   if(checked)
+     Q_EMIT( graphic_open_requested(dims[i][0], dims[i][1], dims[i][2]) );
+   else
+     Q_EMIT( graphic_close_requested(dims[i][0], dims[i][1], dims[i][2]) );
+  });
+  ++i;
+ }
 
  ckb_layout_->setColumnStretch(2, 1);
  ckb_layout_->setRowStretch(2, 1);

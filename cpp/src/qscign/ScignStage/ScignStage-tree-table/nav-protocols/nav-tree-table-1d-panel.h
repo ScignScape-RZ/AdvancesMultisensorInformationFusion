@@ -114,6 +114,9 @@ Q_SIGNALS:
  void sample_down_requested();
  void sample_first_requested();
 
+ void graphic_open_requested(quint8, quint8, quint8);
+ void graphic_close_requested(quint8, quint8, quint8);
+
 
 public Q_SLOTS:
 

@@ -227,6 +227,13 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
  connect(nav_panel_, SIGNAL(sample_up_requested()),
    this, SLOT(handle_sample_up()));
 
+
+ connect(nav_panel_, SIGNAL(graphic_open_requested(quint8, quint8, quint8)),
+   this, SIGNAL(reemit_graphic_open_requested(quint8, quint8, quint8)));
+
+ connect(nav_panel_, SIGNAL(graphic_close_requested(quint8, quint8, quint8)),
+   this, SIGNAL(reemit_graphic_close_requested(quint8, quint8, quint8)));
+
  connect(nav_panel_, SIGNAL(sample_down_requested()),
    this, SLOT(handle_sample_down()));
 
@@ -445,6 +452,8 @@ void ScignStage_Tree_Table_Dialog::run_tree_context_menu(
  QPoint g = main_tree_widget_->mapToGlobal(qp);
  qm->popup(g);
 }
+
+
 
 void ScignStage_Tree_Table_Dialog::handle_flow_down()
 {

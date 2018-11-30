@@ -82,6 +82,13 @@ int main(int argc, char **argv)
  ScignStage_Tree_Table_Dialog dlg (nullptr, &ts);
 #endif
 
+ QApplication::connect(&dlg,
+   &ScignStage_Tree_Table_Dialog::reemit_graphic_open_requested,
+   [](quint8 d, quint8 r, quint8 c)
+ {
+  qDebug() << d << r << c;
+ });
+
 #ifdef USING_KPH
  dlg.set_phr_init_function([&dlg](Phaon_Runner& phr)
  {
