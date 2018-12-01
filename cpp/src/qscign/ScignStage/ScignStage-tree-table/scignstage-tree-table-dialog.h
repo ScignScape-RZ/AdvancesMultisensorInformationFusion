@@ -196,6 +196,7 @@ public Q_SLOTS:
  void handle_sample_up();
 
  void handle_sample_first();
+ void handle_peer_first();
 
  void handle_peer_down();
  void handle_peer_up();

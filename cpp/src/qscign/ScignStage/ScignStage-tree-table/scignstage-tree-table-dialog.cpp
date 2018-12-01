@@ -240,6 +240,9 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
  connect(nav_panel_, SIGNAL(sample_first_requested()),
    this, SLOT(handle_sample_first()));
 
+ connect(nav_panel_, SIGNAL(peer_first_requested()),
+   this, SLOT(handle_peer_first()));
+
  connect(nav_panel_, SIGNAL(peer_up_requested()),
    this, SLOT(handle_peer_up()));
 
@@ -795,6 +798,25 @@ void ScignStage_Tree_Table_Dialog::handle_sample_up()
  }
  emit_highlight();
  highlight(current_sample_);
+}
+
+void ScignStage_Tree_Table_Dialog::handle_peer_first()
+{
+ if(current_sample_)
+ {
+  unhighlight(current_sample_);
+ }
+
+ QWidget* cw = main_tab_widget_->currentWidget();
+ if(Series_TreeWidget* stw = qobject_cast<Series_TreeWidget*>(cw))
+ {
+  QVector<Test_Sample*>* samps = stw->samples();
+  current_sample_ = samps->first();
+  emit_highlight();
+  //QTreeWidgetItem* twi = main_tree_widget_->topLevelItem(0);
+  highlight(current_sample_);
+  //main_tree_widget_->scrollToItem(twi);
+ }
 }
 
 void ScignStage_Tree_Table_Dialog::handle_sample_first()
