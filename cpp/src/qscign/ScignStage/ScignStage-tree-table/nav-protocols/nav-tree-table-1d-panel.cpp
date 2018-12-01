@@ -31,11 +31,13 @@ NAV_Tree_Table1D_Panel::NAV_Tree_Table1D_Panel(QWidget* parent)
  sample_down_button_ = new QPushButton(this);
 
  sample_first_button_ = new QPushButton(this);
+ peer_first_button_ = new QPushButton(this);
 
  sample_up_button_->setIcon(QIcon(DEFAULT_ICON_FOLDER "/Gtk-go-up.svg"));
  sample_down_button_->setIcon(QIcon(DEFAULT_ICON_FOLDER "/Gtk-go-down.svg"));
 
  sample_first_button_->setIcon(QIcon(DEFAULT_ICON_FOLDER "/Arrow-leftup-small.svg"));
+ peer_first_button_->setIcon(QIcon(DEFAULT_ICON_FOLDER "/Arrow-leftup-small.svg"));
 
  peer_up_button_ = new QPushButton(this);
  peer_down_button_ = new QPushButton(this);
@@ -59,6 +61,8 @@ NAV_Tree_Table1D_Panel::NAV_Tree_Table1D_Panel(QWidget* parent)
  connect(sample_first_button_, SIGNAL(clicked()),
    this, SIGNAL(sample_first_requested()));
 
+ connect(peer_first_button_, SIGNAL(clicked()),
+   this, SIGNAL(peer_first_requested()));
 
  sample_up_down_layout_ = new QVBoxLayout;
 
@@ -103,6 +107,15 @@ NAV_Tree_Table1D_Panel::NAV_Tree_Table1D_Panel(QWidget* parent)
  first_hlayout_->addStretch();
 
  first_vlayout_->addLayout(first_hlayout_);
+
+ peer_first_hlayout_ = new QHBoxLayout;
+ peer_first_label_ = new QLabel("Peer First", this);
+
+ peer_first_hlayout_->addWidget(peer_first_label_);
+ peer_first_hlayout_->addWidget(peer_first_button_);
+ peer_first_hlayout_->addStretch();
+
+ first_vlayout_->addLayout(peer_first_hlayout_);
 
  deco_button_ = new QPushButton("DECO", this);
  deco_button_->setCheckable(true);

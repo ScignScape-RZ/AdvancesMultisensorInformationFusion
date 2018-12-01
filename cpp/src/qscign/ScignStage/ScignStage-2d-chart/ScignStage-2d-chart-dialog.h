@@ -67,6 +67,8 @@ public:
 public Q_SLOTS:
 
  void highlight_selected_sample(Test_Sample* samp);
+ void highlight(QGraphicsRectItem* qgri);
+
 
 Q_SIGNALS:
 

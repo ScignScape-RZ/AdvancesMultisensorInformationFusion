@@ -72,6 +72,9 @@ class NAV_Tree_Table1D_Panel : public QFrame
  QLabel* sample_first_label_;
  QPushButton* sample_first_button_;
 
+ QLabel* peer_first_label_;
+ QPushButton* peer_first_button_;
+
  QPushButton* deco_button_;
  QHBoxLayout* deco_hlayout_;
 
@@ -86,6 +89,8 @@ class NAV_Tree_Table1D_Panel : public QFrame
 
  QHBoxLayout* first_hlayout_;
  QVBoxLayout* first_vlayout_;
+
+ QHBoxLayout* peer_first_hlayout_;
 
  QGridLayout* ckb_layout_;
  QCheckBox* ckb_2d_25_;
@@ -112,7 +117,9 @@ Q_SIGNALS:
 
  void sample_up_requested();
  void sample_down_requested();
+
  void sample_first_requested();
+ void peer_first_requested();
 
  void graphic_open_requested(quint8, quint8, quint8);
  void graphic_close_requested(quint8, quint8, quint8);

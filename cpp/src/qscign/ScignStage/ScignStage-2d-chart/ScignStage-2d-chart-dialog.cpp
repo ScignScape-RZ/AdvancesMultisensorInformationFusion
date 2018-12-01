@@ -226,6 +226,9 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
    Test_Sample* samp = (Test_Sample*) qgi->data(1).value<void*>();//sample_map_.value(qgi);
    if(samp)
    {
+    QGraphicsRectItem* qgri = qgraphicsitem_cast<QGraphicsRectItem*>(qgi);
+    highlight(qgri);
+
     qDebug() << QString("%1: %2 %3 %4").arg(samp->index())
       .arg(samp->flow().getDouble())  .arg(samp->temperature_adj())
       .arg(samp->oxy());
@@ -245,11 +248,8 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
  //fore_panel_
 }
 
-void ScignStage_2d_Chart_Dialog::highlight_selected_sample(Test_Sample* samp)
+void ScignStage_2d_Chart_Dialog::highlight(QGraphicsRectItem* qgri)
 {
- QGraphicsRectItem* qgri = qgraphicsitem_cast<QGraphicsRectItem*>
-   (sample_map_.value(samp));
-
  if(last_selected_item_)
  {
   last_selected_item_->setPen(last_pen_);
@@ -267,6 +267,14 @@ void ScignStage_2d_Chart_Dialog::highlight_selected_sample(Test_Sample* samp)
   qgri->ensureVisible();
   current_z_value_ += 0.1f;
  }
+}
+
+void ScignStage_2d_Chart_Dialog::highlight_selected_sample(Test_Sample* samp)
+{
+ QGraphicsRectItem* qgri = qgraphicsitem_cast<QGraphicsRectItem*>
+   (sample_map_.value(samp));
+
+ highlight(qgri);
 }
 
 ScignStage_2d_Chart_Dialog::~ScignStage_2d_Chart_Dialog()
