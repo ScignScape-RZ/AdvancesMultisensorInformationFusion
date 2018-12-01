@@ -130,8 +130,9 @@ class ScignStage_Tree_Table_Dialog : public QDialog
  void send_xpdf_msg(QString msg);
 
  QString load_about_file(QString name);
-
  bool ask_pdf_proceed(QString name);
+ bool ask_pdf_proceed(Series_TreeWidget::Sort_Options so, quint8 col);
+ void show_non_pdf_message(QString name);
 
  void highlight(QTreeWidget* qtw, int index, int down = -1,
    int up = -1);
@@ -172,6 +173,7 @@ public:
  void test_msgbox(QString msg);
 
  void emit_highlight();
+
 
 Q_SIGNALS:
  void canceled(QDialog*);

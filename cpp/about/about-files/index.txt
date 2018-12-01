@@ -1,0 +1,5 @@
+
+The index number is assigned to eacb measurement sample based 
+on its position in the authors' original data set via the .xls file.  
+This number is used for internal cross-referencing within the data 
+set components but has no direct bearing on the experiment or analysis.

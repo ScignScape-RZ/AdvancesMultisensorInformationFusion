@@ -1,0 +1,6 @@
+
+The Oxygen measurements calculate Oxygen levels in oxygenated air (as needed for 
+Continuous Positive Airway Pressure (CPAP) devices) given inputs of ambient temperature 
+and sound time travel (copy values from the 'Index' column while the 
+'Flow' tab is active to get a list of all samples ordered by Oxygen measurement).
+Click 'More' for additional information (requires XPDF).

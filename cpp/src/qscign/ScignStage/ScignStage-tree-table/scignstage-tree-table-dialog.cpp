@@ -263,6 +263,80 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
 
 }
 
+QString ScignStage_Tree_Table_Dialog::load_about_file(QString name)
+{
+ return load_file(QString("%1/%2.txt")
+   .arg(ABOUT_FILE_FOLDER).arg(name)).replace('\n', ' ').simplified();
+}
+
+bool ScignStage_Tree_Table_Dialog::ask_pdf_proceed(Series_TreeWidget::Sort_Options so,
+  quint8 col)
+{
+ static QMap<QPair<Series_TreeWidget::Sort_Options, quint8>, QString> static_map {{
+   {{Series_TreeWidget::Sort_Options::Index, 0}, "!index"},
+   {{Series_TreeWidget::Sort_Options::Index, 1}, "?flow"},
+   {{Series_TreeWidget::Sort_Options::Index, 2}, "?time-w"},
+   {{Series_TreeWidget::Sort_Options::Index, 3}, "?time-a"},
+   {{Series_TreeWidget::Sort_Options::Index, 4}, "?temperature"},
+   {{Series_TreeWidget::Sort_Options::Index, 5}, "?oxy"},
+
+   {{Series_TreeWidget::Sort_Options::Flow, 0}, "?flow-index"},
+   {{Series_TreeWidget::Sort_Options::Flow, 1}, "?flow"},
+   {{Series_TreeWidget::Sort_Options::Flow, 2}, "?time-w"},
+   {{Series_TreeWidget::Sort_Options::Flow, 3}, "?time-a"},
+   {{Series_TreeWidget::Sort_Options::Flow, 4}, "?temperature"},
+   {{Series_TreeWidget::Sort_Options::Flow, 5}, "?oxy"},
+
+   {{Series_TreeWidget::Sort_Options::Temperature, 0}, "?temperature-index"},
+   {{Series_TreeWidget::Sort_Options::Temperature, 1}, "?flow"},
+   {{Series_TreeWidget::Sort_Options::Temperature, 2}, "?time-w"},
+   {{Series_TreeWidget::Sort_Options::Temperature, 3}, "?time-a"},
+   {{Series_TreeWidget::Sort_Options::Temperature, 4}, "?temperature"},
+   {{Series_TreeWidget::Sort_Options::Temperature, 5}, "?oxy"},
+
+   {{Series_TreeWidget::Sort_Options::Oxy, 0}, "?oxy-index"},
+   {{Series_TreeWidget::Sort_Options::Oxy, 1}, "?flow"},
+   {{Series_TreeWidget::Sort_Options::Oxy, 2}, "?time-w"},
+   {{Series_TreeWidget::Sort_Options::Oxy, 3}, "?time-a"},
+   {{Series_TreeWidget::Sort_Options::Oxy, 4}, "?temperature"},
+   {{Series_TreeWidget::Sort_Options::Oxy, 5}, "?oxy"},
+  }};
+
+ QString name = static_map.value({so, col});
+ if(name.startsWith('!'))
+ {
+  show_non_pdf_message(name.mid(1));
+  return false;
+ }
+ if(name.startsWith('?'))
+ {
+  return ask_pdf_proceed(name.mid(1));
+ }
+}
+
+void ScignStage_Tree_Table_Dialog::show_non_pdf_message(QString name)
+{
+ QString about = load_about_file(name);
+ QMessageBox qmb;
+ qmb.setText(about);
+ qmb.addButton("Ok", QMessageBox::NoRole);
+ qmb.exec();
+}
+
+
+bool ScignStage_Tree_Table_Dialog::ask_pdf_proceed(QString name)
+{
+ QString about = load_about_file(name);
+ QMessageBox qmb;
+ qmb.setText(about);
+ QAbstractButton* yes = qmb.addButton(QString("More ..."), QMessageBox::YesRole);
+ qmb.addButton("Cancel", QMessageBox::NoRole);
+
+ qmb.exec();
+
+ return qmb.clickedButton() == yes;
+}
+
 void ScignStage_Tree_Table_Dialog::browse_to_selected_sample(Test_Sample* samp)
 {
  if(current_sample_)
@@ -328,15 +402,24 @@ void ScignStage_Tree_Table_Dialog::highlight(QTreeWidget* qtw, int index,
  }
 }
 
+void ScignStage_Tree_Table_Dialog::open_pdf_file(QString name, int page)
+{
+
+}
+
 void ScignStage_Tree_Table_Dialog::run_tree_context_menu(
   QVector<Test_Sample*>* samps,
   Series_TreeWidget::Sort_Options so, const QPoint& qp,
   int col, int row)
 {
  run_tree_context_menu(samps, so, qp, 0, col,
- [this](int page)
+ [this, so, col](int page)
  {
-
+  bool proceed = ask_pdf_proceed(so, col);
+  if(proceed)
+  {
+   open_pdf_file(ABOUT_FILE_FOLDER "/main.pdf", page);
+  }
  },
  [this](int col, QVector<Test_Sample*>& samps, bool by_rank)
  {
@@ -408,7 +491,7 @@ void ScignStage_Tree_Table_Dialog::run_tree_context_menu(
   std::function<void(int, QVector<Test_Sample*>& samps)> highlight_fn)
 {
  QMenu* qm = new QMenu(this);
- qm->addAction("Show in Document (requires XPDF)",
+ qm->addAction("About/ Show in Document (may require XPDF)",
    [pdf_fn, page](){pdf_fn(page);});
 
  if(!(
@@ -754,25 +837,6 @@ void ScignStage_Tree_Table_Dialog::test_msgbox(QString msg)
  QMessageBox::information(this, "Test OK", m);
 }
 
-
-QString ScignStage_Tree_Table_Dialog::load_about_file(QString name)
-{
- return load_file(QString("%1/%2.txt")
-   .arg(ABOUT_FILE_FOLDER).arg(name)).replace('\n', ' ').simplified();
-}
-
-bool ScignStage_Tree_Table_Dialog::ask_pdf_proceed(QString name)
-{
- QString about = load_about_file(name);
- QMessageBox qmb;
- qmb.setText(about);
- QAbstractButton* yes = qmb.addButton(QString("More ..."), QMessageBox::YesRole);
- qmb.addButton("Cancel", QMessageBox::NoRole);
-
- qmb.exec();
-
- return qmb.clickedButton() == yes;
-}
 
 
 bool ScignStage_Tree_Table_Dialog::xpdf_is_ready()

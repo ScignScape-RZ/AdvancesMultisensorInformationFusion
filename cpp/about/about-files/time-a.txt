@@ -1,0 +1,11 @@
+
+The 'Time against Flow' measurements are a direct physical measurement of 
+sound travel time in a fixed direction (determined by sensor placement), understood 
+to be a measurement of sound travel time 'against flow' insofar as this time 
+is presumed to be lengthened due to the sound traveling in a direction against  
+the air flow.  This value, along with 'Time with Flow', provides a physical strategy 
+for calculating the air flow itself (assumed to be proportionate to the 
+degree of difference between time-with-flow and time-against-flow). 
+The (nested) row beneath the 'Time against Flow' value shows the difference (delta) 
+of time-with-flow and time-against-flow, used as an intermediate calculation.  
+Click 'More' for additional information (requires XPDF).

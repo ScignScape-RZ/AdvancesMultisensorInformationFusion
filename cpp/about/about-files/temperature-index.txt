@@ -1,0 +1,6 @@
+
+The Temperature measurement is a direct (physical) input used as a basis 
+for calculating the flow of oxygenated air and oxygen levels 
+(copy values from the 'Index' column while the 
+'Temperature' tab is active to get a list of all samples ordered by Temperature measurement).    
+Click 'More' for additional information (requires XPDF).

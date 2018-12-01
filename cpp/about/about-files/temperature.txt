@@ -1,0 +1,14 @@
+
+The Temperature measurement is a direct (physical) input used as a basis 
+for calculating the flow of oxygenated air and oxygen levels.  
+The main value is shown in degrees celcius, while the 
+(nested) row beneath this value shows degrees Kelvin 
+(used as an intermediate calculation).  
+The third nested row beneath the Temperature value shows each 
+sample's Temperature 'rank' (where lower ranks mean that a sample has less 
+Temperature; the rank #1 
+is the sample having the lowest measured temperature).  
+The second nested value shows each sample's temperature
+measurement as a fraction of the maximum temperature in the test series (scaled so that 
+the minimum temperature value becomes zero).
+Click 'More' for additional information (requires XPDF).

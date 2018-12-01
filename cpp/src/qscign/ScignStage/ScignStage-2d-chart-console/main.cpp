@@ -54,7 +54,7 @@ int main(int argc, char **argv)
 
  ts.init_ranks();
 
- ScignStage_2d_Chart_Dialog dlg2d(&ts, 25, 25, 1.0f/13, nullptr);
+ ScignStage_2d_Chart_Dialog dlg2d(&ts, 25, 25, nullptr);
 
  dlg2d.show();
 

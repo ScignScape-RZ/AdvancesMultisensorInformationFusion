@@ -1,0 +1,9 @@
+
+The Flow measurements calculate the flow of oxygenated air (as needed for 
+Continuous Positive Airway Pressure (CPAP) devices) given inputs of ambient temperature 
+and sound time travel.  The third (nested) row beneath the Flow value shows each 
+sample's Flow 'rank' (where lower ranks mean that a sample has less Flow; the rank #1 
+is the sample with least flow).  The second nested value shows each sample's flow 
+measurement as a fraction of the maximum measurement in the test series (scaled so that 
+the minimum flow value becomes zero).
+Click 'More' for additional information (requires XPDF).

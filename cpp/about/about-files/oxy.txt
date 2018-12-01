@@ -1,0 +1,10 @@
+
+The Oxygen measurements calculate Oxygen levels in oxygenated air (as needed for 
+Continuous Positive Airway Pressure (CPAP) devices) given inputs of ambient temperature 
+and sound time travel.  The measured levels range between 80% and 90%.  
+The second row beneath the Oxygen value shows each 
+sample's Oxygen 'rank' (where lower ranks mean that a sample has less Oxygen).  
+The row directly beneath the raw Oxygen value shows each sample's Oxygen 
+measurement as a fraction of the maximum measurement in the test series (scaled so that 
+the minimum Oxygen value becomes zero).
+Click 'More' for additional information (requires XPDF).

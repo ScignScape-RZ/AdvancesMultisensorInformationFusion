@@ -1,7 +1,0 @@
-
-NMOS refers to subjective judgments of the quality for each audio sample
-in terms of the background noise -- where high quality means that background 
-does not disrupt understanding the important content in each sample.  Quality  
-is measured on a scale of 1-5 (5 being highest quality or the most 
-'non-disruption', that is, the least disruption from background noise).  
-Click 'More' for additional information (requires XPDF).
