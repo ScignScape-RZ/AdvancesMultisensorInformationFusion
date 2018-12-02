@@ -1,5 +1,5 @@
 
-//          Copyright Nathaniel Christen 2017.
+//          Copyright Nathaniel Christen 2018.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -73,8 +73,8 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
 
  main_layout_ = new QVBoxLayout();
 
- int max_w = 800;
- int max_h = 800;
+ int max_w = 900 * (1 + (fres / 30));
+ int max_h = 900 * (1 + (tres / 30));
 
  int cell_w = max_w / fres;
  int cell_h = max_h / tres;

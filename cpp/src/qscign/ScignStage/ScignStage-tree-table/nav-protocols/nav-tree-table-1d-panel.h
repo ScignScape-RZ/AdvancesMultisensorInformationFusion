@@ -1,5 +1,5 @@
 
-//          Copyright Nathaniel Christen 2017.
+//          Copyright Nathaniel Christen 2018.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -93,10 +93,17 @@ class NAV_Tree_Table1D_Panel : public QFrame
  QHBoxLayout* peer_first_hlayout_;
 
  QGridLayout* ckb_layout_;
- QCheckBox* ckb_2d_25_;
- QCheckBox* ckb_3d_25_;
- QCheckBox* ckb_2d_10_;
- QCheckBox* ckb_3d_10_;
+
+ QMap<QString, QCheckBox*> check_boxes_;
+
+// QCheckBox* ckb_2d_25_;
+// QCheckBox* ckb_3d_25_;
+//// QCheckBox* ckb_2d_10_;
+//// QCheckBox* ckb_3d_10_;
+// QCheckBox* ckb_2d_55x37_;
+// QCheckBox* ckb_3d_55x37_;
+
+
 
  QGroupBox* ckbs_group_box_;
 

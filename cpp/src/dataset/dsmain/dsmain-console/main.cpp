@@ -1,5 +1,5 @@
 
-//          Copyright Nathaniel Christen 2017.
+//          Copyright Nathaniel Christen 2018.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -75,6 +75,7 @@ int main(int argc, char **argv)
  ts.parse_data(DATA_FOLDER "/t1.txt");
 
  ts.init_cells(25, 25);
+ ts.init_cells(110, 75);
 
  ts.init_ranks();
 

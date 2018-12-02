@@ -78,6 +78,8 @@ public:
  void parse_data(QString path);
  void init_cells(int fres, int tres);
 
+ void check_init_cells(int fres, int tres);
+
  void init_ranks();
 
  void each_sample(std::function<void(Test_Sample*)>);

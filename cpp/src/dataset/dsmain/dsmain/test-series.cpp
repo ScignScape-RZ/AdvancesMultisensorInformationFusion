@@ -62,6 +62,14 @@ void Test_Series::parse_data(QString path)
  min_max_.temperature_span = min_max_.temperature_max - min_max_.temperature_min;
 }
 
+void Test_Series::check_init_cells(int fres, int tres)
+{
+ if(!cells_.contains({fres, tres}))
+ {
+  init_cells(fres, tres);
+ }
+}
+
 void Test_Series::init_cells(int fres, int tres)
 {
  double frange = min_max_.flow_span;

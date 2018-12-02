@@ -56,11 +56,11 @@ int main(int argc, char* argv[])
 // ts.init_cells(5, 5);
 // ts.save_cells_to_file(5, 5, DATA_FOLDER "/c0.txt");
 
-// ts.init_cells(25, 25);
-// ts.save_cells_to_file(25, 25, DATA_FOLDER "/c1.txt");
+ ts.init_cells(25, 25);
+ ts.save_cells_to_file(25, 25, DATA_FOLDER "/c1.txt");
 
-// ts.init_cells(108, 74);
-// ts.save_cells_to_file(108, 74, DATA_FOLDER "/c2.txt");
+ ts.init_cells(110, 75);
+ ts.save_cells_to_file(110, 75, DATA_FOLDER "/c2.txt");
 
  return 0;
 
