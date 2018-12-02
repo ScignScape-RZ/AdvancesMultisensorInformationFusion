@@ -79,6 +79,10 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
  int cell_w = max_w / fres;
  int cell_h = max_h / tres;
 
+ // //  adjust so maxes are multiples of cell dimensions
+ max_w = cell_w * fres;
+ max_h = cell_h * tres;
+
  QGraphicsScene* scene = new QGraphicsScene;
 
  QPen grey_pen = QPen(QColor(180,180,190));
@@ -86,6 +90,22 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
 
  QPen red_pen = QPen(QColor(190,80,20));
  QPen brown_pen = QPen(QColor(130,80,20));
+
+ QPen blue_pen = QPen(QColor(130,80,220));
+ blue_pen.setWidth(2);
+ QPen yellow_pen = QPen(QColor(220,180,50,190));
+ yellow_pen.setWidth(2);
+ blue_pen.setDashPattern({1,4,3,4});
+
+ scene->addLine(-50, -50, max_w + 50, -50, blue_pen);
+ scene->addLine(-50, -50, -50, max_h + 50, blue_pen);
+ scene->addLine(max_w + 50, -50, max_w + 50, max_h + 50, blue_pen);
+ scene->addLine(-50, max_h + 50, max_w + 50, max_h + 50, blue_pen);
+
+ scene->addLine(-50, -50, max_w + 50, -50, yellow_pen);
+ scene->addLine(-50, -50, -50, max_h + 50, yellow_pen);
+ scene->addLine(max_w + 50, -50, max_w + 50, max_h + 50, yellow_pen);
+ scene->addLine(-50, max_h + 50, max_w + 50, max_h + 50, yellow_pen);
 
  //grey_pen.setWidth(2);
 
@@ -184,8 +204,8 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
     double cc = (double(c) + cmi) * cell_w;
     double rr = (double(r) + rmi) * cell_h;
 
-    qreal rectw = cell_w / 5;
-    qreal recth = cell_h / 5;
+    qreal rectw = qMin(cell_w / 5, 10);
+    qreal recth = qMin(cell_h / 5, 10);
 
     int col = (pr.second * 225) + 30;
 

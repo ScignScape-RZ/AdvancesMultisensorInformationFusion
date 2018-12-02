@@ -136,12 +136,12 @@ NAV_Tree_Table1D_Panel::NAV_Tree_Table1D_Panel(QWidget* parent)
  ckb_layout_ = new QGridLayout;
 
  QStringList qsl {
-   "2:25x25", "3:25x25",
-   "2:37x75", "3:37x75",
-   "2:6x6", "3:6x6"
+   "2:25x25", "2:9x9", "2:3x3", "2:37x75",
+   "3:25x25", "3:9x9", "3:3x3", "3:37x75"
  };
 
  int count = 0;
+ int col_count = qsl.size() / 2;
 
  for(QString qs : qsl)
  {
@@ -151,7 +151,17 @@ NAV_Tree_Table1D_Panel::NAV_Tree_Table1D_Panel(QWidget* parent)
   int r = qs.left(index).toInt();
   int c = qs.mid(index + 1).toInt();
   QCheckBox* ckb = new QCheckBox(QString("%1D %2").arg(d).arg(qs), this);
-  ckb_layout_->addWidget(ckb, (int)count/2, d - 2);
+  ckb_layout_->addWidget(ckb, d - 2, count % col_count);
+
+  connect(ckb, &QCheckBox::toggled,
+    [this, d, r, c](bool checked)
+  {
+   if(checked)
+     Q_EMIT( graphic_open_requested(d, r, c) );
+   else
+     Q_EMIT( graphic_close_requested(d, r, c) );
+  });
+
   ++count;
  }
 
@@ -194,7 +204,7 @@ NAV_Tree_Table1D_Panel::NAV_Tree_Table1D_Panel(QWidget* parent)
 //  ++i;
 // }
 
- ckb_layout_->setColumnStretch(2, 1);
+ ckb_layout_->setColumnStretch(col_count, 1);
  ckb_layout_->setRowStretch(2, 1);
 
  ckbs_group_box_ = new QGroupBox("Graphics", this);
