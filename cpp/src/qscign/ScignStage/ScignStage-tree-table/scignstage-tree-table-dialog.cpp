@@ -93,7 +93,8 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
   : QDialog(parent), xpdf_bridge_(xpdf_bridge),
     series_(series), tcp_server_(nullptr),
     phr_(nullptr), phr_init_function_(nullptr),
-    screenshot_function_(nullptr), current_sample_(nullptr)
+    screenshot_function_(nullptr), current_sample_(nullptr),
+    current_tcp_msecs_(0)
 {
 
  button_box_ = new QDialogButtonBox(this);
@@ -899,6 +900,33 @@ void ScignStage_Tree_Table_Dialog::check_launch_xpdf(std::function<void()> fn,
  }
 }
 
+void ScignStage_Tree_Table_Dialog::run_kph(const QByteArray& qba)
+{
+#ifdef USING_KPH
+ check_phr();
+
+ KPH_Command_Package khp;
+ khp.absorb_data(qba);
+
+ Kauvir_Code_Model& kcm = phr_->get_kcm();
+
+ KCM_Channel_Group kcg(kcm.channel_names());
+
+ khp.init_channel_group(kcm, kcg);
+ phr_->run(kcg);
+#endif
+}
+
+
+void ScignStage_Tree_Table_Dialog::run_msg(QString msg, QByteArray qba)
+{
+ qDebug() << QString("received: %1").arg(msg);
+
+ if(msg == "kph")
+ {
+  run_kph(qba);
+ }
+}
 
 void ScignStage_Tree_Table_Dialog::activate_tcp_requested()
 {

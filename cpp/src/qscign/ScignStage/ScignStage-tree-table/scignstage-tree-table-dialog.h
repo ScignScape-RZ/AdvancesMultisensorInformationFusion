@@ -115,6 +115,8 @@ class ScignStage_Tree_Table_Dialog : public QDialog
 
  Test_Sample* current_sample_;
 
+ quint64 current_tcp_msecs_;
+
  bool xpdf_is_ready();
  void check_phr();
 
