@@ -31,6 +31,7 @@
 //
 #include "ScignStage-tree-table/scignstage-tree-table-dialog.h"
 
+#include "ScignStage-tree-table/xpdf-bridge.h"
 
 #include "dsmain/test-sample.h"
 #include "dsmain/test-series.h"

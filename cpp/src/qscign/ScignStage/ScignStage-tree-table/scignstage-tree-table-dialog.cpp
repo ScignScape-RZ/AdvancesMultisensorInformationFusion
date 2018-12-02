@@ -406,9 +406,29 @@ void ScignStage_Tree_Table_Dialog::highlight(QTreeWidget* qtw, int index,
  }
 }
 
+void ScignStage_Tree_Table_Dialog::send_xpdf_msg(QString msg)
+{
+ if(xpdf_bridge_)
+   xpdf_bridge_->take_message(msg);
+}
+
 void ScignStage_Tree_Table_Dialog::open_pdf_file(QString name, int page)
 {
-
+#ifdef USING_XPDF
+ check_launch_xpdf([this, name, page]()
+ {
+  send_xpdf_msg(QString("open:%1;%2").arg(name).arg(page));
+ },[this, name, page]()
+ {
+  held_xpdf_msg_ = QString("open:%1;%2").arg(name).arg(page);
+ });
+#else
+ QMessageBox::information(this, "XPDF Needed",
+   "You need to build the customized XPDF library "
+   "to view PDF files from this application.  See "
+   "build-order.txt for more information."
+ );
+#endif
 }
 
 void ScignStage_Tree_Table_Dialog::run_tree_context_menu(
@@ -416,7 +436,9 @@ void ScignStage_Tree_Table_Dialog::run_tree_context_menu(
   Series_TreeWidget::Sort_Options so, const QPoint& qp,
   int col, int row)
 {
- run_tree_context_menu(samps, so, qp, 0, col,
+ static QVector<quint8> pages {0, 2, 16, 16, 7, 10};
+
+ run_tree_context_menu(samps, so, qp, pages.value(col), col,
  [this, so, col](int page)
  {
   bool proceed = ask_pdf_proceed(so, col);
@@ -878,7 +900,7 @@ void ScignStage_Tree_Table_Dialog::handle_xpdf_is_ready()
 {
  if(!held_xpdf_msg_.isEmpty())
  {
-  //?send_xpdf_msg(held_xpdf_msg_);
+  send_xpdf_msg(held_xpdf_msg_);
   held_xpdf_msg_.clear();
  }
 }

@@ -57,6 +57,7 @@ LIBS += -L$$TARGETSDIR -ldsmain  -lScignStage-tree-table \
 exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/external--xpdf--xpdf) \#/
 {
  message(DEFINE\'ing USING_XPDF)
+ DEFINES += USING_XPDF
  LIBS += -L$$TARGETSDIR -lxpdf
 }
 
