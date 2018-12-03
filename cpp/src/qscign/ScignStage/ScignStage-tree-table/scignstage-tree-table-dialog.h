@@ -176,6 +176,8 @@ public:
 
  void emit_highlight();
 
+ void uncheck_graphic(QString code);
+
 
 Q_SIGNALS:
  void canceled(QDialog*);

@@ -431,6 +431,11 @@ void ScignStage_Tree_Table_Dialog::open_pdf_file(QString name, int page)
 #endif
 }
 
+void ScignStage_Tree_Table_Dialog::uncheck_graphic(QString code)
+{
+ nav_panel_->uncheck_graphic(code);
+}
+
 void ScignStage_Tree_Table_Dialog::run_tree_context_menu(
   QVector<Test_Sample*>* samps,
   Series_TreeWidget::Sort_Options so, const QPoint& qp,

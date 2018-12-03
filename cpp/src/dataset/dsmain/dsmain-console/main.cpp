@@ -88,10 +88,14 @@ int main(int argc, char **argv)
 
  Graphic_Dialog_Container gdc(&dlg);
 
-
  QApplication::connect(&dlg,
    SIGNAL(reemit_graphic_open_requested(quint8,quint8,quint8)),
    &gdc, SLOT(handle_graphic_open_requested(quint8,quint8,quint8)));
+
+
+ QApplication::connect(&dlg,
+   SIGNAL(reemit_graphic_close_requested(quint8,quint8,quint8)),
+   &gdc, SLOT(handle_graphic_close_requested(quint8,quint8,quint8)));
 
 #ifdef USING_KPH
  dlg.set_phr_init_function([&dlg](Phaon_Runner& phr)

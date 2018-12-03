@@ -32,7 +32,7 @@ Graphic_Dialog_Container::Graphic_Dialog_Container(ScignStage_Tree_Table_Dialog*
 //     graphic_2d_10x10_(nullptr),
 //     graphic_3d_10x10_(nullptr)
 {
-
+ //oldwf_ = parent_dialog_->windowFlags();
 }
 
 Graphic_Dialog_Container::~Graphic_Dialog_Container() {}
@@ -52,6 +52,18 @@ void Graphic_Dialog_Container::handle_graphic_open_requested(quint8 d, quint8 r,
      parent_dialog_, SLOT(browse_to_selected_sample(Test_Sample*)));
    connect(parent_dialog_, SIGNAL(sample_highlighted(Test_Sample*)),
      dlg, SLOT(highlight_selected_sample(Test_Sample*)));
+   connect(dlg, &QDialog::accepted, [this, dlg]
+   {
+    dlg->show();
+    parent_dialog_->setWindowFlags(
+      parent_dialog_->windowFlags() | Qt::WindowStaysOnTopHint);
+    parent_dialog_->show();
+   });
+   connect(dlg, &QDialog::rejected, [this, code]
+   {
+    parent_dialog_->uncheck_graphic(code);
+   });
+
    graphics_[code] = dlg;
   }
   else if(d == 3)
@@ -62,13 +74,31 @@ void Graphic_Dialog_Container::handle_graphic_open_requested(quint8 d, quint8 r,
      parent_dialog_, SLOT(browse_to_selected_sample(Test_Sample*)));
    connect(parent_dialog_, SIGNAL(sample_highlighted(Test_Sample*)),
      dlg, SLOT(highlight_selected_sample(Test_Sample*)));
+
+   connect(dlg, &QDialog::accepted, [this, dlg]
+   {
+    dlg->show();
+    parent_dialog_->setWindowFlags(
+      parent_dialog_->windowFlags() | Qt::WindowStaysOnTopHint);
+    parent_dialog_->show();
+   });
+   connect(dlg, &QDialog::rejected, [this, code]
+   {
+    parent_dialog_->uncheck_graphic(code);
+   });
+
    graphics_[code] = dlg;
   }
   else
     return;
  }
+
+ parent_dialog_->setWindowFlags(parent_dialog_->windowFlags()
+   &(~Qt::WindowStaysOnTopHint));
+ parent_dialog_->show();
  graphics_[code]->show();
-// qDebug() << d << r << c;
+
+ // qDebug() << d << r << c;
 
 // quint32 code = (r*1000) + (d*1000000) + c;
 // qDebug() << code;

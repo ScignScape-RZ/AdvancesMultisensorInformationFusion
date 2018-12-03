@@ -107,12 +107,16 @@ class NAV_Tree_Table1D_Panel : public QFrame
 
  QGroupBox* ckbs_group_box_;
 
+ QMap<QString, QCheckBox*> ckbs_;
+
 
 public:
 
  NAV_Tree_Table1D_Panel(QWidget* parent = nullptr);
 
  ~NAV_Tree_Table1D_Panel();
+
+ void uncheck_graphic(QString code);
 
 Q_SIGNALS:
 

@@ -136,8 +136,8 @@ NAV_Tree_Table1D_Panel::NAV_Tree_Table1D_Panel(QWidget* parent)
  ckb_layout_ = new QGridLayout;
 
  QStringList qsl {
-   "2:25x25", "2:9x9", "2:3x3", "2:37x75",
-   "3:25x25", "3:9x9", "3:3x3", "3:37x75"
+   "2:25x25", "2:12x12", "2:3x3", "2:37x75",
+   "3:25x25", "3:12x12", "3:3x3", "3:37x75"
  };
 
  int count = 0;
@@ -146,12 +146,13 @@ NAV_Tree_Table1D_Panel::NAV_Tree_Table1D_Panel(QWidget* parent)
  for(QString qs : qsl)
  {
   int d = qs.left(1).toInt();
-  qs = qs.mid(2);
-  int index = qs.indexOf('x');
-  int r = qs.left(index).toInt();
-  int c = qs.mid(index + 1).toInt();
-  QCheckBox* ckb = new QCheckBox(QString("%1D %2").arg(d).arg(qs), this);
+  QString qs1 = qs.mid(2);
+  int index = qs1.indexOf('x');
+  int r = qs1.left(index).toInt();
+  int c = qs1.mid(index + 1).toInt();
+  QCheckBox* ckb = new QCheckBox(QString("%1D %2").arg(d).arg(qs1), this);
   ckb_layout_->addWidget(ckb, d - 2, count % col_count);
+  ckbs_[qs] = ckb;
 
   connect(ckb, &QCheckBox::toggled,
     [this, d, r, c](bool checked)
@@ -231,6 +232,17 @@ NAV_Tree_Table1D_Panel::NAV_Tree_Table1D_Panel(QWidget* parent)
  setLayout(main_layout_);
 
 }
+
+void NAV_Tree_Table1D_Panel::uncheck_graphic(QString code)
+{
+ QCheckBox* ckb = ckbs_.value(code);
+
+ if(ckb)
+ {
+  ckb->setChecked(false);
+ }
+}
+
 
 NAV_Tree_Table1D_Panel::~NAV_Tree_Table1D_Panel()
 {

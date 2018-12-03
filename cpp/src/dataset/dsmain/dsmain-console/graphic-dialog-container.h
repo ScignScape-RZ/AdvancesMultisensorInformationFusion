@@ -36,6 +36,8 @@ class Graphic_Dialog_Container : public QObject
 
  ScignStage_Tree_Table_Dialog* parent_dialog_;
 
+ //Qt::WindowFlags oldwf_;
+
 public:
 
  Graphic_Dialog_Container(ScignStage_Tree_Table_Dialog* parent_dialog);

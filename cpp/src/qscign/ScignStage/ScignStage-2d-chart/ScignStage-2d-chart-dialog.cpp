@@ -46,7 +46,7 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
 
  button_ok_ = new QPushButton("OK");
  //? button_proceed_ = new QPushButton("Proceed");
- button_cancel_ = new QPushButton("Cancel");
+ button_cancel_ = new QPushButton("Close");
 
  button_ok_->setDefault(false);
  button_ok_->setAutoDefault(false);
