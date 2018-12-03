@@ -131,5 +131,9 @@ void Graphic_Dialog_Container::handle_graphic_open_requested(quint8 d, quint8 r,
 
 void Graphic_Dialog_Container::handle_graphic_close_requested(quint8 d, quint8 r, quint8 c)
 {
-
+ QString code = QString("%1:%2x%3").arg(d).arg(r).arg(c);
+ if(QWidget* w = graphics_.value(code))
+ {
+  w->hide();
+ }
 }
