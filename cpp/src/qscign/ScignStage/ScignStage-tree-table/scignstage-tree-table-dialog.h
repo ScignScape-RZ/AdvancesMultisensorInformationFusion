@@ -185,13 +185,15 @@ Q_SIGNALS:
  void take_screenshot_requested();
  void sample_highlighted(Test_Sample* samp);
 
+ void external_sample_highlighted(QWidget*, Test_Sample* samp);
+
  void reemit_graphic_open_requested(quint8, quint8, quint8);
  void reemit_graphic_close_requested(quint8, quint8, quint8);
 
 
 public Q_SLOTS:
 
- void browse_to_selected_sample(Test_Sample* samp);
+ void browse_to_selected_sample(QWidget*, Test_Sample* samp);
 
  void handle_xpdf_is_ready();
  void handle_take_screenshot_requested();

@@ -341,18 +341,20 @@ bool ScignStage_Tree_Table_Dialog::ask_pdf_proceed(QString name)
  return qmb.clickedButton() == yes;
 }
 
-void ScignStage_Tree_Table_Dialog::browse_to_selected_sample(Test_Sample* samp)
+void ScignStage_Tree_Table_Dialog::browse_to_selected_sample(
+  QWidget* qw, Test_Sample* samp)
 {
  if(current_sample_)
    unhighlight(current_sample_);
  highlight_scroll_to_sample(samp);
  current_sample_ = samp;
+ Q_EMIT( external_sample_highlighted(qw, samp) );
 }
 
 void ScignStage_Tree_Table_Dialog::highlight_scroll_to_sample(Test_Sample* samp)
 {
- int index = samp->index() - 1;
- QTreeWidgetItem* twi = main_tree_widget_->topLevelItem(index);
+// int index = samp->index() - 1;
+// QTreeWidgetItem* twi = main_tree_widget_->topLevelItem(index);
  highlight(samp);
 }
 

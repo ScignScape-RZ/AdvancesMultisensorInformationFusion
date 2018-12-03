@@ -18,6 +18,8 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QGraphicsRectItem>
+#include <QMenu>
+#include <QScrollBar>
 
 #include <QDebug>
 
@@ -76,14 +78,14 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
  int max_w = 900 * (1 + (fres / 30));
  int max_h = 900 * (1 + (tres / 30));
 
- int cell_w = max_w / fres;
- int cell_h = max_h / tres;
+ cell_w_ = max_w / fres;
+ cell_h_ = max_h / tres;
 
  // //  adjust so maxes are multiples of cell dimensions
- max_w = cell_w * fres;
- max_h = cell_h * tres;
+ max_w = cell_w_ * fres;
+ max_h = cell_h_ * tres;
 
- QGraphicsScene* scene = new QGraphicsScene;
+ main_scene_ = new QGraphicsScene;
 
  QPen grey_pen = QPen(QColor(180,180,190));
  grey_pen.setWidth(2);
@@ -97,15 +99,15 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
  yellow_pen.setWidth(2);
  blue_pen.setDashPattern({1,4,3,4});
 
- scene->addLine(-50, -50, max_w + 50, -50, blue_pen);
- scene->addLine(-50, -50, -50, max_h + 50, blue_pen);
- scene->addLine(max_w + 50, -50, max_w + 50, max_h + 50, blue_pen);
- scene->addLine(-50, max_h + 50, max_w + 50, max_h + 50, blue_pen);
+ main_scene_->addLine(-50, -50, max_w + 50, -50, blue_pen);
+ main_scene_->addLine(-50, -50, -50, max_h + 50, blue_pen);
+ main_scene_->addLine(max_w + 50, -50, max_w + 50, max_h + 50, blue_pen);
+ main_scene_->addLine(-50, max_h + 50, max_w + 50, max_h + 50, blue_pen);
 
- scene->addLine(-50, -50, max_w + 50, -50, yellow_pen);
- scene->addLine(-50, -50, -50, max_h + 50, yellow_pen);
- scene->addLine(max_w + 50, -50, max_w + 50, max_h + 50, yellow_pen);
- scene->addLine(-50, max_h + 50, max_w + 50, max_h + 50, yellow_pen);
+ main_scene_->addLine(-50, -50, max_w + 50, -50, yellow_pen);
+ main_scene_->addLine(-50, -50, -50, max_h + 50, yellow_pen);
+ main_scene_->addLine(max_w + 50, -50, max_w + 50, max_h + 50, yellow_pen);
+ main_scene_->addLine(-50, max_h + 50, max_w + 50, max_h + 50, yellow_pen);
 
  //grey_pen.setWidth(2);
 
@@ -116,67 +118,67 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
 
  for(int i = 0; i <= fres; ++i)
  {
-  scene->addLine(i * cell_w, 0, i * cell_w, max_h, grey_pen);
+  main_scene_->addLine(i * cell_w_, 0, i * cell_w_, max_h, grey_pen);
 
-  QGraphicsSimpleTextItem* qgsti = scene->addSimpleText(QString::number(i));
+  QGraphicsSimpleTextItem* qgsti = main_scene_->addSimpleText(QString::number(i));
   qgsti->setPen(brown_pen);
   if(i < 10)
-    qgsti->setX(i * cell_w - 4);
+    qgsti->setX(i * cell_w_ - 4);
   else
-    qgsti->setX(i * cell_w - 8);
+    qgsti->setX(i * cell_w_ - 8);
   qgsti->setY(-15);
 
-  QGraphicsSimpleTextItem* qgsti1 = scene->addSimpleText(
+  QGraphicsSimpleTextItem* qgsti1 = main_scene_->addSimpleText(
     QString::number(flow_min + (i * flow_cell_span)).leftJustified(5,
     '_', true));
   qgsti1->setPen(red_pen);
   qgsti1->setY(-30);
-  qgsti1->setX(i * cell_w - 12);
+  qgsti1->setX(i * cell_w_ - 12);
 
-  QGraphicsSimpleTextItem* qgstib = scene->addSimpleText(QString::number(i));
+  QGraphicsSimpleTextItem* qgstib = main_scene_->addSimpleText(QString::number(i));
   qgstib->setPen(brown_pen);
   if(i < 10)
-    qgstib->setX(i * cell_w - 4);
+    qgstib->setX(i * cell_w_ - 4);
   else
-    qgstib->setX(i * cell_w - 8);
+    qgstib->setX(i * cell_w_ - 8);
   qgstib->setY(max_h + 15);
 
-  QGraphicsSimpleTextItem* qgstib1 = scene->addSimpleText(
+  QGraphicsSimpleTextItem* qgstib1 = main_scene_->addSimpleText(
     QString::number(flow_min + (i * flow_cell_span)).leftJustified(5,
     '_', true));
   qgstib1->setPen(red_pen);
   qgstib1->setY(max_h + 30);
-  qgstib1->setX(i * cell_w - 12);
+  qgstib1->setX(i * cell_w_ - 12);
 
  }
 
  for(int j = 0; j <= tres; ++j)
  {
-  scene->addLine(0, j * cell_h, max_w, j * cell_h, grey_pen);
+  main_scene_->addLine(0, j * cell_h_, max_w, j * cell_h_, grey_pen);
 
-  QGraphicsSimpleTextItem* qgsti = scene->addSimpleText(QString::number(j));
+  QGraphicsSimpleTextItem* qgsti = main_scene_->addSimpleText(QString::number(j));
   qgsti->setPen(brown_pen);
   qgsti->setX(-25);
-  qgsti->setY(j * cell_h - 7);
+  qgsti->setY(j * cell_h_ - 7);
 
-  QGraphicsSimpleTextItem* qgsti1 = scene->addSimpleText(
+  QGraphicsSimpleTextItem* qgsti1 = main_scene_->addSimpleText(
     QString::number(temperature_min + (j * temperature_cell_span)).leftJustified(5,
     '0', true));
   qgsti1->setPen(red_pen);
   qgsti1->setX(-40);
-  qgsti1->setY(j * cell_h + 4);
+  qgsti1->setY(j * cell_h_ + 4);
 
-  QGraphicsSimpleTextItem* qgstir = scene->addSimpleText(QString::number(j));
+  QGraphicsSimpleTextItem* qgstir = main_scene_->addSimpleText(QString::number(j));
   qgstir->setPen(brown_pen);
   qgstir->setX(max_w + 15);
-  qgstir->setY(j * cell_h - 7);
+  qgstir->setY(j * cell_h_ - 7);
 
-  QGraphicsSimpleTextItem* qgstir1 = scene->addSimpleText(
+  QGraphicsSimpleTextItem* qgstir1 = main_scene_->addSimpleText(
     QString::number(temperature_min + (j * temperature_cell_span)).leftJustified(5,
     '0', true));
   qgstir1->setPen(red_pen);
   qgstir1->setX(max_w + 15);
-  qgstir1->setY(j * cell_h + 4);
+  qgstir1->setY(j * cell_h_ + 4);
 
 
  }
@@ -201,11 +203,11 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
     double cmi = pr.first->fmicro;
     double rmi = pr.first->tmicro;
 
-    double cc = (double(c) + cmi) * cell_w;
-    double rr = (double(r) + rmi) * cell_h;
+    double cc = (double(c) + cmi) * cell_w_;
+    double rr = (double(r) + rmi) * cell_h_;
 
-    qreal rectw = qMin(cell_w / 5, 10);
-    qreal recth = qMin(cell_h / 5, 10);
+    qreal rectw = qMin(cell_w_ / 5, 10);
+    qreal recth = qMin(cell_h_ / 5, 10);
 
     int col = (pr.second * 225) + 30;
 
@@ -224,22 +226,25 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
 
     QBrush qbr(clr1);
 
-    QGraphicsRectItem* qgri = scene->addRect(cc - rectw, rr - recth, rectw*2, recth*2,
+    QGraphicsRectItem* qgri = main_scene_->addRect(cc - rectw, rr - recth, rectw*2, recth*2,
       qpen, qbr);
 
     qgri->setFlag(QGraphicsItem::ItemIsSelectable);
 
     sample_map_[pr.first->sample] = qgri;
+
+    //items_by_grid_pos_.insertMulti({i,j}, {qgri->rect(),qgri});
+
     QVariant qvar = QVariant::fromValue((void*) pr.first->sample);
     qgri->setData(1, qvar);
    }
   }
  }
 
- connect(scene, &QGraphicsScene::selectionChanged,
-  [this, scene]
+ connect(main_scene_, &QGraphicsScene::selectionChanged,
+  [this]
  {
-  QList<QGraphicsItem*> sis = scene->selectedItems();
+  QList<QGraphicsItem*> sis = main_scene_->selectedItems();
   if(sis.size() == 1)
   {
    QGraphicsItem* qgi = sis.first();
@@ -252,20 +257,232 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
     qDebug() << QString("%1: %2 %3 %4").arg(samp->index())
       .arg(samp->flow().getDouble())  .arg(samp->temperature_adj())
       .arg(samp->oxy());
-    Q_EMIT(sample_selected(samp));
+    Q_EMIT(sample_selected(this, samp));
    }
   }
  });
 
 
- QGraphicsView* view = new QGraphicsView(scene);
+ main_view_ = new QGraphicsView(main_scene_);
+
+ main_view_->setContextMenuPolicy(Qt::CustomContextMenu);
+ connect(main_view_, &QGraphicsView::customContextMenuRequested,
+   [this](const QPoint& qp)
+ {
+  QPointF qpf = main_view_->mapToScene(qp);
+  qDebug() << qpf;
+
+  int f = qpf.x()/cell_w_;
+  int t = qpf.y()/cell_h_;
+
+  QMenu* qm = new QMenu(this);
+  qm->addAction("Scroll to Top Left",
+    [this]()
+  {
+   main_view_->centerOn(0, 0);
+  });
+
+  qm->addAction("Contract Nearby Items (1 cell)",
+    [this, f, t]()
+  {
+   contract_items(f, t, 1);
+  });
+  qm->addAction("Contract Nearby Items (2x2 cells)",
+    [this, f, t]()
+  {
+   contract_items(f, t, 2);
+  });
+  qm->addAction("Contract Nearby Items (4x4 cells)",
+    [this, f, t]()
+  {
+   contract_items(f-1, t-1, 4);
+  });
+  qm->addAction("Contract Nearby Items (8x8 cells)",
+    [this, f, t]()
+  {
+   contract_items(f-2, t-2, 8);
+  });
+
+  qm->addAction("Uncontract Nearby Items (1 cell)",
+    [this, f, t]()
+  {
+   uncontract_items(f, t, 1);
+  });
+  qm->addAction("Uncontract Nearby Items (2x2 cell)",
+    [this, f, t]()
+  {
+   uncontract_items(f, t, 2);
+  });
+  qm->addAction("Uncontract Nearby Items (4x4 cell)",
+    [this, f, t]()
+  {
+   uncontract_items(f-1, t-1, 4);
+  });
+  qm->addAction("Uncontract Nearby Items (8x8 cell)",
+    [this, f, t]()
+  {
+   uncontract_items(f-2, t-2, 8);
+  });
+  QPoint g = main_view_->mapToGlobal(qp);
+  qm->popup(g);
+ });
 
 
- main_layout_->addWidget(view);
+ main_layout_->addWidget(main_view_);
  main_layout_->addWidget(button_box_);
 
  setLayout(main_layout_);
+
  //fore_panel_
+}
+
+
+void ScignStage_2d_Chart_Dialog::uncontract_items(quint8 f, quint8 t)
+{
+// if(contracteds_.count({f,t}) == 0)
+//   return;
+
+ QVector<QPair<QRectF, QGraphicsRectItem*>>* vs = contracteds_.value({f,t});
+
+ if(!vs)
+   return;
+
+ for(QPair<QRectF, QGraphicsRectItem*> pr: *vs)
+ {
+  QGraphicsRectItem* qgri = pr.second;
+  QPen pen = qgri->pen();
+
+  if(pen.width() == 6)
+    continue; // already uncontracted
+  if(pen.width() == 10)
+    continue; // already uncontracted
+
+  if(pen.width() == 5)
+    pen.setWidth(10); // selected
+  else
+    pen.setWidth(6);
+  qgri->setPen(pen);
+  qgri->setRect(pr.first);
+
+  qgri->update();
+ }
+ contracteds_.remove({f,t});
+ delete vs;
+}
+
+void ScignStage_2d_Chart_Dialog::contract_items(quint8 f, quint8 t)
+{
+// if(contraceteds_[{f,t}] > 0)
+//   return;
+
+ if(contracteds_.contains({f,t}))
+   return;
+
+ QList<QGraphicsItem*> items = main_scene_->items(f*cell_w_, t*cell_h_,
+    cell_w_, cell_h_, Qt::IntersectsItemShape, Qt::DescendingOrder);
+
+ QVector<QPair<QRectF, QGraphicsRectItem*>>* qv = new QVector<QPair<QRectF, QGraphicsRectItem*>>;
+
+ for(QGraphicsItem* qgi: items)
+ {
+  if(QGraphicsRectItem* qgri = qgraphicsitem_cast<QGraphicsRectItem*>(qgi))
+  {
+   QPen pen = qgri->pen();
+
+   if(pen.width() == 1)
+     continue; // already contracted
+   if(pen.width() == 5)
+     continue; // already contracted
+
+   if(pen.width() == 10)
+     pen.setWidth(5); // selected
+   else
+     pen.setWidth(1);
+   qgri->setPen(pen);
+
+   QRectF qrf = qgri->rect();
+
+   qv->push_back({qgri->rect(),qgri});
+
+   //contracteds_.insertMulti({f,t}, {qgri->rect(),qgri});
+
+   QRectF qrfa = qrf.adjusted(qrf.width()/3, qrf.height()/3,
+     -qrf.width()/3, -qrf.height()/3);
+   qgri->setRect(qrfa);
+   qgri->update();
+  }
+ }
+
+ contracteds_[{f,t}] = qv;
+
+#ifdef HIDE
+ QList<QPair<QRectF, QGraphicsRectItem*>> vs = items_by_grid_pos_.values({f,t});
+
+ contraceteds_[{f,t}] = vs.size();
+
+ for(QPair<QRectF, QGraphicsItem*> pr: vs)
+ {
+  if(QGraphicsRectItem* qgri = qgraphicsitem_cast<QGraphicsRectItem*>(pr.second))
+  {
+   QPen pen = qgri->pen();
+   if(pen.width() == 10)
+     pen.setWidth(5); // selected
+   else
+     pen.setWidth(1);
+   qgri->setPen(pen);
+
+   QRectF qrf = qgri->rect();
+
+   QRectF qrfa = qrf.adjusted(qrf.width()/3, qrf.height()/3,
+     -qrf.width()/3, -qrf.height()/3);
+   qgri->setRect(qrfa);
+  }
+ }
+#endif// HIDE
+}
+
+void ScignStage_2d_Chart_Dialog::contract_items(qint16 f, qint16 t, quint8 range)
+{
+ if(f < 0)
+   f = 0;
+ if(t < 0)
+   t = 0;
+ for(quint8 i = f; i < f + range; ++i)
+ {
+  for(quint8 j = t; j < t + range; ++j)
+  {
+   contract_items(i, j);
+  }
+ }
+ main_scene_->update();
+ main_view_->update();
+}
+
+void ScignStage_2d_Chart_Dialog::uncontract_items(qint16 f, qint16 t, quint8 range)
+{
+ if(f < 0)
+   f = 0;
+ if(t < 0)
+   t = 0;
+ for(quint8 i = f; i < f + range; ++i)
+ {
+  for(quint8 j = t; j < t + range; ++j)
+  {
+   uncontract_items(i, j);
+  }
+ }
+ main_scene_->update();
+ main_view_->update();
+}
+
+
+void ScignStage_2d_Chart_Dialog::external_highlight_selected_sample(QWidget* qw, Test_Sample* samp)
+{
+ if(this != qw)
+ {
+  highlight_selected_sample(samp);
+ }
+
 }
 
 void ScignStage_2d_Chart_Dialog::highlight(QGraphicsRectItem* qgri)
@@ -280,7 +497,10 @@ void ScignStage_2d_Chart_Dialog::highlight(QGraphicsRectItem* qgri)
   last_selected_item_ = qgri;
   last_pen_ = qgri->pen();
   QPen pen;
-  pen.setWidth(10);
+  if(last_pen_.width() == 1)
+    pen.setWidth(5);
+  else
+    pen.setWidth(10);
   pen.setColor(QColor(255, 255, 0, 105));
   qgri->setPen(pen);
   qgri->setZValue(current_z_value_);

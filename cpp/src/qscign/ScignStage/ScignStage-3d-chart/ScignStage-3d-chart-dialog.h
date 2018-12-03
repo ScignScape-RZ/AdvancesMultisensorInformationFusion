@@ -62,7 +62,7 @@ public:
 Q_SIGNALS:
 //signals:
 
- void sample_selected(Test_Sample*);
+ void sample_selected(QWidget*, Test_Sample*);
 
 public Q_SLOTS:
 
