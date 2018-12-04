@@ -66,10 +66,10 @@ class ScignStage_2d_Chart_Dialog : public QDialog
  int cell_w_;
  int cell_h_;
 
- void contract_items(qint16 f, qint16 t, quint8 range);
+ void contract_items(qint16 f, qint16 t, quint8 frange, quint8 trange = 0);
  void contract_items(quint8 f, quint8 t);
 
- void uncontract_items(qint16 f, qint16 t, quint8 range);
+ void uncontract_items(qint16 f, qint16 t, quint8 range, quint8 trange = 0);
  void uncontract_items(quint8 f, quint8 t);
 
 

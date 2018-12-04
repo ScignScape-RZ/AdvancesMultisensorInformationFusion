@@ -267,7 +267,7 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
 
  main_view_->setContextMenuPolicy(Qt::CustomContextMenu);
  connect(main_view_, &QGraphicsView::customContextMenuRequested,
-   [this](const QPoint& qp)
+   [this, fres, tres](const QPoint& qp)
  {
   QPointF qpf = main_view_->mapToScene(qp);
   qDebug() << qpf;
@@ -292,6 +292,11 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
   {
    contract_items(f, t, 2);
   });
+  qm->addAction("Contract Nearby Items (2xAll cells)",
+    [this, f, t, fres]()
+  {
+   contract_items(0, t, fres, 2);
+  });
   qm->addAction("Contract Nearby Items (4x4 cells)",
     [this, f, t]()
   {
@@ -302,27 +307,43 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
   {
    contract_items(f-2, t-2, 8);
   });
+  qm->addAction("Contract (All cells)",
+    [this, f, t, fres, tres]()
+  {
+   contract_items(0, 0, fres, tres);
+  });
 
   qm->addAction("Uncontract Nearby Items (1 cell)",
     [this, f, t]()
   {
    uncontract_items(f, t, 1);
   });
-  qm->addAction("Uncontract Nearby Items (2x2 cell)",
+  qm->addAction("Uncontract Nearby Items (2x2 cells)",
     [this, f, t]()
   {
    uncontract_items(f, t, 2);
   });
-  qm->addAction("Uncontract Nearby Items (4x4 cell)",
+  qm->addAction("Uncontract Nearby Items (2xAll cells)",
+    [this, f, t, fres]()
+  {
+   uncontract_items(0, t, fres, 2);
+  });
+  qm->addAction("Uncontract Nearby Items (4x4 cells)",
     [this, f, t]()
   {
    uncontract_items(f-1, t-1, 4);
   });
-  qm->addAction("Uncontract Nearby Items (8x8 cell)",
+  qm->addAction("Uncontract Nearby Items (8x8 cells)",
     [this, f, t]()
   {
    uncontract_items(f-2, t-2, 8);
   });
+  qm->addAction("Uncontract (All cells)",
+    [this, f, t, fres, tres]()
+  {
+   uncontract_items(0, 0, fres, tres);
+  });
+
   QPoint g = main_view_->mapToGlobal(qp);
   qm->popup(g);
  });
@@ -441,15 +462,20 @@ void ScignStage_2d_Chart_Dialog::contract_items(quint8 f, quint8 t)
 #endif// HIDE
 }
 
-void ScignStage_2d_Chart_Dialog::contract_items(qint16 f, qint16 t, quint8 range)
+void ScignStage_2d_Chart_Dialog::contract_items(qint16 f, qint16 t, quint8 frange,
+  quint8 trange)
 {
  if(f < 0)
    f = 0;
  if(t < 0)
    t = 0;
- for(quint8 i = f; i < f + range; ++i)
+
+ if(trange == 0)
+   trange = frange;
+
+ for(quint8 i = f; i < f + frange; ++i)
  {
-  for(quint8 j = t; j < t + range; ++j)
+  for(quint8 j = t; j < t + trange; ++j)
   {
    contract_items(i, j);
   }
@@ -458,15 +484,20 @@ void ScignStage_2d_Chart_Dialog::contract_items(qint16 f, qint16 t, quint8 range
  main_view_->update();
 }
 
-void ScignStage_2d_Chart_Dialog::uncontract_items(qint16 f, qint16 t, quint8 range)
+void ScignStage_2d_Chart_Dialog::uncontract_items(qint16 f, qint16 t,
+  quint8 frange, quint8 trange)
 {
  if(f < 0)
    f = 0;
  if(t < 0)
    t = 0;
- for(quint8 i = f; i < f + range; ++i)
+
+ if(trange == 0)
+   trange = frange;
+
+ for(quint8 i = f; i < f + frange; ++i)
  {
-  for(quint8 j = t; j < t + range; ++j)
+  for(quint8 j = t; j < t + frange; ++j)
   {
    uncontract_items(i, j);
   }
