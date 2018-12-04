@@ -21,6 +21,8 @@ INCLUDEPATH += $$QHYP_SRC_GROUP_DIR
 INCLUDEPATH += $$KCM_RUNTIME_EVAL_SRC_GROUP_DIR
 INCLUDEPATH += $$KAUVIR_RUNTIME_SRC_GROUP_DIR
 
+INCLUDEPATH += $$APPLICATION_MODEL_SRC_GROUP_DIR
+
 
 DEFINES += CAON_DEBUG
 DEFINES += RELAE_LABEL_NODES
@@ -50,7 +52,7 @@ SOURCES += \
 
 
 LIBS += -L$$TARGETSDIR -ldsmain  -lScignStage-tree-table \
-    -lScignStage-2d-chart  -lScignStage-3d-chart  \
+    -lScignStage-2d-chart  -lScignStage-3d-chart  -lapplication-model \
 
 
 

@@ -54,6 +54,8 @@
 
 #include "graphic-dialog-container.h"
 
+#include "application-model/application-model.h"
+
 #include "kans.h"
 
 #include <QThread>
@@ -87,6 +89,8 @@ int main(int argc, char **argv)
 #endif
 
  Graphic_Dialog_Container gdc(&dlg);
+
+ Application_Model apm(&dlg);
 
  QApplication::connect(&dlg,
    SIGNAL(reemit_graphic_open_requested(quint8,quint8,quint8)),

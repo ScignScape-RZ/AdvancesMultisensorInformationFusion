@@ -5,10 +5,6 @@
 #           http://www.boost.org/LICENSE_1_0.txt)
 
 
-BUILD_DIR_CODE = $$OUT_PWD
+PROJECT_GROUP = application-model
 
-BUILD_DIR_CODE ~= s!.*/(build|release)-build-(\w+)-.*!UNIBUILD-\2
-
-CHOICE_CODE = $$BUILD_DIR_CODE-choices
-
-include(../build-root-both.pri)
+include(../build-proset.pri)
