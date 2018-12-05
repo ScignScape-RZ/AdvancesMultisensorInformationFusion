@@ -66,12 +66,25 @@ class ScignStage_2d_Chart_Dialog : public QDialog
  int cell_w_;
  int cell_h_;
 
- void contract_items(qint16 f, qint16 t, quint8 frange, quint8 trange = 0);
+ int fres_;
+ int tres_;
+
+
+ void contract_items(qint16 f, qint16 t, quint8 frange,
+   quint8 trange = 0);
  void contract_items(quint8 f, quint8 t);
+
+ void contract_graphic(QGraphicsRectItem* qgri);
+ void uncontract_graphic(QGraphicsRectItem* qgri, QRectF& qrf);
 
  void uncontract_items(qint16 f, qint16 t, quint8 range, quint8 trange = 0);
  void uncontract_items(quint8 f, quint8 t);
 
+ void highlight_items_by_oxy(quint8 oxy);
+
+ enum class Item_States { Normal = 0,
+    Highlight = 1, Contracted = 2, Highlight_Oxy = 4,
+    Highlight_Contracted = 3, Highlight_Oxy_Contracted = 6 };
 
 public:
 
@@ -80,7 +93,7 @@ public:
 
  //QMap<QPair<quint8, quint8>, int> contraceteds_;
  QMap<QPair<quint8, quint8>,
-   QVector<QPair<QRectF, QGraphicsRectItem*>>*> contracteds_;
+   QVector<QGraphicsRectItem*>*> contracteds_;
 
 
 

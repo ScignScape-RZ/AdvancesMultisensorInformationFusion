@@ -81,6 +81,10 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
  cell_w_ = max_w / fres;
  cell_h_ = max_h / tres;
 
+ fres_ = fres;
+ tres_ = tres;
+
+
  // //  adjust so maxes are multiples of cell dimensions
  max_w = cell_w_ * fres;
  max_h = cell_h_ * tres;
@@ -229,10 +233,18 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
     QGraphicsRectItem* qgri = main_scene_->addRect(cc - rectw, rr - recth, rectw*2, recth*2,
       qpen, qbr);
 
+    QRectF qrf = qgri->rect();
+    qgri->setData(2, qVariantFromValue<QRectF>(qrf));
+    qgri->setData(3, (quint8) Item_States::Normal);
+
     qgri->setFlag(QGraphicsItem::ItemIsSelectable);
 
     sample_map_[pr.first->sample] = qgri;
 
+    if(pr.first->sample->index() == 1)
+    {
+     qDebug() << (quint64) qgri;
+    }
     //items_by_grid_pos_.insertMulti({i,j}, {qgri->rect(),qgri});
 
     QVariant qvar = QVariant::fromValue((void*) pr.first->sample);
@@ -344,6 +356,28 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
    uncontract_items(0, 0, fres, tres);
   });
 
+  qm->addAction("Highlight Oxygen = 93",
+    [this]()
+  {
+   highlight_items_by_oxy(93);
+  });
+  qm->addAction("Highlight Oxygen = 90",
+    [this]()
+  {
+   highlight_items_by_oxy(90);
+  });
+  qm->addAction("Highlight Oxygen = 87",
+    [this]()
+  {
+   highlight_items_by_oxy(87);
+  });
+  qm->addAction("Highlight Oxygen = 80",
+    [this]()
+  {
+   highlight_items_by_oxy(80);
+  });
+
+
   QPoint g = main_view_->mapToGlobal(qp);
   qm->popup(g);
  });
@@ -363,74 +397,152 @@ void ScignStage_2d_Chart_Dialog::uncontract_items(quint8 f, quint8 t)
 // if(contracteds_.count({f,t}) == 0)
 //   return;
 
- QVector<QPair<QRectF, QGraphicsRectItem*>>* vs = contracteds_.value({f,t});
+ QVector<QGraphicsRectItem*>* vs = contracteds_.value({f,t});
 
  if(!vs)
    return;
 
- for(QPair<QRectF, QGraphicsRectItem*> pr: *vs)
+ for(QGraphicsRectItem* qgri: *vs)
  {
-  QGraphicsRectItem* qgri = pr.second;
-  QPen pen = qgri->pen();
-
-  if(pen.width() == 6)
-    continue; // already uncontracted
-  if(pen.width() == 10)
-    continue; // already uncontracted
-
-  if(pen.width() == 5)
-    pen.setWidth(10); // selected
-  else
-    pen.setWidth(6);
-  qgri->setPen(pen);
-  qgri->setRect(pr.first);
-
-  qgri->update();
+  QRectF qrf = qgri->data(2).value<QRectF>();
+  uncontract_graphic(qgri, qrf);
  }
  contracteds_.remove({f,t});
  delete vs;
 }
+
+void ScignStage_2d_Chart_Dialog::highlight_items_by_oxy(quint8 oxy)
+{
+ contract_items(0, 0, fres_, tres_);
+
+ QMapIterator<Test_Sample*, QGraphicsItem*> it(sample_map_);
+ while(it.hasNext())
+ {
+  it.next();
+  Test_Sample* samp = it.key();
+  QGraphicsItem* qgi = it.value();
+
+  if(QGraphicsRectItem* qgri = qgraphicsitem_cast<QGraphicsRectItem*>(qgi))
+  {
+   if(samp->oxy() == oxy)
+   {
+    QRectF qrf = qgri->data(2).value<QRectF>();
+    uncontract_graphic(qgri, qrf);
+    QPen pen = qgri->pen();
+    pen.setColor(QColor({0, 145,185,200}));
+    qgri->setPen(pen);
+
+    Item_States ist = Item_States::Highlight_Oxy;
+
+    qgri->setData(3, (quint8) ist);
+
+   }
+  }
+ }
+ main_scene_->update();
+ main_view_->update();
+}
+
+void ScignStage_2d_Chart_Dialog::uncontract_graphic(QGraphicsRectItem* qgri, QRectF& qrf)
+{
+ Item_States ist = (Item_States) qgri->data(3).value<quint8>();
+
+ switch(ist)
+ {
+ case Item_States::Normal:
+ case Item_States::Highlight:
+ case Item_States::Highlight_Oxy:
+     return; // already uncontracted
+
+ case Item_States::Contracted:
+  ist = Item_States::Normal; break;
+ case Item_States::Highlight_Contracted:
+  ist = Item_States::Highlight; break;
+ case Item_States::Highlight_Oxy_Contracted:
+  ist = Item_States::Highlight_Oxy; break;
+ }
+
+ qgri->setData(3, (quint8) ist);
+
+ QPen pen = qgri->pen();
+
+// if(pen.width() == 6)
+//   return; // already uncontracted
+// if(pen.width() == 10)
+//   return; // already uncontracted
+
+ if(pen.width() == 5)
+   pen.setWidth(10); // selected
+ else
+   pen.setWidth(6);
+
+ qgri->setPen(pen);
+ qgri->setRect(qrf);
+
+ qgri->update();
+}
+
+void ScignStage_2d_Chart_Dialog::contract_graphic(QGraphicsRectItem* qgri)
+{
+ Item_States ist = (Item_States) qgri->data(3).value<quint8>();
+
+ switch(ist)
+ {
+ case Item_States::Contracted:
+ case Item_States::Highlight_Contracted:
+ case Item_States::Highlight_Oxy_Contracted:
+   return; // already contracted
+
+ case Item_States::Normal: ist = Item_States::Contracted; break;
+ case Item_States::Highlight: ist = Item_States::Highlight_Contracted; break;
+ case Item_States::Highlight_Oxy: ist = Item_States::Highlight_Oxy_Contracted; break;
+ }
+
+ qgri->setData(3, (quint8) ist);
+
+ QPen pen = qgri->pen();
+
+// if(pen.width() == 1)
+//   return; // already contracted
+// if(pen.width() == 5)
+//   return; // already contracted
+
+ if(pen.width() == 10)
+   pen.setWidth(5); // selected
+ else
+   pen.setWidth(1);
+ qgri->setPen(pen);
+
+ QRectF qrf = qgri->rect();
+
+ //contracteds_.insertMulti({f,t}, {qgri->rect(),qgri});
+
+ QRectF qrfa = qrf.adjusted(qrf.width()/3, qrf.height()/3,
+   -qrf.width()/3, -qrf.height()/3);
+ qgri->setRect(qrfa);
+ qgri->update();
+}
+
 
 void ScignStage_2d_Chart_Dialog::contract_items(quint8 f, quint8 t)
 {
 // if(contraceteds_[{f,t}] > 0)
 //   return;
 
- if(contracteds_.contains({f,t}))
-   return;
+// if(contracteds_.contains({f,t}))
+//   return;
 
  QList<QGraphicsItem*> items = main_scene_->items(f*cell_w_, t*cell_h_,
     cell_w_, cell_h_, Qt::IntersectsItemShape, Qt::DescendingOrder);
 
- QVector<QPair<QRectF, QGraphicsRectItem*>>* qv = new QVector<QPair<QRectF, QGraphicsRectItem*>>;
+ QVector<QGraphicsRectItem*>* qv = new QVector<QGraphicsRectItem*>;
 
  for(QGraphicsItem* qgi: items)
  {
   if(QGraphicsRectItem* qgri = qgraphicsitem_cast<QGraphicsRectItem*>(qgi))
   {
-   QPen pen = qgri->pen();
-
-   if(pen.width() == 1)
-     continue; // already contracted
-   if(pen.width() == 5)
-     continue; // already contracted
-
-   if(pen.width() == 10)
-     pen.setWidth(5); // selected
-   else
-     pen.setWidth(1);
-   qgri->setPen(pen);
-
-   QRectF qrf = qgri->rect();
-
-   qv->push_back({qgri->rect(),qgri});
-
-   //contracteds_.insertMulti({f,t}, {qgri->rect(),qgri});
-
-   QRectF qrfa = qrf.adjusted(qrf.width()/3, qrf.height()/3,
-     -qrf.width()/3, -qrf.height()/3);
-   qgri->setRect(qrfa);
-   qgri->update();
+   qv->push_back(qgri);
+   contract_graphic(qgri);
   }
  }
 
