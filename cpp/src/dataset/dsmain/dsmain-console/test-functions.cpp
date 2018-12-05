@@ -108,6 +108,11 @@ void show_graphic(ScignStage_Tree_Table_Dialog* dlg, QString code)
  //dlg->play_sample(index);
 }
 
+void expand_sample(ScignStage_Tree_Table_Dialog* dlg, int index)
+{
+ dlg->expand_sample(index);
+}
+
 void init_test_functions(void* origin, Kauvir_Code_Model& kcm,
   Phaon_Channel_Group_Table& table, Phaon_Symbol_Scope& pss)
 {
@@ -163,6 +168,22 @@ void init_test_functions(void* origin, Kauvir_Code_Model& kcm,
     );
 
   table.init_phaon_function(g1, pss, "show_graphic", 710, &show_graphic);
+
+  g1.clear_all();
+ }
+
+ {
+  g1.add_sigma_carrier(
+    {kcm.get_kcm_type_by_type_name("ScignStage_Tree_Table_Dialog*"), nullptr},
+     QString()
+    );
+
+  g1.add_lambda_carrier(
+    {kcm.get_kcm_type_by_kauvir_type_object( &type_system->type_object__u32() ), nullptr},
+     QString()
+    );
+
+  table.init_phaon_function(g1, pss, "expand_sample", 710, &expand_sample);
 
   g1.clear_all();
  }

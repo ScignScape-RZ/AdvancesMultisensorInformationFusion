@@ -7,7 +7,7 @@ kenv \= (envv _$);
 
 fnd -> init kenv;
 
-,play_sample ::: .[ScignStage_Audio_Dialog*] .(int)  $-> extern;
+,expand_sample ::: .[ScignStage_Tree_Table_Dialog*] .(int)  $-> extern;
 
-fnd -> kph-gen  "play_sample" "3";
+fnd -> kph-gen  "expand_sample" "3";
 

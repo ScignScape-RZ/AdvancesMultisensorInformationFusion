@@ -178,6 +178,8 @@ public:
 
  void uncheck_graphic(QString code);
 
+ void expand_sample(int index);
+
 
 Q_SIGNALS:
  void canceled(QDialog*);

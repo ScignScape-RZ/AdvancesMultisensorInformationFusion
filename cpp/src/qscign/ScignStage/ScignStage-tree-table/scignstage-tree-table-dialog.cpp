@@ -849,6 +849,16 @@ void ScignStage_Tree_Table_Dialog::handle_peer_first()
  }
 }
 
+void ScignStage_Tree_Table_Dialog::expand_sample(int index)
+{
+ if(current_sample_)
+ {
+  unhighlight(current_sample_);
+ }
+ current_sample_ = series_->samples().at(index - 1);
+ highlight(current_sample_);
+}
+
 void ScignStage_Tree_Table_Dialog::handle_sample_first()
 {
  if(current_sample_)
