@@ -14,6 +14,8 @@
 #include <QDialogButtonBox>
 #include <QMap>
 
+class QFormLayout;
+
 #include <functional>
 
 #include "kans.h"
@@ -32,11 +34,15 @@ class Application_Model_Test_Dialog : public QDialog
  QPushButton* button_cancel_;
  QVBoxLayout* main_layout_;
 
+ QFormLayout* main_form_layout_;
+
+ QMap<QString, QString> tests_;
+
 
 public:
 
 
- Application_Model_Test_Dialog(QWidget* parent);
+ Application_Model_Test_Dialog(QMap<QString, QString>&& tests, QWidget* parent);
 
  ~Application_Model_Test_Dialog();
 

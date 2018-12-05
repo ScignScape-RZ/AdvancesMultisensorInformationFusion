@@ -24,7 +24,13 @@ int main(int argc, char **argv)
 {
  QApplication qapp(argc, argv);
 
- Application_Model_Test_Dialog dlg(nullptr);
+
+ //  QCheckBox* ckb = new QCheckBox(DEFAULT_KPH_FOLDER "/t1.txt", this);
+ //  main_form_layout_->addRow("Test 1", ckb);
+
+ Application_Model_Test_Dialog dlg({{
+   {"Test 1", DEFAULT_KPH_FOLDER "/t1.txt"}
+   }}, nullptr);
 
  dlg.show();
 

@@ -14,6 +14,9 @@
 #include <QDirIterator>
 #include <QGroupBox>
 
+#include <QFormLayout>
+#include <QCheckBox>
+
 #include "styles.h"
 
 
@@ -25,8 +28,9 @@
 
 USING_KANS(TextIO)
 
-Application_Model_Test_Dialog::Application_Model_Test_Dialog(QWidget* parent)
- : QDialog(parent)
+Application_Model_Test_Dialog::Application_Model_Test_Dialog(
+  QMap<QString, QString>&& tests, QWidget* parent)
+  : QDialog(parent), tests_(tests)
 {
  button_box_ = new QDialogButtonBox(this);
 
@@ -62,8 +66,23 @@ Application_Model_Test_Dialog::Application_Model_Test_Dialog(QWidget* parent)
  connect(button_box_, SIGNAL(accepted()), this, SLOT(accept()));
  connect(button_box_, SIGNAL(rejected()), this, SLOT(close()));
 
- main_layout_ = new QVBoxLayout();
+ main_layout_ = new QVBoxLayout;
 
+ main_form_layout_ = new QFormLayout;
+
+ QMapIterator<QString, QString> it(tests);
+
+ while(it.hasNext())
+ {
+  it.next();
+  QCheckBox* ckb = new QCheckBox(it.value(), this);
+  main_form_layout_->addRow(it.key(), ckb);
+
+ }
+
+
+
+ main_layout_->addLayout(main_form_layout_);
  main_layout_->addWidget(button_box_);
 
  setLayout(main_layout_);
