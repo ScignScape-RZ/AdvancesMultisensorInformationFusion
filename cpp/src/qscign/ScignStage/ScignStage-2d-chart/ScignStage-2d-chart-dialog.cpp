@@ -526,16 +526,22 @@ void ScignStage_2d_Chart_Dialog::contract_graphic(QGraphicsRectItem* qgri)
 
 void ScignStage_2d_Chart_Dialog::contract_items(quint8 f, quint8 t)
 {
-// if(contraceteds_[{f,t}] > 0)
-//   return;
+ QVector<QGraphicsRectItem*>* qv = contracteds_.value({f,t});
 
-// if(contracteds_.contains({f,t}))
-//   return;
+ if(qv)
+ {
+  for(QGraphicsRectItem* qgri : *qv)
+  {
+   contract_graphic(qgri);
+  }
+  return;
+ }
+
 
  QList<QGraphicsItem*> items = main_scene_->items(f*cell_w_, t*cell_h_,
     cell_w_, cell_h_, Qt::IntersectsItemShape, Qt::DescendingOrder);
 
- QVector<QGraphicsRectItem*>* qv = new QVector<QGraphicsRectItem*>;
+ qv = new QVector<QGraphicsRectItem*>;//(items.toVector());
 
  for(QGraphicsItem* qgi: items)
  {
