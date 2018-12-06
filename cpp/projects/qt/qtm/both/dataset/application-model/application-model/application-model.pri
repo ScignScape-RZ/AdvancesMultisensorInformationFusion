@@ -6,13 +6,14 @@
 
 include(../build-group.pri)
 
-QT += network
+QT += widgets network
 
 INCLUDEPATH += $$SRC_DIR $$SRC_GROUP_DIR
 
 #INCLUDEPATH += $$KAUVIR_KCM_SRC_GROUP_DIR $$KAUVIR_KCM_SRC_GROUP_DIR/kcm-lisp-bridge
 
 INCLUDEPATH += $$KAUVIR_PHAON_SRC_GROUP_DIR
+INCLUDEPATH += $$SCIGNSTAGE_SRC_GROUP_DIR
 
 #INCLUDEPATH += $$POSIT_SRC_GROUP_DIR
 
@@ -20,9 +21,9 @@ DEFINES += CAON_DEBUG
 DEFINES += RELAE_LABEL_NODES
 
 
-INCLUDEPATH += $$RZ_KAUVIR_SRC_GROUP_DIR \
-  $$RZ_KAUVIR_SRC_GROUP_DIR/rz-graph-core  $$RZ_KAUVIR_SRC_GROUP_DIR/rz-graph-token  \
-  $$RELAE_SRC_GROUP_DIR  $$KAUVIR_KCM_SRC_GROUP_DIR
+#INCLUDEPATH += $$RZ_KAUVIR_SRC_GROUP_DIR \
+#  $$RZ_KAUVIR_SRC_GROUP_DIR/rz-graph-core  $$RZ_KAUVIR_SRC_GROUP_DIR/rz-graph-token  \
+#  $$RELAE_SRC_GROUP_DIR  $$KAUVIR_KCM_SRC_GROUP_DIR
 
 
 CONFIG += no_keywords
@@ -40,6 +41,8 @@ SOURCES += \
   $$SRC_DIR/application-model.cpp \
   $$SRC_DIR/application-test-model.cpp \
 
+
+LIBS += -L$$TARGETSDIR  -lScignStage-tree-table
 
 exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/tests-kph--kauvir-phaon--kauvir-phaon) \#/
 {

@@ -58,12 +58,55 @@ void Application_Test_Model::run_kph_test(QString path,
  qDebug() << path;
 
 #ifdef USING_KPH
+
+// //  This version seems slower, since it relies on an
+ //    extra communication step.  But the QNAM version
+ //    relying on a RemoteHostClosedError may be a bit
+ //    hackneyed ...
+#ifdef USE_SOCKET_WITHOUT_QNAM
+
+ QByteArray* qba = new QByteArray;
+ init_kph_qba(*qba, path);
+
+ QTcpSocket* socket = new QTcpSocket;
+ int port = 18261; // // r z 1
+
+ socket->connectToHost("Localhost", port);
+
+ QObject::connect(socket, &QNetworkReply::readyRead,
+  [socket, qba, okcb, errcb]()
+ {
+  QString result = QString::fromLatin1( socket->readAll() );
+  if(result == "OK")
+  {
+   socket->write(*qba);
+  }
+  else if(result == "END")
+  {
+   qDebug() << "OK\n";
+   socket->disconnectFromHost();
+   socket->deleteLater();
+   delete qba;
+   okcb();
+  }
+  else
+  {
+   qDebug() << "Unexpected response: " << result << "\n";
+   socket->disconnectFromHost();
+   socket->deleteLater();
+   delete qba;
+   errcb();
+  }
+ });
+
+
+#else //  USE_SOCKET_WITHOUT_QNAM not defined
+ if(!qnam_)
+   qnam_ = new QNetworkAccessManager;
+
  QByteArray qba;
 
  init_kph_qba(qba, path);
-
- if(!qnam_)
-   qnam_ = new QNetworkAccessManager;
 
  int port = 18261; // // r z 1
  QString addr = QString("http://localhost:%1/").arg(port);
@@ -87,15 +130,15 @@ void Application_Test_Model::run_kph_test(QString path,
   {
    okcb();
    //std::function<void()> pass_cb, std::function<void()> fail_cb
-
-
    //qDebug() << "OK\n";
   }
   reply->deleteLater();
  });
+#endif // USE_SOCKET_WITHOUT_QNAM
+
 #else
  qDebug() << "This library was built without KPH!";
-#endif
+#endif  //  USING_KPH
 }
 
 Application_Test_Model::~Application_Test_Model()

@@ -94,7 +94,7 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
     series_(series), tcp_server_(nullptr),
     phr_(nullptr), phr_init_function_(nullptr),
     screenshot_function_(nullptr), current_sample_(nullptr),
-    current_tcp_msecs_(0)
+    current_tcp_msecs_(0), application_model_(nullptr)
 {
 
  button_box_ = new QDialogButtonBox(this);
@@ -442,7 +442,7 @@ void ScignStage_Tree_Table_Dialog::open_pdf_file(QString name, int page)
   held_xpdf_msg_ = QString("open:%1;%2").arg(name).arg(page);
  });
 #else
- QMessageBox::information(this, "XPDF Needed",
+ QMessageBox::warning(this, "XPDF Needed",
    "You need to build the customized XPDF library "
    "to view PDF files from this application.  See "
    "build-order.txt for more information."
@@ -1061,7 +1061,7 @@ void ScignStage_Tree_Table_Dialog::activate_tcp_requested()
   });
  });
 #else
- QMessageBox::information(this, "Kauvir/Phaon Needed",
+ QMessageBox::critical(this, "Kauvir/Phaon Needed",
    QString(
      "To use TCP for testing/demoing \"Kernel Application Interface\" "
      "functions you need to build several additional libraries "

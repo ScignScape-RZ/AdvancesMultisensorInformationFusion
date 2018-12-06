@@ -92,6 +92,8 @@ int main(int argc, char **argv)
 
  Application_Model apm(&dlg);
 
+ dlg.set_application_model(&apm);
+
  QApplication::connect(&dlg,
    SIGNAL(reemit_graphic_open_requested(quint8,quint8,quint8)),
    &gdc, SLOT(handle_graphic_open_requested(quint8,quint8,quint8)));

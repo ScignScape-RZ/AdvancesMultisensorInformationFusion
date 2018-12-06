@@ -16,6 +16,8 @@
 
 class QFormLayout;
 class QCheckBox;
+class QScrollArea;
+class QFrame;
 
 #include <functional>
 
@@ -39,6 +41,8 @@ class Application_Model_Test_Dialog : public QDialog
  QVBoxLayout* main_layout_;
 
  QFormLayout* main_form_layout_;
+ QFrame* main_form_frame_;
+ QScrollArea* main_scroll_area_;
 
  QMap<QString, QString> tests_;
 

@@ -27,6 +27,8 @@
 
 #include "ScignStage-tree-table/scignstage-tree-table-dialog.h"
 
+#include "application-model/application-model.h"
+
 
 #include <QTextStream>
 
@@ -105,12 +107,20 @@ void test_msgbox(ScignStage_Tree_Table_Dialog* dlg, QString msg)
 // quint8 d, quint8 c, quint8 r
 void show_graphic(ScignStage_Tree_Table_Dialog* dlg, QString code)
 {
+ if(Application_Model* appm = static_cast<Application_Model*>(dlg->application_model()))
+ {
+  appm->show_graphic(dlg, code);
+ }
  //dlg->play_sample(index);
 }
 
 void expand_sample(ScignStage_Tree_Table_Dialog* dlg, int index)
 {
- dlg->expand_sample(index);
+ if(Application_Model* appm = static_cast<Application_Model*>(dlg->application_model()))
+ {
+  appm->expand_sample(dlg, index);
+ }
+ //dlg->expand_sample(index);
 }
 
 void init_test_functions(void* origin, Kauvir_Code_Model& kcm,

@@ -117,6 +117,8 @@ class ScignStage_Tree_Table_Dialog : public QDialog
 
  quint64 current_tcp_msecs_;
 
+ void* application_model_;
+
  bool xpdf_is_ready();
  void check_phr();
 
@@ -170,6 +172,7 @@ public:
  ACCESSORS__SET(std::function<void()> ,screenshot_function)
 
  ACCESSORS(Test_Series* ,series)
+ ACCESSORS(void* ,application_model)
 
  // //  Kernel Application Interface
  void test_msgbox(QString msg);

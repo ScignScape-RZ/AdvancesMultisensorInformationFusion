@@ -37,7 +37,9 @@ SUBDIRS += \
   tests-kph/kauvir-phaon/kauvir-phaon-console \
 
 SUBDIRS += \
-  dataset/application-model/application-model \ 
+  dataset/application-model/application-model \
+  dataset/application-model/application-model-test-dialog \
+  dataset/application-model/amtd-console \
   dataset/dsmain/_run__dsmain-console \
 
 SUBDIRS += \
