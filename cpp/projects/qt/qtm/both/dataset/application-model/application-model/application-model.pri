@@ -41,7 +41,13 @@ SOURCES += \
   $$SRC_DIR/application-test-model.cpp \
 
 
-LIBS += -L$$TARGETSDIR -lkauvir-phaon
+exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/tests-kph--kauvir-phaon--kauvir-phaon) \#/
+{
+ message(DEFINE\'ing USING_KPH)
+ DEFINES += USING_KPH
+ LIBS += -L$$TARGETSDIR  -lkauvir-phaon \
+
+}
 
 
 message(choice: $$CPP_ROOT_DIR/targets/$$CHOICE_CODE/$$PROJECT_SET--$$PROJECT_GROUP--$$PROJECT_NAME)

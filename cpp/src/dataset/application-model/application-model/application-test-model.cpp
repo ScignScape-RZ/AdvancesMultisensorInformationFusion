@@ -37,13 +37,10 @@ Application_Test_Model::Application_Test_Model()
 
 void Application_Test_Model::init_kph_qba(QByteArray& qba, QString path)
 {
+#ifdef USING_KPH
  KPH_Command_Package kcp;
  kcp.parse_from_file(path);
-
-
  kcp.supply_data(qba);
-
-
  qba.append("<//>");
 
  QByteArray pre = "<<>>kph@";
@@ -51,6 +48,7 @@ void Application_Test_Model::init_kph_qba(QByteArray& qba, QString path)
  pre.append(QByteArray::number(ms));
  pre.append(':');
  qba.prepend(pre);
+#endif // USING_KPH
 }
 
 
@@ -59,6 +57,7 @@ void Application_Test_Model::run_kph_test(QString path,
 {
  qDebug() << path;
 
+#ifdef USING_KPH
  QByteArray qba;
 
  init_kph_qba(qba, path);
@@ -94,6 +93,9 @@ void Application_Test_Model::run_kph_test(QString path,
   }
   reply->deleteLater();
  });
+#else
+ qDebug() << "This library was built without KPH!";
+#endif
 }
 
 Application_Test_Model::~Application_Test_Model()
