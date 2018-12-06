@@ -12,6 +12,7 @@
 
 #include <QMap>
 
+
 class ScignStage_2d_Chart_Dialog;
 class ScignStage_3d_Chart_Dialog;
 class QDialog;
@@ -30,7 +31,6 @@ public:
 
  Application_Model(ScignStage_Tree_Table_Dialog* tree_table_dialog);
  ~Application_Model();
-
 
 };
 

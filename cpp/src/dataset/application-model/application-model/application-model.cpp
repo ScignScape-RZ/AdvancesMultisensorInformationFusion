@@ -17,6 +17,12 @@
 //#include "dsmain/test-sample.h"
 //#include "dsmain/test-series.h"
 
+#include "kauvir-phaon/kph-command-package.h"
+
+
+USING_KANS(Phaon)
+
+
 #include <QDebug>
 
 

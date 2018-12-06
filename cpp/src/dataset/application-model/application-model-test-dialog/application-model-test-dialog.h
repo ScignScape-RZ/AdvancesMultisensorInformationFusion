@@ -15,6 +15,7 @@
 #include <QMap>
 
 class QFormLayout;
+class QCheckBox;
 
 #include <functional>
 
@@ -22,6 +23,9 @@ class QFormLayout;
 
 KANS_CLASS_DECLARE(DSM ,Test_Sample)
 KANS_CLASS_DECLARE(DSM ,Test_Series)
+
+KANS_CLASS_DECLARE(DSM ,Application_Test_Model)
+
 
 USING_KANS(DSM)
 
@@ -38,11 +42,17 @@ class Application_Model_Test_Dialog : public QDialog
 
  QMap<QString, QString> tests_;
 
+ QMap<QString, QString> results_;
+
+ Application_Test_Model* apptm_;
+
+ void check_test_result(QString desc, QCheckBox* ckb, QString file);
 
 public:
 
 
- Application_Model_Test_Dialog(QMap<QString, QString>&& tests, QWidget* parent);
+ Application_Model_Test_Dialog(Application_Test_Model* apptm,
+   QMap<QString, QString>&& tests, QWidget* parent);
 
  ~Application_Model_Test_Dialog();
 

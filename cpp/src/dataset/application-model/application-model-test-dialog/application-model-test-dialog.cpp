@@ -17,8 +17,13 @@
 #include <QFormLayout>
 #include <QCheckBox>
 
+#include <QMessageBox>
+
+#include <QDebug>
+
 #include "styles.h"
 
+#include "application-model/application-test-model.h"
 
 //#include "dsmain/test-sample.h"
 //#include "dsmain/test-series.h"
@@ -29,8 +34,9 @@
 USING_KANS(TextIO)
 
 Application_Model_Test_Dialog::Application_Model_Test_Dialog(
+  Application_Test_Model* apptm,
   QMap<QString, QString>&& tests, QWidget* parent)
-  : QDialog(parent), tests_(tests)
+  : QDialog(parent), tests_(tests), apptm_(apptm)
 {
  button_box_ = new QDialogButtonBox(this);
 
@@ -75,9 +81,33 @@ Application_Model_Test_Dialog::Application_Model_Test_Dialog(
  while(it.hasNext())
  {
   it.next();
-  QCheckBox* ckb = new QCheckBox(it.value(), this);
-  main_form_layout_->addRow(it.key(), ckb);
+  QString file = it.value();
+  QString desc = it.key();
+  QCheckBox* ckb = new QCheckBox(file, this);
+  ckb->setTristate();
+  main_form_layout_->addRow(desc, ckb);
+  connect(ckb, &QCheckBox::toggled, [this, file, ckb, desc](bool b)
+  {
+   if(b)
+   {
+    ckb->setCheckState(Qt::PartiallyChecked);
 
+    qDebug() << file;
+    apptm_->run_kph_test(file, [this, ckb, desc, file]
+    {
+     check_test_result(desc, ckb, file);
+    },  [this, ckb]
+    {
+     QString about = "The test did not finish running (note: this does not"
+       " mean it failed).  Check that TCP is active in the main application.";
+     QMessageBox qmb;
+     qmb.setText(about);
+     qmb.addButton("Ok", QMessageBox::NoRole);
+     qmb.exec();
+     ckb->setCheckState(Qt::Unchecked);
+    });
+   }
+  });
  }
 
 
@@ -94,3 +124,34 @@ Application_Model_Test_Dialog::~Application_Model_Test_Dialog()
 
 }
 
+void Application_Model_Test_Dialog::check_test_result(QString desc,
+  QCheckBox* ckb, QString file)
+{
+ QString ask = QString("Test %1: Pass or Fail?").arg(desc);
+ QMessageBox qmb;
+ qmb.setText(ask);
+ //qmb.setDetailedText(ask);
+ qmb.setWindowTitle("Test Returned");
+ QAbstractButton* yes = qmb.addButton("Pass", QMessageBox::YesRole);
+ qmb.addButton("Fail", QMessageBox::NoRole);
+
+ qmb.exec();
+ if(qmb.clickedButton() == yes)
+ {
+  QString ind = QString("QCheckBox::indicator:checked"
+    "{image: url(%1);width:24px;height: 20px;}").arg(DEFAULT_ICON_FOLDER "/yes.png");
+  //ckb->setData(1, ind);
+  ckb->setCheckState(Qt::Checked);
+  ckb->setStyleSheet(ind);
+  results_[file] = ind;
+ }
+ else
+ {
+  QString ind = QString("QCheckBox::indicator:checked"
+    "{image: url(%1);width:15px;height: 15px;}").arg(DEFAULT_ICON_FOLDER "/no.png");
+  //ckb->setData(1, ind);
+  ckb->setCheckState(Qt::Checked);
+  ckb->setStyleSheet(ind);
+  results_[file] = ind;
+ }
+}

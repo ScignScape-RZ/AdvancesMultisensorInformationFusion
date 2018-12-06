@@ -17,7 +17,7 @@ DEFINES += CAON_DEBUG
 DEFINES += RELAE_LABEL_NODES
 
 DEFINES += DEFAULT_KPH_FOLDER=\\\"$$CPP_ROOT_DIR/kph\\\"
-
+DEFINES += DEFAULT_ICON_FOLDER=\\\"$$CPP_ROOT_DIR/assets/icons\\\"
 
 INCLUDEPATH += $$RZ_KAUVIR_SRC_GROUP_DIR \
   $$RZ_KAUVIR_SRC_GROUP_DIR/rz-graph-core  $$RZ_KAUVIR_SRC_GROUP_DIR/rz-graph-token  \
@@ -38,6 +38,8 @@ HEADERS += \
 SOURCES += \
   $$SRC_DIR/application-model-test-dialog.cpp \
 
+
+LIBS += -L$$TARGETSDIR -lapplication-model
 
 message(choice: $$CPP_ROOT_DIR/targets/$$CHOICE_CODE/$$PROJECT_SET--$$PROJECT_GROUP--$$PROJECT_NAME)
 mkpath($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/$$PROJECT_SET--$$PROJECT_GROUP--$$PROJECT_NAME)

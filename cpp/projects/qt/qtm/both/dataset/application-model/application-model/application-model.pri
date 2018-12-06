@@ -6,10 +6,15 @@
 
 include(../build-group.pri)
 
-INCLUDEPATH += $$SRC_DIR $$SRC_GROUP_DIR
-INCLUDEPATH += $$KAUVIR_KCM_SRC_GROUP_DIR $$KAUVIR_KCM_SRC_GROUP_DIR/kcm-lisp-bridge
+QT += network
 
-INCLUDEPATH += $$POSIT_SRC_GROUP_DIR
+INCLUDEPATH += $$SRC_DIR $$SRC_GROUP_DIR
+
+#INCLUDEPATH += $$KAUVIR_KCM_SRC_GROUP_DIR $$KAUVIR_KCM_SRC_GROUP_DIR/kcm-lisp-bridge
+
+INCLUDEPATH += $$KAUVIR_PHAON_SRC_GROUP_DIR
+
+#INCLUDEPATH += $$POSIT_SRC_GROUP_DIR
 
 DEFINES += CAON_DEBUG
 DEFINES += RELAE_LABEL_NODES
@@ -29,10 +34,14 @@ DEFINES += USE_RZNS
 
 HEADERS += \
   $$SRC_DIR/application-model.h \
-
+  $$SRC_DIR/application-test-model.h \
 
 SOURCES += \
   $$SRC_DIR/application-model.cpp \
+  $$SRC_DIR/application-test-model.cpp \
+
+
+LIBS += -L$$TARGETSDIR -lkauvir-phaon
 
 
 message(choice: $$CPP_ROOT_DIR/targets/$$CHOICE_CODE/$$PROJECT_SET--$$PROJECT_GROUP--$$PROJECT_NAME)

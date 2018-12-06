@@ -38,7 +38,7 @@ SOURCES += \
   $$SRC_DIR/main.cpp \
 
 
-LIBS += -L$$TARGETSDIR -lapplication-model-test-dialog
+LIBS += -L$$TARGETSDIR -lapplication-model-test-dialog  -lapplication-model
 
 
 message(choice: $$CPP_ROOT_DIR/targets/$$CHOICE_CODE/$$PROJECT_SET--$$PROJECT_GROUP--$$PROJECT_NAME)
