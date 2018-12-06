@@ -332,18 +332,23 @@ bool ScignStage_Tree_Table_Dialog::ask_pdf_proceed(QString name)
 {
  QString about = load_about_file(name);
  QMessageBox qmb;
- qmb.setWindowTitle(name.toUpper());
+
 
  int index = about.indexOf("%%");
  if(index == -1)
  {
+  qmb.setWindowTitle(name.toUpper());
   qmb.setText(about);
  }
  else
  {
-  qmb.setText(about.left(index));
+  qmb.setWindowTitle(about.left(index));
+  qmb.setText("Click 'Show Details' for a summary "
+    "or 'More' for PDF/Original Article links.");
   qmb.setDetailedText(about.mid(index + 2));
  }
+
+ qmb.setIcon(QMessageBox::Information);
 
  QAbstractButton* yes = qmb.addButton(QString("More (PDF) ..."), QMessageBox::YesRole);
  qmb.addButton("Cancel", QMessageBox::NoRole);

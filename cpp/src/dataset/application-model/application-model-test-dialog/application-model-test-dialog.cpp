@@ -130,7 +130,7 @@ void Application_Model_Test_Dialog::check_test_result(QString desc,
  QString ask = QString("Test %1: Pass or Fail?").arg(desc);
  QMessageBox qmb;
  qmb.setText(ask);
- //qmb.setDetailedText(ask);
+ qmb.setIcon(QMessageBox::Question);
  qmb.setWindowTitle("Test Returned");
  QAbstractButton* yes = qmb.addButton("Pass", QMessageBox::YesRole);
  qmb.addButton("Fail", QMessageBox::NoRole);
