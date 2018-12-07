@@ -20,6 +20,10 @@
 #include <QFrame>
 
 #include <QMessageBox>
+#include <QDesktopServices>
+#include <QMenu>
+#include <QUrl>
+
 
 #include <QDebug>
 
@@ -97,31 +101,50 @@ Application_Model_Test_Dialog::Application_Model_Test_Dialog(
 
   ckb->setContextMenuPolicy(Qt::CustomContextMenu);
   connect(ckb, &QCheckBox::customContextMenuRequested,
-    [this, ckb]
+    [this, ckb, file, desc](const QPoint& p)
   {
-   qDebug() << "D: " << docus_[ckb]["test"];
+   QMenu* qm = new QMenu(this);
+   qm->addAction("View Documentation",
+     [this, ckb, file, desc]()
+   {
+    QString d = QString("%1: %2").arg(desc).arg(docus_[ckb]["test"]);
+    QMessageBox::information(this, file, d);
+   });
+   qm->addAction("Toggle Test Result",
+     [this, ckb, file, desc]()
+   {
+    toggle_result(ckb, file);
+   });
+   qm->addAction("Repeat Test",
+     [this, ckb, file, desc]()
+   {
+    do_run_test(ckb, file, desc);
+   });
+   qm->addAction("Show in Folder",
+     [this, file]()
+   {
+    QFileInfo qfi(file);
+    QDesktopServices::openUrl( QUrl::fromLocalFile( qfi.absoluteDir().absolutePath() ) );
+   });
+
+   QString sf = docus_[ckb]["origin"];
+   if(!sf.isEmpty())
+   {
+    qm->addAction("Show Origin (Script) Folder",
+      [sf]()
+    {
+     desktop_open_folder(sf);
+    });
+   }
+
+   qm->popup(ckb->mapToGlobal(p));
   });
 
   connect(ckb, &QCheckBox::toggled, [this, file, ckb, desc](bool b)
   {
    if(b)
    {
-    ckb->setCheckState(Qt::PartiallyChecked);
-
-    qDebug() << file;
-    apptm_->run_kph_test(file, [this, ckb, desc, file]
-    {
-     check_test_result(desc, ckb, file);
-    },  [this, ckb]
-    {
-     QString about = "The test did not finish running (note: this does not"
-       " mean it failed).  Check that TCP is active in the main application.";
-     QMessageBox qmb;
-     qmb.setText(about);
-     qmb.addButton("Ok", QMessageBox::NoRole);
-     qmb.exec();
-     ckb->setCheckState(Qt::Unchecked);
-    });
+    do_run_test(ckb, file, desc);
    }
   });
  }
@@ -137,6 +160,52 @@ Application_Model_Test_Dialog::Application_Model_Test_Dialog(
 
  setLayout(main_layout_);
  //fore_panel_
+}
+
+void Application_Model_Test_Dialog::desktop_open_folder(QString qs)
+{
+ if(qs.startsWith('@'))
+ {
+  qs.replace(0, 1, '/');
+  qs.prepend(ARCHIVE_ROOT_FOLDER);
+ }
+
+ QString ap;
+
+ QFileInfo qfi(qs);
+
+ if(qfi.isDir())
+ {
+  if(!qs.endsWith('/'))
+  {
+   qs += "/";
+   qfi = QFileInfo(qs);
+  }
+  ap = qfi.absolutePath();
+ }
+ else
+   ap = qfi.absoluteDir().absolutePath();
+
+ QDesktopServices::openUrl(QUrl::fromLocalFile(ap));
+}
+
+void Application_Model_Test_Dialog::do_run_test(QCheckBox* ckb, QString file, QString desc)
+{
+ ckb->setCheckState(Qt::PartiallyChecked);
+ //qDebug() << file;
+ apptm_->run_kph_test(file, [this, ckb, desc, file]
+ {
+  check_test_result(desc, ckb, file);
+ },  [this, ckb]
+ {
+  QString about = "The test did not finish running (note: this does not"
+    " mean it failed).  Check that TCP is active in the main application.";
+  QMessageBox qmb;
+  qmb.setText(about);
+  qmb.addButton("Ok", QMessageBox::NoRole);
+  qmb.exec();
+  ckb->setCheckState(Qt::Unchecked);
+ });
 }
 
 Application_Model_Test_Dialog::~Application_Model_Test_Dialog()
@@ -159,21 +228,33 @@ void Application_Model_Test_Dialog::check_test_result(QString desc,
 
  qmb.exec();
  if(qmb.clickedButton() == yes)
- {
-  QString ind = QString("QCheckBox::indicator:checked"
-    "{image: url(%1);width:24px;height: 20px;}").arg(DEFAULT_ICON_FOLDER "/yes.png");
-  //ckb->setData(1, ind);
-  ckb->setCheckState(Qt::Checked);
-  ckb->setStyleSheet(ind);
-  results_[file] = ind;
- }
+   set_result_yes(ckb, file);
  else
- {
-  QString ind = QString("QCheckBox::indicator:checked"
-    "{image: url(%1);width:15px;height: 15px;}").arg(DEFAULT_ICON_FOLDER "/no.png");
-  //ckb->setData(1, ind);
-  ckb->setCheckState(Qt::Checked);
-  ckb->setStyleSheet(ind);
-  results_[file] = ind;
- }
+   set_result_no(ckb, file);
+}
+
+void Application_Model_Test_Dialog::set_result_yes(QCheckBox* ckb, QString file)
+{
+ QString ind = QString("QCheckBox::indicator:checked"
+   "{image: url(%1);width:24px;height: 20px;}").arg(DEFAULT_ICON_FOLDER "/yes.png");
+ ckb->setCheckState(Qt::Checked);
+ ckb->setStyleSheet(ind);
+ results_[file] = ind;
+}
+
+void Application_Model_Test_Dialog::set_result_no(QCheckBox* ckb, QString file)
+{
+ QString ind = QString("QCheckBox::indicator:checked"
+   "{image: url(%1);width:15px;height: 15px;}").arg(DEFAULT_ICON_FOLDER "/no.png");
+ ckb->setCheckState(Qt::Checked);
+ ckb->setStyleSheet(ind);
+ results_[file] = ind;
+}
+
+void Application_Model_Test_Dialog::toggle_result(QCheckBox* ckb, QString file)
+{
+ if(results_[file].endsWith("no.png"))
+   set_result_yes(ckb, file);
+ else
+   set_result_no(ckb, file);
 }

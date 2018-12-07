@@ -211,7 +211,7 @@ void KPH_Command_Package::parse_from_string_list(QString path, const QStringList
     int index = qs.indexOf(':');
     if(index != -1)
     {
-     docus_[qs.mid(1, index - 1)] = qs.mid(index).trimmed();
+     docus_[qs.mid(1, index - 1)] = qs.mid(index + 1).trimmed();
     }
    }
    break;
