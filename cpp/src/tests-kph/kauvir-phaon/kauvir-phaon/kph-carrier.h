@@ -52,7 +52,7 @@ public:
     return nullptr;
   return &value_;
  }
- 
+
  void supply_data(QByteArray& qba) const;
  void absorb_data(const QByteArray& qba);
 

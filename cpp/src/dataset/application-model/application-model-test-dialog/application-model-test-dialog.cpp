@@ -27,12 +27,15 @@
 
 #include "application-model/application-test-model.h"
 
+#include "kauvir-phaon/kph-command-package.h"
+
 //#include "dsmain/test-sample.h"
 //#include "dsmain/test-series.h"
 
+USING_KANS(Phaon)
+
+
 #include "textio.h"
-
-
 USING_KANS(TextIO)
 
 Application_Model_Test_Dialog::Application_Model_Test_Dialog(
@@ -86,8 +89,19 @@ Application_Model_Test_Dialog::Application_Model_Test_Dialog(
   QString file = it.value();
   QString desc = it.key();
   QCheckBox* ckb = new QCheckBox(file, this);
+  QString text = load_file(file);
+  KPH_Command_Package::read_docus(text, docus_[ckb]);
+  qDebug() << "D: " << docus_[ckb]["test"];
   ckb->setTristate();
   main_form_layout_->addRow(desc, ckb);
+
+  ckb->setContextMenuPolicy(Qt::CustomContextMenu);
+  connect(ckb, &QCheckBox::customContextMenuRequested,
+    [this, ckb]
+  {
+   qDebug() << "D: " << docus_[ckb]["test"];
+  });
+
   connect(ckb, &QCheckBox::toggled, [this, file, ckb, desc](bool b)
   {
    if(b)
@@ -129,6 +143,8 @@ Application_Model_Test_Dialog::~Application_Model_Test_Dialog()
 {
 
 }
+
+
 
 void Application_Model_Test_Dialog::check_test_result(QString desc,
   QCheckBox* ckb, QString file)

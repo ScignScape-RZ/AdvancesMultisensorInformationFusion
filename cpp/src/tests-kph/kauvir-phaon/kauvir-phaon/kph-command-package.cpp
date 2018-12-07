@@ -27,7 +27,6 @@ KPH_Command_Package::KPH_Command_Package()
 
 }
 
-
 void operator<<(QDataStream& qds, KPH_Carrier* cs)
 {
  QByteArray qba;
@@ -56,6 +55,8 @@ void KPH_Command_Package::supply_data(QByteArray& qba) const
 
  qds << carriers_;
  qds << pins_;
+
+ qds << docus_;
 }
 
 
@@ -71,6 +72,8 @@ void KPH_Command_Package::absorb_data(const QByteArray& qba)
 
  qds >> carriers_;
  qds >> pins_;
+
+ qds >> docus_;
 
 }
 
@@ -155,7 +158,6 @@ void KPH_Command_Package::parse_from_string_list(QString path, const QStringList
 void KPH_Command_Package::parse_from_string_list(QString path, const QStringList& qsl,
   QMap<int, QString>& channel_names, int& current_expression_code)
 {
-
  for(QString qs : qsl)
  {
   switch(qs[0].toLatin1())
@@ -202,6 +204,15 @@ void KPH_Command_Package::parse_from_string_list(QString path, const QStringList
   case '+' : // pins
    {
     pins_.push_back(qs.mid(1));
+   }
+   break;
+  case '%' : // documentation
+   {
+    int index = qs.indexOf(':');
+    if(index != -1)
+    {
+     docus_[qs.mid(1, index - 1)] = qs.mid(index).trimmed();
+    }
    }
    break;
   default : // carrier
@@ -320,3 +331,28 @@ QString KPH_Command_Package::moc_signature()
  result += ')';
  return result;
 }
+
+
+
+//void KPH_Command_Package::read_docus(QString file_path, QMap<QString, QString>& docus)
+//{
+// QString qs = load_file(file_path);
+// QStringList qsl = qs.split("\n.\n");
+// for(QString qs : qsl)
+// {
+//  switch(qs[0].toLatin1())
+//  {
+//  case '%' : // documentation
+//   {
+//    int index = qs.indexOf(':');
+//    if(index != -1)
+//    {
+//     docus[qs.mid(1, index - 1)] = qs.mid(index).trimmed();
+//    }
+//   }
+//   break;
+//  default: break;
+//  }
+// }
+//}
+

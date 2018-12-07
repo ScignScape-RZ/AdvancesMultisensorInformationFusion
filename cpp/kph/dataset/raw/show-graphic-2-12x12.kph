@@ -1,6 +1,8 @@
 - 
 
 .
+%test: This test should open a 2D 12x12 graphic window.
+.
 ;sigma:1
 .
 ;lambda:2

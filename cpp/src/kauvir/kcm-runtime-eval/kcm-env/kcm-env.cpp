@@ -25,19 +25,21 @@ void KCM_Env::report_channel_group(KCM_Channel_Group* kcg)
  }
 }
 
-void KCM_Env::kph_gen(KCM_Channel_Group* kcg, QString subs, QString fn, QString* text)
+void KCM_Env::kph_gen(KCM_Channel_Group* kcg, QString subs, QString fn,
+  QString* text, QMap<QString, QString> docus)
 {
  if(kph_gen_fn_)
  {
-  kph_gen_fn_(kcm_, kcg, subs, fn, text);
+  kph_gen_fn_(kcm_, kcg, subs, fn, text, docus);
  }
 }
 
-void KCM_Env::kph_gen(KCM_Channel_Group* kcg, QString fn, QString* text)
+void KCM_Env::kph_gen(KCM_Channel_Group* kcg, QString fn,
+  QString* text, QMap<QString, QString> docus)
 {
  if(kph_gen_fn_)
  {
-  kph_gen_fn_(kcm_, kcg, QString(), fn, text);
+  kph_gen_fn_(kcm_, kcg, QString(), fn, text, docus);
  }
 }
 

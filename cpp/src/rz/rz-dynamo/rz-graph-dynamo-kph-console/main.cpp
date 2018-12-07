@@ -181,20 +181,20 @@ void run_dynamo(KCM_Lisp_Eval& kle, QString script_file, KCM_Env* kenv)
  });
 
  kenv->set_kph_gen_fn([](Kauvir_Code_Model* kcm, KCM_Channel_Group* kcg,
-   QString subsstr, QString fn, QString* text)
+   QString subsstr, QString fn, QString* text, QMap<QString, QString> docus)
  {
   KPH_Generator_Substitutions subs(subsstr);
 
   if(text)
   {
    KPH_Generator gen;
-   gen.encode(*kcg, fn);
+   gen.encode(*kcg, docus, fn);
    *text = gen.text();
   }
   else
   {
    KPH_Generator gen (DEFAULT_KPH_FOLDER "/gen/rz-kph/t1.txt", &subs);
-   gen.encode(*kcg, fn);
+   gen.encode(*kcg, docus, fn);
    gen.save_kph_file();
   }
  });

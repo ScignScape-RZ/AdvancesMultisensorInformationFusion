@@ -33,6 +33,8 @@ class KPH_Generator
  QString text_;
  KPH_Generator_Substitutions* subs_;
 
+ QString docus_string_;
+
  static void close_line(QTextStream& qts);
 
 public:
@@ -48,8 +50,11 @@ public:
 
  void save_kph_file();
 
- void encode(KCM_Channel_Group& kcg, QString fn = QString());
- void encode(KCM_Command_Package& kcp, QString fn = QString());
+ void encode(KCM_Channel_Group& kcg, QMap<QString, QString> docus,
+   QString fn = QString());
+
+ void encode(KCM_Command_Package& kcp, QMap<QString, QString> docus,
+   QString fn = QString());
 
 };
 

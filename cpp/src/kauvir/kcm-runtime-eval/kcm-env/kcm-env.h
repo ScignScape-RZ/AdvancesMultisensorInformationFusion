@@ -40,7 +40,8 @@ class KCM_Env : public Kauvir_Universal_Class
  report_channel_group_fn_type report_channel_group_fn_;
 
  typedef std::function<void (Kauvir_Code_Model*,
-   KCM_Channel_Group*, QString, QString, QString*)> kph_gen_fn_type;
+   KCM_Channel_Group*, QString, QString, QString*,
+     QMap<QString, QString> )> kph_gen_fn_type;
  kph_gen_fn_type kph_gen_fn_;
 
 public:
@@ -54,8 +55,10 @@ public:
 
  void report_channel_group(KCM_Channel_Group* kcg);
 
- void kph_gen(KCM_Channel_Group* kcg, QString subs, QString fn, QString* text);
- void kph_gen(KCM_Channel_Group* kcg, QString fn, QString* text);
+ void kph_gen(KCM_Channel_Group* kcg, QString subs, QString fn,
+   QString* text, QMap<QString, QString> );
+ void kph_gen(KCM_Channel_Group* kcg, QString fn, QString* text,
+   QMap<QString, QString> docus);
 };
 
 

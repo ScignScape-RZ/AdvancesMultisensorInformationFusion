@@ -37,6 +37,8 @@ class KPH_Command_Package
  QVector<KPH_Carrier*> carriers_;
  QStringList pins_;
 
+ QMap<QString, QString> docus_;
+
  void parse_from_string_list(QString path, const QStringList& qsl,
    QMap<int, QString>& channel_names, int& current_expression_code);
 
@@ -52,6 +54,29 @@ class KPH_Command_Package
 public:
 
  KPH_Command_Package();
+
+
+ static void read_docus(QString& text, QMap<QString, QString>& docus)
+ {
+  QStringList qsl = text.split("\n.\n");
+  for(QString qs : qsl)
+  {
+   switch(qs[0].toLatin1())
+   {
+   case '%' : // documentation
+    {
+     int index = qs.indexOf(':');
+     if(index != -1)
+     {
+      docus[qs.mid(1, index - 1)] = qs.mid(index).trimmed();
+     }
+    }
+    break;
+   default: break;
+   }
+  }
+ }
+
 
  void init_channel_group(Kauvir_Code_Model& kcm, KCM_Channel_Group& kcg);
 

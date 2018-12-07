@@ -40,13 +40,16 @@ void KPH_Generator::close_line(QTextStream& qts)
  qts << "\n.\n";
 }
 
-void KPH_Generator::encode(KCM_Channel_Group& kcg, QString fn)
+void KPH_Generator::encode(KCM_Channel_Group& kcg, QMap<QString, QString> docus,
+  QString fn)
 {
  KCM_Command_Package kcp(kcg);
- encode(kcp, fn);
+ encode(kcp, docus, fn);
 }
 
-void KPH_Generator::encode(KCM_Command_Package& kcp, QString fn)
+
+void KPH_Generator::encode(KCM_Command_Package& kcp, QMap<QString, QString> docus,
+  QString fn)
 {
  QString fuxe_name = fn;
  QMap<QString, QPair<int, const KCM_Channel*>> channel_codes;
@@ -55,6 +58,14 @@ void KPH_Generator::encode(KCM_Command_Package& kcp, QString fn)
  QTextStream qts(&text_);
  qts << "-\nAuto Generated";
  close_line(qts);
+
+ QMapIterator<QString, QString> dit(docus);
+ while(dit.hasNext())
+ {
+  dit.next();
+  qts << "%" << dit.key() << ' ' << dit.value();
+  close_line(qts);
+ }
 
  QString args;
  QTextStream aqts(&args);
@@ -113,4 +124,13 @@ void KPH_Generator::encode(KCM_Command_Package& kcp, QString fn)
 void KPH_Generator::save_kph_file()
 {
  save_file(file_path_, text_);
+
+// QMapIterator<QString, QString> it(docus_);
+
+// while(it.hasNext())
+// {
+//  it.next();
+//  save_file(file_path_ + '.' + it.key(), it.value());
+// }
+
 }

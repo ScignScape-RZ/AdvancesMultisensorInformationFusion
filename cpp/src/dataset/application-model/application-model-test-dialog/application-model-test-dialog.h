@@ -48,6 +48,8 @@ class Application_Model_Test_Dialog : public QDialog
 
  QMap<QString, QString> results_;
 
+ QMap<QCheckBox*, QMap<QString, QString>> docus_;
+
  Application_Test_Model* apptm_;
 
  void check_test_result(QString desc, QCheckBox* ckb, QString file);
