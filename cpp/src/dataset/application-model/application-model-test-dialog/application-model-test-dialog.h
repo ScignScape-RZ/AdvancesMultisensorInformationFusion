@@ -52,6 +52,8 @@ class Application_Model_Test_Dialog : public QDialog
 
  Application_Test_Model* apptm_;
 
+ QCheckBox* last_ckb_;
+
  void check_test_result(QString desc, QCheckBox* ckb, QString file);
 
  void do_run_test(QCheckBox* ckb, QString file, QString desc);
@@ -59,6 +61,8 @@ class Application_Model_Test_Dialog : public QDialog
  void set_result_yes(QCheckBox* ckb, QString file);
  void set_result_no(QCheckBox* ckb, QString file);
  void toggle_result(QCheckBox* ckb, QString file);
+
+ void save_results();
 
  static void desktop_open_folder(QString qs);
 

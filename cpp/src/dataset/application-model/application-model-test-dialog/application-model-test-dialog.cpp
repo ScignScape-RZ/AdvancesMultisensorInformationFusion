@@ -5,7 +5,6 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 
-
 #include "application-model-test-dialog.h"
 
 #include <QDialogButtonBox>
@@ -26,6 +25,7 @@
 
 
 #include <QDebug>
+#include <QFileDialog>
 
 #include "styles.h"
 
@@ -45,7 +45,7 @@ USING_KANS(TextIO)
 Application_Model_Test_Dialog::Application_Model_Test_Dialog(
   Application_Test_Model* apptm,
   QMap<QString, QString>&& tests, QWidget* parent)
-  : QDialog(parent), tests_(tests), apptm_(apptm)
+  : QDialog(parent), tests_(tests), apptm_(apptm), last_ckb_(nullptr)
 {
  button_box_ = new QDialogButtonBox(this);
 
@@ -110,12 +110,29 @@ Application_Model_Test_Dialog::Application_Model_Test_Dialog(
     QString d = QString("%1: %2").arg(desc).arg(docus_[ckb]["test"]);
     QMessageBox::information(this, file, d);
    });
+   qm->addAction("Save Results",
+     [this]()
+   {
+    save_results();
+   });
    qm->addAction("Toggle Test Result",
-     [this, ckb, file, desc]()
+     [this, ckb, file]()
    {
     toggle_result(ckb, file);
    });
-   qm->addAction("Repeat Test",
+   qm->addAction("Mark Passed",
+     [this, ckb, file]()
+   {
+    last_ckb_ = ckb;
+    set_result_yes(ckb, file);
+   });
+   qm->addAction("Mark Failed",
+     [this, ckb, file]()
+   {
+    last_ckb_ = ckb;
+    set_result_no(ckb, file);
+   });
+   qm->addAction("Run or Repeat Test",
      [this, ckb, file, desc]()
    {
     do_run_test(ckb, file, desc);
@@ -213,7 +230,38 @@ Application_Model_Test_Dialog::~Application_Model_Test_Dialog()
 
 }
 
+void Application_Model_Test_Dialog::save_results()
+{
+ QString text;
+ QMapIterator<QString, QString> it(results_);
 
+ while(it.hasNext())
+ {
+  it.next();
+  QString r;
+  if(it.value().endsWith("yes.png"))
+  {
+   r = "Pass";
+  }
+  else if(it.value().endsWith("no.png"))
+  {
+   r = "Fail";
+  }
+  else
+  {
+   r = "Incomplete/Unknown";
+  }
+  text += QString("%1: %2\n").arg(it.key()).arg(r);
+ }
+
+ QString fn = QFileDialog::getSaveFileName(this, "Save File",
+      ARCHIVE_ROOT_FOLDER,
+      "Text files (*.txt)");
+ if(!fn.isEmpty())
+ {
+  save_file(fn, text);
+ }
+}
 
 void Application_Model_Test_Dialog::check_test_result(QString desc,
   QCheckBox* ckb, QString file)
@@ -235,20 +283,32 @@ void Application_Model_Test_Dialog::check_test_result(QString desc,
 
 void Application_Model_Test_Dialog::set_result_yes(QCheckBox* ckb, QString file)
 {
+ QString icon = DEFAULT_ICON_FOLDER "/yes.png";
  QString ind = QString("QCheckBox::indicator:checked"
-   "{image: url(%1);width:24px;height: 20px;}").arg(DEFAULT_ICON_FOLDER "/yes.png");
- ckb->setCheckState(Qt::Checked);
- ckb->setStyleSheet(ind);
- results_[file] = ind;
+   "{image: url(%1);width:24px;height: 20px;}").arg(icon);
+
+ {
+  const QSignalBlocker blocker(ckb);
+  ckb->setCheckState(Qt::Checked);
+  ckb->setStyleSheet(ind);
+ }
+
+ results_[file] = icon;
 }
 
 void Application_Model_Test_Dialog::set_result_no(QCheckBox* ckb, QString file)
 {
+ QString icon = DEFAULT_ICON_FOLDER "/no.png";
  QString ind = QString("QCheckBox::indicator:checked"
-   "{image: url(%1);width:15px;height: 15px;}").arg(DEFAULT_ICON_FOLDER "/no.png");
- ckb->setCheckState(Qt::Checked);
- ckb->setStyleSheet(ind);
- results_[file] = ind;
+   "{image: url(%1);width:15px;height: 15px;}").arg(icon);
+
+ {
+  const QSignalBlocker blocker(ckb);
+  ckb->setCheckState(Qt::Checked);
+  ckb->setStyleSheet(ind);
+ }
+
+ results_[file] = icon;
 }
 
 void Application_Model_Test_Dialog::toggle_result(QCheckBox* ckb, QString file)
