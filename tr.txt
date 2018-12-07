@@ -1,3 +1,3 @@
-C:/scign/MSR/ar/cpp/kph/dataset/raw/copy-oxy-column.kph: Pass
+C:/scign/MSR/ar/cpp/kph/dataset/raw/copy-flow-column.kph: Fail
+C:/scign/MSR/ar/cpp/kph/dataset/raw/expand-sample.kph: Pass
 C:/scign/MSR/ar/cpp/kph/dataset/raw/show-graphic-2-12x12.kph: Pass
-C:/scign/MSR/ar/cpp/kph/dataset/raw/show-graphic-2-3x3.kph: Fail
