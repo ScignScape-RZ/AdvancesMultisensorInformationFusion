@@ -1,6 +1,12 @@
 -
 Auto Generated
 .
+%origin: @scripts/rz-kph
+.
+%test: This test should result in the third sample 
+   (ordered by index) being expanded, with a highlight 
+   color, and nested rows revealed.
+.
 ;lambda:1
 .
 ;sigma:2

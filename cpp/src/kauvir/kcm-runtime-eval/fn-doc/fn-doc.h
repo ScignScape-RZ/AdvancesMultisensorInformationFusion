@@ -14,6 +14,8 @@
 
 #include <QString>
 #include <QObject>
+#include <QMap>
+
 
 KANS_CLASS_DECLARE(KCM ,Kauvir_Code_Model)
 KANS_CLASS_DECLARE(KCM ,KCM_Channel_Group)
@@ -38,6 +40,10 @@ class Fn_Doc : public QObject, public Kauvir_Universal_Class
  KCM_Scope_System* scopes_;
  KCM_Env* kenv_;
 
+ QMap<QString, QMap<QString, QString>> docus_;
+
+ QString held_fn_;
+
 public:
 
  Fn_Doc();
@@ -50,7 +56,11 @@ public:
 
  Q_INVOKABLE void read(QString fn);
  Q_INVOKABLE void init(KCM_Env* kenv);
- Q_INVOKABLE void kph_gen(QString fn, QString subs);
+ Q_INVOKABLE void kph_gen(QString subs);
+
+ Q_INVOKABLE void hold_function_name(QString fn);
+
+ Q_INVOKABLE void add_documentation(QString key_val);
 
  const KCM_Type_Object* get_type_object_from_symbol_name(QString fn);
 

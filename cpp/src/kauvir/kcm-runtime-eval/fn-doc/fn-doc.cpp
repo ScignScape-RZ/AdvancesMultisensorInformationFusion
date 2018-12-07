@@ -72,23 +72,37 @@ const KCM_Type_Object* Fn_Doc::get_type_object_from_symbol_name(QString fn)
  return scopes_->get_type_object_from_symbol_name(fn);
 }
 
-void Fn_Doc::kph_gen(QString fn, QString subs)
+void Fn_Doc::kph_gen(QString subs)
 {
- qDebug() << "fn: " << fn;
- const KCM_Type_Object* kto = scopes_->get_type_object_from_symbol_name(fn);
+ qDebug() << "fn: " << held_fn_;
+ const KCM_Type_Object* kto = scopes_->get_type_object_from_symbol_name(held_fn_);
  if(kto)
  {
   if(kenv_)
   {
-   kenv_->kph_gen(kto->channel_group(), subs, fn, nullptr, {});
+   kenv_->kph_gen(kto->channel_group(), subs,  held_fn_, nullptr, docus_[held_fn_]);
   }
  }
+}
+
+void Fn_Doc::add_documentation(QString key_val)
+{
+ int index = key_val.indexOf(':');
+ if(index != -1)
+ {
+  docus_[held_fn_][key_val.left(index)] = key_val.mid(index + 1).trimmed();
+ }
+}
+
+void Fn_Doc::hold_function_name(QString fn)
+{
+ held_fn_ = fn;
 }
 
 void Fn_Doc::kph_gen(const KCM_Type_Object* kto, QString fn, QString& text)
 {
  if(kenv_)
  {
-  kenv_->kph_gen(kto->channel_group(), fn, &text, {});
+  kenv_->kph_gen(kto->channel_group(), fn, &text, docus_[fn]);
  }
 }

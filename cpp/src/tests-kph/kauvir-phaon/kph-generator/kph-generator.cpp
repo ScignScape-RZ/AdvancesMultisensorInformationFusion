@@ -63,7 +63,7 @@ void KPH_Generator::encode(KCM_Command_Package& kcp, QMap<QString, QString> docu
  while(dit.hasNext())
  {
   dit.next();
-  qts << "%" << dit.key() << ' ' << dit.value();
+  qts << "%" << dit.key() << ": " << dit.value();
   close_line(qts);
  }
 

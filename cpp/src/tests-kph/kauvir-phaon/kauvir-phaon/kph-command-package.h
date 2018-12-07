@@ -68,7 +68,7 @@ public:
      int index = qs.indexOf(':');
      if(index != -1)
      {
-      docus[qs.mid(1, index - 1)] = qs.mid(index + 1).trimmed();
+      docus[qs.mid(1, index - 1)] = qs.mid(index + 1).simplified();
      }
     }
     break;
