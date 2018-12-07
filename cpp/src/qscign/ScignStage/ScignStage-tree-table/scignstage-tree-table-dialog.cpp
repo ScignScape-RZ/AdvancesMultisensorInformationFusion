@@ -473,37 +473,7 @@ void ScignStage_Tree_Table_Dialog::run_tree_context_menu(
  },
  [this](int col, QVector<Test_Sample*>& samps, bool by_rank)
  {
-  QString copy;
-  for(Test_Sample* samp : samps)
-  {
-   switch (col)
-   {
-   case 0:
-    copy += QString("%1\n").arg(samp->index());
-    break;
-   case 1:
-    copy += QString("%1\n").arg(by_rank?
-      series_->get_flow_rank(*samp) : samp->flow().getDouble() );
-    break;
-   case 2:
-    copy += QString("%1\n").arg(samp->time_with_flow().getDouble());
-    break;
-   case 3:
-    copy += QString("%1\n").arg(samp->time_against_flow().getDouble());
-    break;
-   case 4:
-    copy += QString("%1\n").arg(by_rank?
-      series_->get_temperature_rank(*samp) : samp->temperature_adj() );
-    break;
-   case 5:
-    copy += QString("%1\n").arg(by_rank?
-      series_->get_oxy_rank(*samp) : samp->oxy() );
-    break;
-   default:
-    break;
-   }
-  }
-  QApplication::clipboard()->setText(copy);
+  copy_column_to_clipboard(col, samps, by_rank);
  }, row,
  row? [this](int row, QVector<Test_Sample*>& samps)
  {
@@ -661,6 +631,46 @@ void ScignStage_Tree_Table_Dialog::handle_temperature_down()
  }
  emit_highlight();
  highlight(current_sample_);
+}
+
+void ScignStage_Tree_Table_Dialog::copy_column_to_clipboard(int col, QVector<Test_Sample*>& samps, bool by_rank)
+{
+ QString copy;
+ for(Test_Sample* samp : samps)
+ {
+  switch (col)
+  {
+  case 0:
+   copy += QString("%1\n").arg(samp->index());
+   break;
+  case 1:
+   copy += QString("%1\n").arg(by_rank?
+     series_->get_flow_rank(*samp) : samp->flow().getDouble() );
+   break;
+  case 2:
+   copy += QString("%1\n").arg(samp->time_with_flow().getDouble());
+   break;
+  case 3:
+   copy += QString("%1\n").arg(samp->time_against_flow().getDouble());
+   break;
+  case 4:
+   copy += QString("%1\n").arg(by_rank?
+     series_->get_temperature_rank(*samp) : samp->temperature_adj() );
+   break;
+  case 5:
+   copy += QString("%1\n").arg(by_rank?
+     series_->get_oxy_rank(*samp) : samp->oxy() );
+   break;
+  default:
+   break;
+  }
+ }
+ QApplication::clipboard()->setText(copy);
+}
+
+void ScignStage_Tree_Table_Dialog::copy_column_to_clipboard(int col, bool by_rank)
+{
+ copy_column_to_clipboard(col, series_->samples(), by_rank);
 }
 
 void ScignStage_Tree_Table_Dialog::handle_temperature_up()

@@ -12,9 +12,9 @@ fnd -> init kenv;
 fnd -> hold-function-name  "expand_sample";
 
 fnd -> add-documentation  "test:  
-   This test should result in the third sample 
-   (ordered by index) being expanded, with a highlight 
-   color, and nested rows revealed.";
+  This test should result in the third sample 
+  (ordered by index) being expanded, with a highlight 
+  color, and nested rows revealed.";
   
 fnd -> add-documentation  "origin: @scripts/rz-kph";
 

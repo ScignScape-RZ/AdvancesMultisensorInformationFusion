@@ -29,6 +29,7 @@ class Application_Model : public QObject
 
 public:
 
+ Q_INVOKABLE void copy_column(ScignStage_Tree_Table_Dialog* dlg, QString code);
  Q_INVOKABLE void hide_graphic(ScignStage_Tree_Table_Dialog* dlg, QString code);
  Q_INVOKABLE void show_graphic(ScignStage_Tree_Table_Dialog* dlg, QString code);
  Q_INVOKABLE void expand_sample(ScignStage_Tree_Table_Dialog* dlg, int index);

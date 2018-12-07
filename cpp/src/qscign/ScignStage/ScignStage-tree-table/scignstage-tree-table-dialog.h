@@ -183,6 +183,10 @@ public:
 
  void expand_sample(int index);
 
+ void copy_column_to_clipboard(int col, QVector<Test_Sample*>& samps, bool by_rank);
+ void copy_column_to_clipboard(int col, bool by_rank);
+
+
 
 Q_SIGNALS:
  void canceled(QDialog*);

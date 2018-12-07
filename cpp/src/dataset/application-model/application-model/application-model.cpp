@@ -37,6 +37,36 @@ void Application_Model::expand_sample(ScignStage_Tree_Table_Dialog* dlg, int ind
  dlg->expand_sample(index);
 }
 
+void Application_Model::copy_column(ScignStage_Tree_Table_Dialog* dlg, QString code)
+{
+ bool by_ranks;
+ if(code.endsWith("-R"))
+ {
+  by_ranks = true;
+ }
+ else if(code.endsWith("-V"))
+ {
+  by_ranks = false;
+ }
+ else
+   return;
+
+ code.chop(2);
+
+ static QMap<QString, int> static_map {{
+  { "FLOW", 1 },
+  { "TEMPERATURE", 4 },
+  { "OXY", 5 },
+ }};
+
+ auto it = static_map.constFind(code.toUpper());
+ if(it != static_map.end())
+ {
+  dlg->copy_column_to_clipboard(*it, by_ranks);
+ }
+
+}
+
 void Application_Model::show_graphic(ScignStage_Tree_Table_Dialog* dlg, QString code)
 {
  int d = code.left(1).toInt();
