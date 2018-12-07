@@ -1,7 +1,8 @@
 - 
 
 .
-%test: This test should open a 3D 3x3 graphic window.
+%test: This test should cause an opened 3D 35x75 graphic window to close 
+and the corresponding checkbox to be uncheckeed.
 .
 %origin: @scripts/rz-kph
 .
@@ -15,10 +16,10 @@
 .
 #1
 .
-&:show_graphic
+&:hide_graphic
 .
 1:1::1:::#*ScignStage_Tree_Table_Dialog*:
 .
-2:1::2::::3-3x3
+2:1::2::::3-35x75
 .
 -

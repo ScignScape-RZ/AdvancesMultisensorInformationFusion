@@ -1,7 +1,7 @@
 - 
 
 .
-%test: This test should open a 2D 35x75 graphic window.
+%test: This test should open a 3D 35x75 graphic window.
 .
 %origin: @scripts/rz-kph
 .
@@ -19,6 +19,6 @@
 .
 1:1::1:::#*ScignStage_Tree_Table_Dialog*:
 .
-2:1::2::::2-35x75
+2:1::2::::3-35x75
 .
 -
