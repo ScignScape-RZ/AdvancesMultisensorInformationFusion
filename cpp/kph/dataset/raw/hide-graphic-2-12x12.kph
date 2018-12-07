@@ -1,6 +1,11 @@
 - 
 
 .
+%test: This test should cause an opened 2D 12x12 graphic window to close 
+and the corresponding checkbox to be uncheckeed.
+.
+%origin: @scripts/rz-kph
+.
 ;sigma:1
 .
 ;lambda:2

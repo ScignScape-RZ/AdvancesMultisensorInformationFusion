@@ -32,7 +32,11 @@ int main(int argc, char **argv)
  //  main_form_layout_->addRow("Test 1", ckb);
 
  Application_Model_Test_Dialog dlg(&apptm, {{
+
    {"Expand Sample", DEFAULT_KPH_FOLDER "/dataset/raw/expand-sample.kph"},
+   {"Copy Flow", DEFAULT_KPH_FOLDER "/dataset/raw/copy-flow-column.kph"},
+   {"Copy Temperature", DEFAULT_KPH_FOLDER "/dataset/raw/copy-temperature-column.kph"},
+   {"Copy Oxygen", DEFAULT_KPH_FOLDER "/dataset/raw/copy-oxy-column.kph"},
 
    {"Show 2d Graphic (3x3)", DEFAULT_KPH_FOLDER "/dataset/raw/show-graphic-2-3x3.kph"},
    {"Show 2d Graphic (12x12)", DEFAULT_KPH_FOLDER "/dataset/raw/show-graphic-2-12x12.kph"},
