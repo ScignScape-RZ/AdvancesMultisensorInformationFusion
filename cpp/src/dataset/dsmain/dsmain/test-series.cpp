@@ -81,7 +81,6 @@ void Test_Series::init_cells(int fres, int tres)
  each_sample ([this, frange, trange, oran, fres, tres](Test_Sample* samp)
  {
   auto& cs = cells_[{fres, tres}];
-  //cs.first =
   QVector<Cell_Info*>& qv = cs.second;
 
   double fl = samp->flow().getDouble();
@@ -324,10 +323,6 @@ void Test_Series::get_cell_coords(int fres, int tres,
 
 void Test_Series::save_cells_to_file(int fres, int tres, QString path)
 {
- //auto& cs = cells_[{fres, tres}];
- //cs.first =
-
-
  QString text;
 
  QMap<QPair<int, int>, QList<QPair<Cell_Info*, double>>> qm;

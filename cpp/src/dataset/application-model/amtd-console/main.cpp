@@ -11,8 +11,6 @@
 
 #include <QApplication>
 
-//#include "dsmain/test-sample.h"
-//#include "dsmain/test-series.h"
 
 #include "kans.h"
 

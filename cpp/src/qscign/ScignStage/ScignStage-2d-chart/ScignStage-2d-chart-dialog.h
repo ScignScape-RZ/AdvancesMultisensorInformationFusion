@@ -21,8 +21,6 @@ class QGraphicsItem;
 class QGraphicsView;
 class QGraphicsScene;
 
-//class QGraphicsSceneHoverEvent;
-
 #include "kans.h"
 
 KANS_CLASS_DECLARE(DSM ,Test_Sample)
@@ -30,9 +28,10 @@ KANS_CLASS_DECLARE(DSM ,Test_Series)
 
 USING_KANS(DSM)
 
+//  for future reference ...
 //struct Clickable_Graphics_Item : public QGraphicsRectItem
 //{
-// // Q_DECLARE_OVERRIDE
+//
 // Clickable_Graphics_Item();
 
 // void hoverEnterEvent(QGraphicsSceneHoverEvent* event) Q_DECL_OVERRIDE;
@@ -40,12 +39,10 @@ USING_KANS(DSM)
 // void mousePressEvent(QGraphicsSceneMouseEvent* event) Q_DECL_OVERRIDE;
 //};
 
-
 class ScignStage_2d_Chart_Dialog : public QDialog
 {
  Q_OBJECT
 
- //Fore_Geometric1D_Panel fore_panel_;
  QDialogButtonBox* button_box_;
  QPushButton* button_ok_;
  QPushButton* button_cancel_;
@@ -91,10 +88,8 @@ public:
  ScignStage_2d_Chart_Dialog(Test_Series* ts,
    int fres, int tres, QWidget* parent);
 
- //QMap<QPair<quint8, quint8>, int> contraceteds_;
  QMap<QPair<quint8, quint8>,
    QVector<QGraphicsRectItem*>*> contracteds_;
-
 
 
  ~ScignStage_2d_Chart_Dialog();
@@ -114,4 +109,4 @@ Q_SIGNALS:
 };
 
 
-#endif //  SCIGNSTAGE_2D_CHART_DIALOG__H
+#endif //SCIGNSTAGE_2D_CHART_DIALOG__H

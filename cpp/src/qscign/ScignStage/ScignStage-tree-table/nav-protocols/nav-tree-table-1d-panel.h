@@ -134,7 +134,7 @@ public Q_SLOTS:
 //_QSNS(ScignStage)
 
 
-#endif  // NAV_Tree_Table1D_PANEL__H
+#endif  //NAV_Tree_Table1D_PANEL__H
 
 
 

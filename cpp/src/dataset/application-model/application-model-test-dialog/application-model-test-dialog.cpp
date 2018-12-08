@@ -153,14 +153,13 @@ Application_Model_Test_Dialog::Application_Model_Test_Dialog(
  main_scroll_area_ = new QScrollArea(this);
  main_form_frame_ = new QFrame(this);
  main_form_frame_->setLayout(main_form_layout_);
- //main_scroll_area_->setWidgetResizable(true);
+
  main_scroll_area_->setWidget(main_form_frame_);
 
  main_layout_->addWidget(main_scroll_area_);
  main_layout_->addWidget(button_box_);
 
  setLayout(main_layout_);
- //fore_panel_
 }
 
 void Application_Model_Test_Dialog::desktop_open_folder(QString qs)

@@ -4,7 +4,6 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-
 #ifndef SCIGNSTAGE_TREE_TABLE_DIALOG__H
 #define SCIGNSTAGE_TREE_TABLE_DIALOG__H
 

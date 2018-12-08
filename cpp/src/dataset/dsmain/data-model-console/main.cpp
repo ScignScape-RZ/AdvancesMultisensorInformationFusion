@@ -17,22 +17,7 @@
 
 USING_KANS(DSM)
 
-//void qdb(QString str)
-//{
-// qDebug() << str;
-//}
-
-//void test(QString str)
-//{
-// pri_(str)
-//  str.replace('-', '_');
-// _pri(str);
-
-// qdb( pri(str) );
-//}
-
 #include "textio.h"
-
 
 
 USING_KANS(DSM)
@@ -46,9 +31,6 @@ int main(int argc, char* argv[])
  ts.init_ranks();
  ts.save_ranks_to_file(DATA_FOLDER "/r1.txt");
 
-// ts.init_cells(5, 5);
-// ts.save_cells_to_file(5, 5, DATA_FOLDER "/c0.txt");
-
  ts.init_cells(25, 25);
  ts.save_cells_to_file(25, 25, DATA_FOLDER "/c1.txt");
 
@@ -57,10 +39,6 @@ int main(int argc, char* argv[])
 
  return 0;
 
-// QVector<Test_Sample*> ts;
-// Test_Sample::read_samples_from_file(DATA_FOLDER "/t1.txt", ts);
-
- //Test_Sample::write_samples_to_file(DATA_FOLDER "/t1.out.txt", ts);
 }
 
 
@@ -159,90 +137,3 @@ int main1(int argc, char* argv[])
 
  return 0;
 }
-
-// int max_ta = 0;
-// int min_ta = -1;
-
-// int max_fl = 0;
-// int min_fl = -1;
-
-// QMap<QPair<int, int>, double> qm;
-// for(Test_Sample* samp : ts)
-// {
-//  int ta = samp->temperature_adj()/10;
-//  int fl = int(samp->flow().getDouble() * 20);
-
-//  if(ta > max_ta)
-//    max_ta = ta;
-
-//  if((min_ta == -1) || (ta < min_ta))
-//    min_ta = ta;
-
-//  if(fl > max_fl)
-//    max_fl = fl;
-//  if((min_fl == -1) || (fl < min_fl))
-//    min_fl = fl;
-
-//  qm.insert({ta,fl}, (double)samp->oxy()/10);
-////  int ta = samp->temperature_adj()/400;
-////  int fl = int(samp->flow().getDouble() * 2);
-////  qm.insert({ta,fl}, (double)samp->oxy()/10);
-// }
-
-
-
-// QVector<QVector<float>*> rows;
-// for(int i = min_fl; i < max_fl; ++i)
-// {
-//  QVector<float>* r = new QVector<float>;
-//  for(int j = min_ta; j < max_ta; ++j)
-//  {
-//   *r << qm.value({i, j}, 0.0f);
-//  }
-//  rows.push_back(r);
-// }
-
-// QString text;
-
-// for(QVector<float>* qv : rows)
-// {
-//  for(float fl : *qv)
-//  {
-//   text += QString::number(fl) + ' ';
-//  }
-//  text += '\n';
-// }
-
-// save_file(DATA_FOLDER "/t3.txt", text);
-
-//// Test_Series_Folder tsf(SAMPLES_FOLDER);
-
-//// Test_Series ts;
-//// tsf.read_files(ts);
-// return 0;
-//}
-
-//int mainx(int argc, char* argv[])
-//{
-// Assessment_Scores scores;
-
-
-// scores.set_speech_nondistortion(3);
-// scores.set_background_nondisruption(4);
-
-// scores.set_overall_quality(2);
-
-// scores.with_ (quint8,background_nondisruption ,bq)
-//  qDebug() << "bq: " << bq;
-// _with;
-
-// scores.with_ (quint8,speech_nondistortion ,sq)
-//  qDebug() << "sq: " << sq;
-// _with;
-
-// scores.with_ (quint8,overall_quality ,oq)
-//  qDebug() << "oq: " << oq;
-// _with;
-
-// return 0;
-//}

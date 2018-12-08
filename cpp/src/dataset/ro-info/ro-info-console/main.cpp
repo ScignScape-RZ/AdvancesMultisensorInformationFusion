@@ -17,16 +17,16 @@ USING_KANS(DSM)
 int main(int argc, char **argv)
 {
  RO_Info ro;
- ro.set_article_url(QUrl("https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0199787"));
- ro.set_main_repo_url(QUrl("https://github.com/scignscape/SubjectiveSpeechQualityMeasurement"));
+ ro.set_article_url(QUrl(""));
+ ro.set_main_repo_url(QUrl(""));
  ro.set_main_executable_path(TARGETS_DIR "/dsmain_console.exe");
  ro.set_local_article_path(AR_ROOT_DIR "/cpp/about/about-files/main.pdf");
  ro.set_main_project_path(AR_ROOT_DIR "cpp/projects/qt/qtm/both/dataset/dsmain/dsmain-console");
- ro.parse_kai_signatures_from_file("ScignStage_Audio_Dialog",
+ ro.parse_kai_signatures_from_file("ScignStage_Tree_Table_Dialog",
    AR_ROOT_DIR "/cpp/kph/dataset/raw-multi/t1.kph.sigs");
  qDebug() << ro.main_executable_path();
  qDebug() << ro.local_article_path();
  qDebug() << ro.main_project_path();
- qDebug() << '\n' << ro.kai_signatures()["ScignStage_Audio_Dialog"].join("  ");
+ qDebug() << '\n' << ro.kai_signatures()["ScignStage_Tree_Table_Dialog"].join("  ");
  return 0;
 }

@@ -37,5 +37,4 @@ _KANS(Phaon)
 
 #endif // USING_KPH
 
-
 #endif //TEST_FUNCTIONS__H

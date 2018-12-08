@@ -28,7 +28,6 @@
 
 #include <QFileDialog>
 
-//
 #include "ScignStage-tree-table/scignstage-tree-table-dialog.h"
 
 #include "ScignStage-tree-table/xpdf-bridge.h"

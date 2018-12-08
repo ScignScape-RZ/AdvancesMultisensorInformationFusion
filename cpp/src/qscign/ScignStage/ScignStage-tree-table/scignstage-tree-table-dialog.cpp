@@ -174,21 +174,6 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
  oxy_tree_widget_ = new Series_TreeWidget(series_,
    Series_TreeWidget::Sort_Options::Oxy, this);
 
-// main_tree_widget_->setContextMenuPolicy(Qt::CustomContextMenu);
-// connect(main_tree_widget_, &QTreeWidget::customContextMenuRequested, [this](const QPoint& qp)
-// {
-//  QModelIndex qmi = main_tree_widget_->indexAt(qp);
-//  run_tree_context_menu(qp, qmi.column(), qmi.row());
-// });
-
-// main_tree_widget_->setContextMenuPolicy(Qt::CustomContextMenu);
-// connect(main_tree_widget_, &Series_TreeWidget::column_context_menu_requested,
-//   [this](const QPoint& qp, int col)
-// {
-//  run_tree_context_menu(qp, col);
-// });
-
-
  for(Series_TreeWidget* stw :
    {main_tree_widget_, flow_tree_widget_, temperature_tree_widget_, oxy_tree_widget_})
  {

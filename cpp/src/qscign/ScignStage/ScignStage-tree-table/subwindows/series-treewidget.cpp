@@ -130,8 +130,6 @@ Series_TreeWidget::Series_TreeWidget(Test_Series* ts, Sort_Options so, QWidget* 
    twi->addChild(rtwi);
 
    this->addTopLevelItem(twi);
-
-   //twi->setData(0, Qt::UserRole, QVariant::fromValue(group)
   }
  }
 

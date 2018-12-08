@@ -41,11 +41,7 @@ int main(int argc, char* argv[])
 {
  KPH_Generator gen (DEFAULT_KPH_FOLDER "/gen/t1.txt");
 
-
  Phaon_Runner phr;
-
-// Phaon_Namespace phn("TestNS");
-// Phaon_Class phc("Test_Class", &phn);
 
  Kauvir_Code_Model& kcm = phr.get_kcm();
  kcm.set_kph_generator(&gen);

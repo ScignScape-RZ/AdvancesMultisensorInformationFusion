@@ -143,9 +143,9 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
 #endif
 
  less_series_->setMesh(QAbstract3DSeries::MeshCylinder);
- //
- //series1->setMesh(QAbstract3DSeries::MeshCube);
- //series1->setMeshAngle(25);
+
+ //->setMesh(QAbstract3DSeries::MeshCube);
+ //->setMeshAngle(25);
 #endif
 
  bars->addSeries(series_);

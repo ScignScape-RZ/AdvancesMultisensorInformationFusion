@@ -57,8 +57,6 @@ void XPDF_Bridge::init()
    if(is_ready())
    {
     Q_EMIT xpdf_is_ready();
-//    thr->exit();
-//    thr->deleteLater();
     break;
    }
   }

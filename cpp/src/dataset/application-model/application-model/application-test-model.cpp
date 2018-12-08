@@ -119,8 +119,6 @@ void Application_Test_Model::run_kph_test(QString path,
   else
   {
    okcb();
-   //std::function<void()> pass_cb, std::function<void()> fail_cb
-   //qDebug() << "OK\n";
   }
   reply->deleteLater();
  });

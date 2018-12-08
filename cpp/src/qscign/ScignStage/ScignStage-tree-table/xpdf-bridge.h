@@ -59,4 +59,4 @@ struct XPDF_Bridge
 
 #endif // USING_XPDF
 
-#endif  // XPDF_BRIDGE__H
+#endif  //XPDF_BRIDGE__H

@@ -30,7 +30,6 @@ class ScignStage_3d_Chart_Dialog : public QDialog
 {
  Q_OBJECT
 
- //Fore_Geometric1D_Panel fore_panel_;
  QDialogButtonBox* button_box_;
  QPushButton* button_ok_;
  QPushButton* button_cancel_;
@@ -60,7 +59,6 @@ public:
  ~ScignStage_3d_Chart_Dialog();
 
 Q_SIGNALS:
-//signals:
 
  void sample_selected(QWidget*, Test_Sample*);
 
@@ -72,4 +70,4 @@ public Q_SLOTS:
 };
 
 
-#endif //  SCIGNSTAGE_3D_CHART_DIALOG__H
+#endif //SCIGNSTAGE_3D_CHART_DIALOG__H
