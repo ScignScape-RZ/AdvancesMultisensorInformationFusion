@@ -104,14 +104,12 @@ void test_msgbox(ScignStage_Tree_Table_Dialog* dlg, QString msg)
  dlg->test_msgbox(msg);
 }
 
-// quint8 d, quint8 c, quint8 r
 void show_graphic(ScignStage_Tree_Table_Dialog* dlg, QString code)
 {
  if(Application_Model* appm = static_cast<Application_Model*>(dlg->application_model()))
  {
   appm->show_graphic(dlg, code);
  }
- //dlg->play_sample(index);
 }
 
 void hide_graphic(ScignStage_Tree_Table_Dialog* dlg, QString code)

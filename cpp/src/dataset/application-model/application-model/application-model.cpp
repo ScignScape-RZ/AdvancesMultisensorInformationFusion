@@ -7,15 +7,7 @@
 
 #include "application-model.h"
 
-//#include "ScignStage-2d-chart/ScignStage-2d-chart-dialog.h"
-
-//#include "ScignStage-3d-chart/ScignStage-3d-chart-dialog.h"
-
 #include "ScignStage-tree-table/ScignStage-tree-table-dialog.h"
-
-
-//#include "dsmain/test-sample.h"
-//#include "dsmain/test-series.h"
 
 #include "kauvir-phaon/kph-command-package.h"
 

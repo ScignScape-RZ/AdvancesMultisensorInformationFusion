@@ -24,15 +24,8 @@ using namespace QtDataVisualization;
 
 Graphic_Dialog_Container::Graphic_Dialog_Container(ScignStage_Tree_Table_Dialog* parent_dialog)
   :  parent_dialog_(parent_dialog)
-//  ,
-//     graphic_2d_25x25_(nullptr),
-//     graphic_3d_25x25_(nullptr),
-//     graphic_2d_110x75_(nullptr),
-//     graphic_3d_110x75_(nullptr)
-//     graphic_2d_10x10_(nullptr),
-//     graphic_3d_10x10_(nullptr)
 {
- //oldwf_ = parent_dialog_->windowFlags();
+
 }
 
 Graphic_Dialog_Container::~Graphic_Dialog_Container() {}
@@ -104,66 +97,6 @@ void Graphic_Dialog_Container::handle_graphic_open_requested(quint8 d, quint8 r,
    &(~Qt::WindowStaysOnTopHint));
  parent_dialog_->show();
  graphics_[code]->show();
-
- // qDebug() << d << r << c;
-
-// quint32 code = (r*1000) + (d*1000000) + c;
-// qDebug() << code;
-
-// switch(code)
-// {
-// case 2110075:
-//  if(!graphic_2d_110x75_)
-//  {
-//   parent_dialog_->series()->check_init_cells(55, 37);
-
-//   graphic_2d_110x75_ = new ScignStage_2d_Chart_Dialog(
-//     parent_dialog_->series(), 55, 37, parent_dialog_);
-
-//   connect(graphic_2d_110x75_, SIGNAL(sample_selected(Test_Sample*)),
-//     parent_dialog_, SLOT(browse_to_selected_sample(Test_Sample*)));
-
-//   connect(parent_dialog_, SIGNAL(sample_highlighted(Test_Sample*)),
-//     graphic_2d_110x75_, SLOT(highlight_selected_sample(Test_Sample*)));
-//  }
-//  graphic_2d_110x75_->show();
-//  break;
-
-// case 2025025:
-//  if(!graphic_2d_25x25_)
-//  {
-//   graphic_2d_25x25_ = new ScignStage_2d_Chart_Dialog(
-//     parent_dialog_->series(), 25, 25, parent_dialog_);
-
-//   connect(graphic_2d_25x25_, SIGNAL(sample_selected(Test_Sample*)),
-//     parent_dialog_, SLOT(browse_to_selected_sample(Test_Sample*)));
-
-//   connect(parent_dialog_, SIGNAL(sample_highlighted(Test_Sample*)),
-//     graphic_2d_25x25_, SLOT(highlight_selected_sample(Test_Sample*)));
-//  }
-//  graphic_2d_25x25_->show();
-//  break;
-// case 3025025:
-//  if(!graphic_3d_25x25_)
-//  {
-//   graphic_3d_25x25_ = new ScignStage_3d_Chart_Dialog(
-//     parent_dialog_->series(), 25, 25, parent_dialog_);
-
-//   connect(parent_dialog_, SIGNAL(sample_highlighted(Test_Sample*)),
-//     graphic_3d_25x25_, SLOT(external_selected(Test_Sample*)));
-
-//   graphic_3d_25x25_->selected_cb = [this](Test_Sample* samp)
-//   {
-//    qDebug() << "samp: " << samp->index();
-//    parent_dialog_->browse_to_selected_sample(samp);
-//   };
-//  }
-//  graphic_3d_25x25_->show();
-//  break;
-// default:
-//  break;
-// }
-
 }
 
 void Graphic_Dialog_Container::handle_graphic_close_requested(quint8 d, quint8 r, quint8 c)

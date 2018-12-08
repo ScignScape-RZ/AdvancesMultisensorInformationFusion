@@ -124,13 +124,4 @@ void KPH_Generator::encode(KCM_Command_Package& kcp, QMap<QString, QString> docu
 void KPH_Generator::save_kph_file()
 {
  save_file(file_path_, text_);
-
-// QMapIterator<QString, QString> it(docus_);
-
-// while(it.hasNext())
-// {
-//  it.next();
-//  save_file(file_path_ + '.' + it.key(), it.value());
-// }
-
 }

@@ -29,25 +29,6 @@ using namespace QtDataVisualization;
 
 int main(int argc, char **argv)
 {
-// QGuiApplication app(argc, argv);
-
-// Q3DSurface surface;
-// surface.setFlags(surface.flags() ^ Qt::FramelessWindowHint);
-// QSurfaceDataArray *data = new QSurfaceDataArray;
-// QSurfaceDataRow *dataRow1 = new QSurfaceDataRow;
-// QSurfaceDataRow *dataRow2 = new QSurfaceDataRow;
-
-// *dataRow1 << QVector3D(0.0f, 0.1f, 0.5f) << QVector3D(1.0f, 0.5f, 0.5f);
-// *dataRow2 << QVector3D(0.0f, 1.8f, 1.0f) << QVector3D(1.0f, 1.2f, 1.0f);
-// *data << dataRow1 << dataRow2;
-
-// QSurface3DSeries *series = new QSurface3DSeries;
-// series->dataProxy()->resetArray(data);
-// surface.addSeries(series);
-// surface.show();
-
-// return app.exec();
-
 
  QApplication qapp(argc, argv);
 
@@ -59,31 +40,6 @@ int main(int argc, char **argv)
 
  ScignStage_3d_Chart_Dialog dlg3d(&ts, 25, 25, nullptr);
 
-
  dlg3d.show();
-
-// ScignStage_Tree_Table_Dialog dlg (nullptr, &ts);
-
-// dlg.show();
-
-// QApplication::connect(&dlg, &ScignStage_Tree_Table_Dialog::sample_highlighted,
-//   [&dlg3d](Test_Sample* samp)
-// {
-//  dlg3d.external_selected(samp);
-// });
-
-// QApplication::connect(&dlg, SIGNAL(sample_highlighted(Test_Sample*)),
-//   &dlg3d, SLOT(external_selected(Test_Sample*)));
-
-//// dlg3d.connect(&dlg3d, SIGNAL(sample_selected(Test_Sample*)),
-////  &dlg, SLOT(browse_to_selected_sample(Test_Sample*)));
-
-
-// dlg3d.selected_cb = [&dlg](Test_Sample* samp)
-// {
-//  qDebug() << "samp: " << samp->index();
-//  dlg.browse_to_selected_sample(samp);
-// };
-
  return qapp.exec();
 }

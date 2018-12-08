@@ -162,7 +162,7 @@ void KPH_Command_Package::parse_from_string_list(QString path, const QStringList
  {
   switch(qs[0].toLatin1())
   {
-  case '-' : break; // comment
+  case '-' : break; // // comment
 
   case '~' :
    {
@@ -170,7 +170,7 @@ void KPH_Command_Package::parse_from_string_list(QString path, const QStringList
     parse_from_file_list(path, files, channel_names, current_expression_code);
    }
    break;
-  case ';' : // channel name
+  case ';' : // // channel name
    {
     int index = qs.indexOf(':');
     QString channel_name = qs.mid(1, index - 1);
@@ -178,13 +178,13 @@ void KPH_Command_Package::parse_from_string_list(QString path, const QStringList
     channel_names[code] = channel_name;
    }
    break;
-  case '#' : // expression
+  case '#' : // // expression
    {
     if(qs[1] != '#')
       current_expression_code = qs.mid(1).toInt();
    }
    break;
-  case '@' : // type name
+  case '@' : // // type name
    {
     int index = qs.indexOf(':');
     QString type_name = qs.mid(1, index - 1);
@@ -194,19 +194,19 @@ void KPH_Command_Package::parse_from_string_list(QString path, const QStringList
     type_names_[code] = {type_name, mode};
    }
    break;
-  case '&' : // fn name
+  case '&' : // // fn name
    {
     int index = qs.indexOf(':');
     fn_code_ = qs.mid(1, index - 1).toInt();
     fn_name_ = qs.mid(index + 1);
    }
    break;
-  case '+' : // pins
+  case '+' : // // pins
    {
     pins_.push_back(qs.mid(1));
    }
    break;
-  case '%' : // documentation
+  case '%' : // // documentation
    {
     int index = qs.indexOf(':');
     if(index != -1)
@@ -215,7 +215,7 @@ void KPH_Command_Package::parse_from_string_list(QString path, const QStringList
     }
    }
    break;
-  default : // carrier
+  default : // // carrier
    {
     int index = qs.indexOf(':');
     int channel = qs.left(index).toInt();
@@ -331,28 +331,3 @@ QString KPH_Command_Package::moc_signature()
  result += ')';
  return result;
 }
-
-
-
-//void KPH_Command_Package::read_docus(QString file_path, QMap<QString, QString>& docus)
-//{
-// QString qs = load_file(file_path);
-// QStringList qsl = qs.split("\n.\n");
-// for(QString qs : qsl)
-// {
-//  switch(qs[0].toLatin1())
-//  {
-//  case '%' : // documentation
-//   {
-//    int index = qs.indexOf(':');
-//    if(index != -1)
-//    {
-//     docus[qs.mid(1, index - 1)] = qs.mid(index).trimmed();
-//    }
-//   }
-//   break;
-//  default: break;
-//  }
-// }
-//}
-

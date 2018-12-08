@@ -5,7 +5,6 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 
-
 #include "ScignStage-2d-chart-dialog.h"
 
 #include <QDialogButtonBox>
@@ -38,38 +37,23 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
   int fres, int tres, QWidget* parent)
  : QDialog(parent), last_selected_item_(nullptr), current_z_value_(1)
 {
-
  button_box_ = new QDialogButtonBox(this);
 
- //?url_label_ = new QLabel(this);
-  //?url_label_->setText(url);
-
-// name_qle_ = new QLineEdit(this);
-
  button_ok_ = new QPushButton("OK");
- //? button_proceed_ = new QPushButton("Proceed");
+
  button_cancel_ = new QPushButton("Close");
 
  button_ok_->setDefault(false);
  button_ok_->setAutoDefault(false);
-
- //?button_proceed_->setDefault(false);
- //?button_proceed_->setAutoDefault(false);
 
  button_cancel_->setDefault(true);
 
  button_ok_->setStyleSheet(basic_button_style_sheet_());
  button_cancel_->setStyleSheet(basic_button_style_sheet_());
 
-
- //?button_ok_->setEnabled(false);
-
  button_box_->addButton(button_ok_, QDialogButtonBox::AcceptRole);
- //?button_box_->addButton(button_proceed_, QDialogButtonBox::ApplyRole);
  button_box_->addButton(button_cancel_, QDialogButtonBox::RejectRole);
 
-
- //?connect(button_proceed_, SIGNAL(clicked()), this, SLOT(proceed()));
  connect(button_box_, SIGNAL(accepted()), this, SLOT(accept()));
  connect(button_box_, SIGNAL(rejected()), this, SLOT(close()));
 
@@ -112,8 +96,6 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
  main_scene_->addLine(-50, -50, -50, max_h + 50, yellow_pen);
  main_scene_->addLine(max_w + 50, -50, max_w + 50, max_h + 50, yellow_pen);
  main_scene_->addLine(-50, max_h + 50, max_w + 50, max_h + 50, yellow_pen);
-
- //grey_pen.setWidth(2);
 
  double flow_min, flow_cell_span, temperature_min, temperature_cell_span;
 
@@ -195,10 +177,6 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
  {
   for(int j = 0; j <= tres; ++j)
   {
-   //int rank = 0;
-
-   //QStringList brcodes = {"b", "r", "g", "bg", "rg"};
-
    for(QPair<Cell_Info*, double> pr : qm.value({i, j}, {}))
    {
 
@@ -214,13 +192,6 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
     qreal recth = qMin(cell_h_ / 5, 10);
 
     int col = (pr.second * 225) + 30;
-
-//    int red = brcodes[rank].contains('r')? 255 : col;
-//    int green = brcodes[rank].contains('g')? 255 : col;
-//    int blue = brcodes[rank].contains('b')? 255 : col;
-
-//    if(rank < brcodes.size() - 1)
-//     ++rank;
 
     QColor clr1 = QColor(col, 255 - col, 0, 200);
     QColor clr2 = QColor(90, 90, 255, 100);
@@ -238,15 +209,7 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
     qgri->setData(3, (quint8) Item_States::Normal);
 
     qgri->setFlag(QGraphicsItem::ItemIsSelectable);
-
     sample_map_[pr.first->sample] = qgri;
-
-    if(pr.first->sample->index() == 1)
-    {
-     qDebug() << (quint64) qgri;
-    }
-    //items_by_grid_pos_.insertMulti({i,j}, {qgri->rect(),qgri});
-
     QVariant qvar = QVariant::fromValue((void*) pr.first->sample);
     qgri->setData(1, qvar);
    }
@@ -260,7 +223,7 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
   if(sis.size() == 1)
   {
    QGraphicsItem* qgi = sis.first();
-   Test_Sample* samp = (Test_Sample*) qgi->data(1).value<void*>();//sample_map_.value(qgi);
+   Test_Sample* samp = (Test_Sample*) qgi->data(1).value<void*>();
    if(samp)
    {
     QGraphicsRectItem* qgri = qgraphicsitem_cast<QGraphicsRectItem*>(qgi);
@@ -394,9 +357,6 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
 
 void ScignStage_2d_Chart_Dialog::uncontract_items(quint8 f, quint8 t)
 {
-// if(contracteds_.count({f,t}) == 0)
-//   return;
-
  QVector<QGraphicsRectItem*>* vs = contracteds_.value({f,t});
 
  if(!vs)
@@ -447,34 +407,28 @@ void ScignStage_2d_Chart_Dialog::uncontract_graphic(QGraphicsRectItem* qgri, QRe
 {
  Item_States ist = (Item_States) qgri->data(3).value<quint8>();
 
+ int w = 0;
+
  switch(ist)
  {
  case Item_States::Normal:
  case Item_States::Highlight:
  case Item_States::Highlight_Oxy:
-     return; // already uncontracted
+     return; // // already uncontracted
 
  case Item_States::Contracted:
-  ist = Item_States::Normal; break;
+  ist = Item_States::Normal; w = 6; break;
  case Item_States::Highlight_Contracted:
-  ist = Item_States::Highlight; break;
+  ist = Item_States::Highlight; w = 10; break;
  case Item_States::Highlight_Oxy_Contracted:
-  ist = Item_States::Highlight_Oxy; break;
+  ist = Item_States::Highlight_Oxy; w = 10; break;
  }
 
  qgri->setData(3, (quint8) ist);
 
  QPen pen = qgri->pen();
 
-// if(pen.width() == 6)
-//   return; // already uncontracted
-// if(pen.width() == 10)
-//   return; // already uncontracted
-
- if(pen.width() == 5)
-   pen.setWidth(10); // selected
- else
-   pen.setWidth(6);
+ pen.setWidth(w);
 
  qgri->setPen(pen);
  qgri->setRect(qrf);
@@ -486,6 +440,7 @@ void ScignStage_2d_Chart_Dialog::contract_graphic(QGraphicsRectItem* qgri)
 {
  Item_States ist = (Item_States) qgri->data(3).value<quint8>();
 
+ int w = 0;
  switch(ist)
  {
  case Item_States::Contracted:
@@ -493,29 +448,23 @@ void ScignStage_2d_Chart_Dialog::contract_graphic(QGraphicsRectItem* qgri)
  case Item_States::Highlight_Oxy_Contracted:
    return; // already contracted
 
- case Item_States::Normal: ist = Item_States::Contracted; break;
- case Item_States::Highlight: ist = Item_States::Highlight_Contracted; break;
- case Item_States::Highlight_Oxy: ist = Item_States::Highlight_Oxy_Contracted; break;
+ case Item_States::Normal:
+   ist = Item_States::Contracted; w = 1; break;
+ case Item_States::Highlight:
+   ist = Item_States::Highlight_Contracted;  w = 5; break;
+ case Item_States::Highlight_Oxy:
+   ist = Item_States::Highlight_Oxy_Contracted;  w = 5; break;
  }
 
  qgri->setData(3, (quint8) ist);
 
  QPen pen = qgri->pen();
 
-// if(pen.width() == 1)
-//   return; // already contracted
-// if(pen.width() == 5)
-//   return; // already contracted
+ pen.setWidth(w);
 
- if(pen.width() == 10)
-   pen.setWidth(5); // selected
- else
-   pen.setWidth(1);
  qgri->setPen(pen);
 
  QRectF qrf = qgri->rect();
-
- //contracteds_.insertMulti({f,t}, {qgri->rect(),qgri});
 
  QRectF qrfa = qrf.adjusted(qrf.width()/3, qrf.height()/3,
    -qrf.width()/3, -qrf.height()/3);
@@ -541,7 +490,7 @@ void ScignStage_2d_Chart_Dialog::contract_items(quint8 f, quint8 t)
  QList<QGraphicsItem*> items = main_scene_->items(f*cell_w_, t*cell_h_,
     cell_w_, cell_h_, Qt::IntersectsItemShape, Qt::DescendingOrder);
 
- qv = new QVector<QGraphicsRectItem*>;//(items.toVector());
+ qv = new QVector<QGraphicsRectItem*>;
 
  for(QGraphicsItem* qgi: items)
  {
@@ -553,31 +502,6 @@ void ScignStage_2d_Chart_Dialog::contract_items(quint8 f, quint8 t)
  }
 
  contracteds_[{f,t}] = qv;
-
-#ifdef HIDE
- QList<QPair<QRectF, QGraphicsRectItem*>> vs = items_by_grid_pos_.values({f,t});
-
- contraceteds_[{f,t}] = vs.size();
-
- for(QPair<QRectF, QGraphicsItem*> pr: vs)
- {
-  if(QGraphicsRectItem* qgri = qgraphicsitem_cast<QGraphicsRectItem*>(pr.second))
-  {
-   QPen pen = qgri->pen();
-   if(pen.width() == 10)
-     pen.setWidth(5); // selected
-   else
-     pen.setWidth(1);
-   qgri->setPen(pen);
-
-   QRectF qrf = qgri->rect();
-
-   QRectF qrfa = qrf.adjusted(qrf.width()/3, qrf.height()/3,
-     -qrf.width()/3, -qrf.height()/3);
-   qgri->setRect(qrfa);
-  }
- }
-#endif// HIDE
 }
 
 void ScignStage_2d_Chart_Dialog::contract_items(qint16 f, qint16 t, quint8 frange,

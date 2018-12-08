@@ -28,9 +28,6 @@ int main(int argc, char **argv)
 
  Application_Test_Model apptm;
 
- //  QCheckBox* ckb = new QCheckBox(DEFAULT_KPH_FOLDER "/t1.txt", this);
- //  main_form_layout_->addRow("Test 1", ckb);
-
  Application_Model_Test_Dialog dlg(&apptm, {{
 
    {"Expand Sample", DEFAULT_KPH_FOLDER "/dataset/raw/expand-sample.kph"},

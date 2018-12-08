@@ -55,7 +55,10 @@ public:
 
  KPH_Command_Package();
 
-
+ // //  this does not use any KPH functionality
+  //    so implementing it in the header makes
+  //    it unnecessary to link against the
+  //    library just for this one function
  static void read_docus(QString& text, QMap<QString, QString>& docus)
  {
   QStringList qsl = text.split("\n.\n");

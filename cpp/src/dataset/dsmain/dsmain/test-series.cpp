@@ -100,12 +100,10 @@ void Test_Series::init_cells(int fres, int tres)
   ci->oxy_adj = oxy - min_max_.oxy_min;
   ci->oxy = oval;
   ci->sample = samp;
-  //ci->fmicro = (frange/fres) *;
 
   qv.push_back(ci);
 
  });
- // sort*(x-min)/(max-min)
 }
 
 void Test_Series::cells_to_qmap(int fres, int tres,
@@ -115,7 +113,6 @@ void Test_Series::cells_to_qmap(int fres, int tres,
 
  for(Cell_Info* ci : qv)
  {
-  //qDebug() << ci->oxy_adj;
   switch (ci->oxy_adj)
   {
   case 0:
@@ -140,18 +137,6 @@ void Test_Series::cells_to_qmap(int fres, int tres,
    qDebug() << "Wrong oxy adj: " << ci->oxy_adj;
    break;
   }
-
- // qm[{ci->fmacro, ci->tmacro}].push_back({ci, 0.5});
-
-
-//  if(ci->oxy == 1)
-
-//  else if(ci->oxy == 0)
-//    qm[{ci->fmacro, ci->tmacro}].push_back({ci, 0.5});
-//  else
-//    qm[{ci->fmacro, ci->tmacro}].push_back({ci, 0.75});
-
-
  }
 }
 

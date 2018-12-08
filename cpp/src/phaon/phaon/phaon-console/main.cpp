@@ -40,9 +40,6 @@ int main(int argc, char* argv[])
 {
  Phaon_Runner phr;
 
-// Phaon_Namespace phn("TestNS");
-// Phaon_Class phc("Test_Class", &phn);
-
  Kauvir_Code_Model& kcm = phr.get_kcm();
  kcm.set_direct_eval_fn(&kcm_direct_eval);
 

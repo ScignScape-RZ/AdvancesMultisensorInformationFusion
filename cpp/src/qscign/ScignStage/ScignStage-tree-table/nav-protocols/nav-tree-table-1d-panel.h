@@ -96,15 +96,6 @@ class NAV_Tree_Table1D_Panel : public QFrame
 
  QMap<QString, QCheckBox*> check_boxes_;
 
-// QCheckBox* ckb_2d_25_;
-// QCheckBox* ckb_3d_25_;
-//// QCheckBox* ckb_2d_10_;
-//// QCheckBox* ckb_3d_10_;
-// QCheckBox* ckb_2d_55x37_;
-// QCheckBox* ckb_3d_55x37_;
-
-
-
  QGroupBox* ckbs_group_box_;
 
  QMap<QString, QCheckBox*> ckbs_;

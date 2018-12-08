@@ -166,52 +166,12 @@ NAV_Tree_Table1D_Panel::NAV_Tree_Table1D_Panel(QWidget* parent)
   ++count;
  }
 
-// check_boxes_[""]
-
-// ckb_2d_25_ = new QCheckBox("2D 25x25", this);
-// ckb_3d_25_ = new QCheckBox("3D 25x25", this);
-//// ckb_2d_10_ = new QCheckBox("2D 10x10", this);
-//// ckb_3d_10_ = new QCheckBox("3D 10x10", this);
-// ckb_2d_55x37_ = new QCheckBox("2D 55x37", this);
-// ckb_3d_55x37_ = new QCheckBox("3D 55x37", this);
-
-// ckb_layout_->addWidget(ckb_2d_25_, 0, 0);
-// ckb_layout_->addWidget(ckb_3d_25_, 0, 1);
-//// ckb_layout_->addWidget(ckb_2d_10_, 1, 0);
-//// ckb_layout_->addWidget(ckb_3d_10_, 1, 1);
-// ckb_layout_->addWidget(ckb_2d_55x37_, 1, 0);
-// ckb_layout_->addWidget(ckb_3d_55x37_, 1, 1);
-
-
-// quint8 dims [4][3] {{2, 25, 25}, {3, 25, 25},
-//   //{2, 10, 10}, {3, 10, 10}
-//   {2, 55, 37}, {3, 55, 37}
-//                    };
-// int i = 0;
-// for(QCheckBox* ckb :
-//   {ckb_2d_25_, ckb_3d_25_,
-//     ckb_2d_55x37_, ckb_3d_55x37_ //ckb_2d_10_, ckb_3d_10_
-
-//     })
-// {
-//  connect(ckb, &QCheckBox::toggled,
-//    [this, ckb, dims, i](bool checked)
-//  {
-//   if(checked)
-//     Q_EMIT( graphic_open_requested(dims[i][0], dims[i][1], dims[i][2]) );
-//   else
-//     Q_EMIT( graphic_close_requested(dims[i][0], dims[i][1], dims[i][2]) );
-//  });
-//  ++i;
-// }
-
  ckb_layout_->setColumnStretch(col_count, 1);
  ckb_layout_->setRowStretch(2, 1);
 
  ckbs_group_box_ = new QGroupBox("Graphics", this);
  ckbs_group_box_->setLayout(ckb_layout_);
 
- //first_vlayout_->addWidget(ckbs_group_box_);
  QSpacerItem* sp1 = new QSpacerItem(5, 0, QSizePolicy::Fixed, QSizePolicy::Fixed);
  QSpacerItem* sp2 = new QSpacerItem(5, 0, QSizePolicy::Fixed, QSizePolicy::Fixed);
  QSpacerItem* sp3 = new QSpacerItem(25, 0, QSizePolicy::Maximum, QSizePolicy::Fixed);
@@ -220,7 +180,7 @@ NAV_Tree_Table1D_Panel::NAV_Tree_Table1D_Panel(QWidget* parent)
  navigation_layout_->addLayout(first_vlayout_);
  navigation_layout_->addSpacerItem(sp2);
  navigation_layout_->addSpacerItem(sp3);
-// navigation_layout_->addStretch();
+
  navigation_layout_->addWidget(ckbs_group_box_);
  navigation_layout_->addStretch();
 

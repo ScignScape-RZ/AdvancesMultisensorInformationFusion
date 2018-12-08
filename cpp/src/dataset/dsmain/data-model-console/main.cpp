@@ -9,16 +9,9 @@
 #include <QDebug>
 #include <QVector>
 
-
-//#include "dsmain/pri.h"
-
 #include "dsmain/test-sample.h"
 
 #include "dsmain/test-series.h"
-
-//#include "dsmain/assessment-scores.h"
-//#include "dsmain/test-series-folder.h"
-//#include "dsmain/test-series.h"
 
 #include "kans.h"
 
