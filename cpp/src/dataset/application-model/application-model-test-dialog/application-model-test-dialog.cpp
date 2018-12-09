@@ -22,6 +22,7 @@
 #include <QDesktopServices>
 #include <QMenu>
 #include <QUrl>
+#include <QPlainTextEdit>
 
 
 #include <QDebug>
@@ -254,8 +255,28 @@ void Application_Model_Test_Dialog::check_test_result(QString desc,
  qmb.setText(ask);
  qmb.setIcon(QMessageBox::Question);
  qmb.setWindowTitle("Test Returned");
+ qmb.setDetailedText("Note: For tests which involve "
+   "values copied to the system clipboard, you can use the "
+   "text area below as a scratch pad to examine the clipboard contents.");
+
+ QPlainTextEdit* qpte = new QPlainTextEdit(&qmb);
+ qpte->setStyleSheet("QPlainTextEdit{background:rgb(239,246,255);"
+   "border:6px ridge #EC8A80;}");
+
+ if(QGridLayout* gl = dynamic_cast<QGridLayout*>(qmb.layout()))
+ {
+  gl->addWidget(qpte, gl->rowCount(), 0, 1, 3);
+ }
+ else
+ {
+  qpte->setMaximumWidth(100);
+  qmb.layout()->addWidget(qpte);
+ }
+
+
  QAbstractButton* yes = qmb.addButton("Pass", QMessageBox::YesRole);
  qmb.addButton("Fail", QMessageBox::NoRole);
+
 
  qmb.exec();
  if(qmb.clickedButton() == yes)
