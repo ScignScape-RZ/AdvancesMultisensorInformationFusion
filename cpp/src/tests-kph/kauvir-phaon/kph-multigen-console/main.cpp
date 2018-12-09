@@ -62,7 +62,7 @@ int main(int argc, char* argv[])
  }
 
  save_file(DEFAULT_KPH_FOLDER "/dataset/gen-multi/t1.kph.sigs",
-   sigs["ScignStage_Audio_Dialog*"]);
+   sigs["ScignStage_Tree_Table_Dialog*"]);
 
  return 0;
 }
