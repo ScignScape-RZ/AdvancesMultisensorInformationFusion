@@ -1,11 +1,11 @@
-- 
+-
 
 .
-%test: This test should result in the Flow ranks 
-  (sorted by index) being copied to the system 
-  clipboard, which can be verified by pasting the 
-  clipboard into a blank file and comparing the lines 
-  (there should be one sample per line) to the Flow 
+%test: This test should result in the Flow ranks
+  (sorted by index) being copied to the system
+  clipboard, which can be verified by pasting the
+  clipboard into a blank file and comparing the lines
+  (there should be one sample per line) to the Flow
   column as viewed in the tree table dialog.
 .
 %origin: @scripts/rz-kph
@@ -22,7 +22,7 @@
 .
 &:copy_column
 .
-1 :: 1 :: 1 ::#*ScignStage_Tree_Table_Dialog*:
+1 :: 1 :: 1 :::#*ScignStage_Tree_Table_Dialog*
 .
 2 :: 1 :: 2 :::Flow-R
 .
