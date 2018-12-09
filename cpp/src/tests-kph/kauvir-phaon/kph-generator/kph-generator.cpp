@@ -103,11 +103,23 @@ void KPH_Generator::encode(KCM_Command_Package& kcp, QMap<QString, QString> docu
      close_line(tqts);
      ++tyc;
     }
+
+    // // field order:
+     //    channel (numeric index code)
+     //    keyword (for function parameter)
+     //    position (carrier's position in channel)
+     //    mode (modifier on carrier; spec on carrier state
+     //    type code (numeric code)
+     //    expression ref (numeric code if carrier holds expression result)
+     //    symbolic ref (if carrier holds symbol in lieu of value)
+     //    value (if carrier holds actual value)
+
     QString src_val = subs_? subs_->get_src_value(it.key(), car, c - 1)
       : car.get_src_value();
-    aqts << chc << ':' << QString::number(c) << "::"
-      << QString::number(ty) << "::::"
+    aqts << chc << " :: " << QString::number(c) << " :: "
+      << QString::number(ty) << " ::: "
       << src_val;
+    ++c;
     close_line(aqts);
    }
   }

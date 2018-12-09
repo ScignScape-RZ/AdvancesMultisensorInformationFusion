@@ -217,18 +217,28 @@ void KPH_Command_Package::parse_from_string_list(QString path, const QStringList
    break;
   default : // // carrier
    {
+    // // field order:
+     //    channel (numeric index code)
+     //    keyword (for function parameter)
+     //    position (carrier's position in channel)
+     //    mode (modifier on carrier; spec on carrier state
+     //    type code (numeric code)
+     //    expression ref (numeric code if carrier holds expression result)
+     //    symbolic ref (if carrier holds symbol in lieu of value)
+     //    value (if carrier holds actual value)
+
     int index = qs.indexOf(':');
     int channel = qs.left(index).toInt();
     int index1 = qs.indexOf(':', index + 1);
-    int pos = qs.mid(index + 1, index1 - index - 1).toInt();
+    QString kw = qs.mid(index + 1, index1 - index - 1);
     int index2 = qs.indexOf(':', index1 + 1);
-    QString mode = qs.mid(index1 + 1, index2 - index1 - 1);
+    int pos = qs.mid(index1 + 1, index2 - index1 - 1).toInt();
     int index3 = qs.indexOf(':', index2 + 1);
-    int typec = qs.mid(index2 + 1, index3 - index2 - 1).toInt();
+    QString mode = qs.mid(index2 + 1, index3 - index2 - 1);
     int index4 = qs.indexOf(':', index3 + 1);
-    QString kw = qs.mid(index4 + 1, index4 - index3 - 1);
+    int typec = qs.mid(index3 + 1, index4 - index3 - 1).toInt();
     int index5 = qs.indexOf(':', index4 + 1);
-    int expref = qs.mid(index5 + 1, index5 - index4 - 1).toInt();
+    int expref = qs.mid(index4 + 1, index5 - index4 - 1).toInt();
     int index6 = qs.indexOf(':', index5 + 1);
     QString symref = qs.mid(index5 + 1, index6 - index5 - 1);
     QString value = qs.mid(index6 + 1);
