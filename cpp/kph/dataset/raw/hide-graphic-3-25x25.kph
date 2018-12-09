@@ -18,8 +18,8 @@ and the corresponding checkbox to be uncheckeed.
 .
 &:hide_graphic
 .
-1:1::1:::#*ScignStage_Tree_Table_Dialog*:
+1 :: 1 :: 1 ::#*ScignStage_Tree_Table_Dialog*:
 .
-2:1::2::::3-25x25
+2 :: 1 :: 2 :::3-25x25
 .
 -

@@ -13,8 +13,8 @@
 .
 &:expand_sample
 .
-1:1::1:::#*ScignStage_Tree_Table_Dialog*:
+1 :: 1 :: 1 ::#*ScignStage_Tree_Table_Dialog*:
 .
-2:1::2::::3
+2 :: 1 :: 2 :::3
 .
 -
