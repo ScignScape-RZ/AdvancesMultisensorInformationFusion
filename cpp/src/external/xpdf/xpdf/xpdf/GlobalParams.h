@@ -538,7 +538,7 @@ private:
   GList *keyBindings;		// key & mouse button bindings [KeyBinding]
   GList *popupMenuCmds;		// popup menu commands [PopupMenuCmd]
   GBool printCommands;		// print the drawing commands
-  GBool errQuiet;		// suppress error messages?
+  GBool errQuiet;		// suppress error #messages?
 
   CharCodeToUnicodeCache *cidToUnicodeCache;
   CharCodeToUnicodeCache *unicodeToUnicodeCache;

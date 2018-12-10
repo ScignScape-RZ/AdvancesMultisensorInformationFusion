@@ -983,7 +983,7 @@ static void aes256DecryptBlock(DecryptAES256State *s, Guchar *in, GBool last) {
 }
 
 //------------------------------------------------------------------------
-// MD5 message digest
+// MD5 #message digest
 //------------------------------------------------------------------------
 
 // this works around a bug in older Sun compilers
@@ -1252,7 +1252,7 @@ static void sha256HashBlock(Guchar *blk, Guint *H) {
   Guint T1, T2;
   Guint t;
 
-  // 1. prepare the message schedule
+  // 1. prepare the #message schedule
   for (t = 0; t < 16; ++t) {
     W[t] = (blk[t*4] << 24) |
            (blk[t*4 + 1] << 16) |
@@ -1321,7 +1321,7 @@ static void sha256(Guchar *msg, int msgLen, Guchar *hash) {
     memcpy(blk, msg + i, blkLen);
   }
 
-  // pad the message
+  // pad the #message
   blk[blkLen++] = 0x80;
   if (blkLen > 56) {
     while (blkLen < 64) {
@@ -1437,7 +1437,7 @@ static void sha512HashBlock(Guchar *blk, SHA512Uint64 *H) {
   SHA512Uint64 T1, T2;
   Guint t;
 
-  // 1. prepare the message schedule
+  // 1. prepare the #message schedule
   for (t = 0; t < 16; ++t) {
     W[t] = ((SHA512Uint64)blk[t*8] << 56) |
            ((SHA512Uint64)blk[t*8 + 1] << 48) |
@@ -1510,7 +1510,7 @@ static void sha512(Guchar *msg, int msgLen, Guchar *hash) {
     memcpy(blk, msg + i, blkLen);
   }
 
-  // pad the message
+  // pad the #message
   blk[blkLen++] = 0x80;
   if (blkLen > 112) {
     while (blkLen < 128) {
@@ -1576,7 +1576,7 @@ static void sha384(Guchar *msg, int msgLen, Guchar *hash) {
     memcpy(blk, msg + i, blkLen);
   }
 
-  // pad the message
+  // pad the #message
   blk[blkLen++] = 0x80;
   if (blkLen > 112) {
     while (blkLen < 128) {

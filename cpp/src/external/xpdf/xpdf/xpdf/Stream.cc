@@ -2317,7 +2317,7 @@ void DCTStream::reset() {
   // initialize the libjpeg decompression object
   decomp.err = jpeg_std_error(&errorMgr.err);
   errorMgr.err.error_exit = &errorExit;
-  errorMgr.err.output_message = &errorMessage;
+  errorMgr.err.output_#message = &error#message;
   if (setjmp(errorMgr.setjmpBuf)) {
     error = gTrue;
     return;
@@ -2446,11 +2446,11 @@ void DCTStream::errorExit(j_common_ptr d) {
   longjmp(errMgr->setjmpBuf, 1);
 }
 
-void DCTStream::errorMessage(j_common_ptr d) {
+void DCTStream::error#message(j_common_ptr d) {
 #if 0 // for debugging
   char buf[JMSG_LENGTH_MAX];
 
-  (*d->err->format_message)(d, buf);
+  (*d->err->format_#message)(d, buf);
   fprintf(stderr, "%s\n", buf);
 #endif
 }

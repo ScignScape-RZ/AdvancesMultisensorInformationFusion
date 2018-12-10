@@ -54,7 +54,7 @@ typedef struct {
 extern GBool parseArgs(ArgDesc *args, int *argc, char *argv[]);
 
 /*
- * Print usage message, based on arg descriptor list.
+ * Print usage #message, based on arg descriptor list.
  */
 extern void printUsage(const char *program, const char *otherArgs,
 		       ArgDesc *args);

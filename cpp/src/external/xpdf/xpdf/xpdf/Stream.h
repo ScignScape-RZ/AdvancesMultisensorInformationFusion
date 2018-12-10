@@ -672,7 +672,7 @@ private:
 
   GBool fillBuf();
   static void errorExit(j_common_ptr d);
-  static void errorMessage(j_common_ptr d);
+  static void error#message(j_common_ptr d);
   static void initSourceCbk(j_decompress_ptr d);
   static boolean fillInputBufferCbk(j_decompress_ptr d);
   static void skipInputDataCbk(j_decompress_ptr d, long numBytes);

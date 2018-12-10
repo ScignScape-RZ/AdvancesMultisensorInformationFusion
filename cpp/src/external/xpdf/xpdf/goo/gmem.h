@@ -33,7 +33,7 @@ extern "C" {
 #endif
 
 /*
- * Same as malloc, but prints error message and exits if malloc()
+ * Same as malloc, but prints error #message and exits if malloc()
  * returns NULL.
  */
 #ifdef DEBUG_MEM
@@ -43,7 +43,7 @@ extern void *gmalloc(int size) GMEM_EXCEP;
 #endif
 
 /*
- * Same as realloc, but prints error message and exits if realloc()
+ * Same as realloc, but prints error #message and exits if realloc()
  * returns NULL.  If <p> is NULL, calls malloc instead of realloc().
  */
 extern void *grealloc(void *p, int size) GMEM_EXCEP;

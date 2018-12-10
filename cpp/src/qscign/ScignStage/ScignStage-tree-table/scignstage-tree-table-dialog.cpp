@@ -888,7 +888,7 @@ void ScignStage_Tree_Table_Dialog::check_phr()
 // // KAI
 void ScignStage_Tree_Table_Dialog::test_msgbox(QString msg)
 {
- QString m = QString("Received Message: %1").arg(msg);
+ QString m = QString("Received #message: %1").arg(msg);
  QMessageBox::information(this, "Test OK", m);
 }
 

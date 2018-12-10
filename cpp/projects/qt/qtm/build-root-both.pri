@@ -13,19 +13,20 @@ TEMPLATE = lib
 ##    to set some of these constants by hand (most of these constants
 ##    are set assuming a common directory structure underneath ROOT_DIR).
 ##    To see the settings obtained from these substitutions,
-##    uncomment the "message" lines below.
+##    uncomment the "#message" lines below.
 
 ROOT_DIR = $$OUT_PWD
 
 ROOT_DIR ~= s!/cpp/projects.qt/.*!!
 
+DEFINES += WHICH_DEFINES=\\\"./_defines/$${BUILD_DIR_CODE}_defines.h\\\"
+
 ## this is defined elswhere now ...
 #BUILD_DIR_CODE = $$OUT_PWD
 #BUILD_DIR_CODE ~= s!.*/(build|release)-($$PROJECT_NAME)-(.*)-(Debug|Release)!\3
 
-
-#message($$ROOT_DIR)
-#message($$BUILD_DIR_CODE)
+##message($$ROOT_DIR)
+##message($$BUILD_DIR_CODE)
 
 TARGET_QT_VERSION = $$QT_VERSION
 

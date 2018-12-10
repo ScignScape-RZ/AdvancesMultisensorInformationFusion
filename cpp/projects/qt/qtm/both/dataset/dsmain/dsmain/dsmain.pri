@@ -13,8 +13,8 @@ INCLUDEPATH += $$POSIT_SRC_GROUP_DIR
 
 exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/kauvir--kauvir-kcm--kcm-lisp-bridge) \#/
 {
- INCLUDEPATH += $$SEXP_DIR
- INCLUDEPATH += $$SEXP_DIR/pingus/
+ #? INCLUDEPATH += $$SEXP_DIR
+ #? INCLUDEPATH += $$SEXP_DIR/pingus/
 }
 
 
@@ -49,5 +49,5 @@ SOURCES += \
   $$SRC_DIR/test-sample.cpp \
   $$SRC_DIR/test-series.cpp \
 
-message(choice: $$CPP_ROOT_DIR/targets/$$CHOICE_CODE/$$PROJECT_SET--$$PROJECT_GROUP--$$PROJECT_NAME)
+#message(choice: $$CPP_ROOT_DIR/targets/$$CHOICE_CODE/$$PROJECT_SET--$$PROJECT_GROUP--$$PROJECT_NAME)
 mkpath($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/$$PROJECT_SET--$$PROJECT_GROUP--$$PROJECT_NAME)

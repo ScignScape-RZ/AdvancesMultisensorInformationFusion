@@ -42,10 +42,10 @@ LIBS += -L$$TARGETSDIR -lkcm-scopes -lkauvir-code-model \
 
 exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/kauvir--kauvir-kcm--kcm-lisp-bridge)\
 {
- message(DEFINE\'ing USING_ECL)
- include(../../../../find-ecl-sexp.pri)
+ message(DEFINE\'ing ISO__USING_ECL)
 
- LIBS += -L$$TARGETSDIR -lkcm-lisp-bridge
+ #? include(../../../../find-ecl-sexp.pri)
+ #? LIBS += -L$$TARGETSDIR -lkcm-lisp-bridge
 
 }
 

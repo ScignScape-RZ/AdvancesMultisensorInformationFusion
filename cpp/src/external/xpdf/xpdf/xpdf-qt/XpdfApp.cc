@@ -123,7 +123,7 @@ void send_msg(RZW& rzw, QString msg)
 void run_msg(RZW& rzw, QString msg)
 {
  rzw.current_tcp_msg = msg;
-// QMessageBox::information(nullptr, "Qt Server",
+// Q#messageBox::information(nullptr, "Qt Server",
 //                          QString("received: %1")
 //                          .arg(msg));
  int index = msg.indexOf(':');
@@ -131,7 +131,7 @@ void run_msg(RZW& rzw, QString msg)
 
  QString arg = msg.mid(index + 1);
 
-  QMessageBox::information(nullptr, "Qt Server",
+  Q#messageBox::information(nullptr, "Qt Server",
                            QString("received: %1, %2")
                            .arg(key).arg(arg));
 
@@ -151,23 +151,23 @@ XpdfApp::XpdfApp(int &argc, char **argv):
  QTcpServer* tcp_server = new QTcpServer();
  QMap<qintptr, QByteArray>* temps = new QMap<qintptr, QByteArray>();
 
- QString waiting_message;
+ QString waiting_#message;
 
  int port = 18262; // // r z 1
 
  if (!tcp_server->listen(QHostAddress::LocalHost, port))
  {
-  QMessageBox::critical(nullptr, "Qt Server",
+  Q#messageBox::critical(nullptr, "Qt Server",
                         QString("Unable to start the server: %1.")
                         .arg(tcp_server->errorString()));
  }
  else
  {
-  waiting_message = QString("Server waiting on IP: %1\nport: %2\n\n")
+  waiting_#message = QString("Server waiting on IP: %1\nport: %2\n\n")
     .arg(tcp_server->serverAddress().toString()).arg(tcp_server->serverPort());
 
-  QMessageBox::information(nullptr, "Qt Server",
-                           QString(waiting_message));
+  Q#messageBox::information(nullptr, "Qt Server",
+                           QString(waiting_#message));
  }
 
  RZW* rzw = new RZW{*this, 18261, "", *(new QNetworkAccessManager)};
@@ -175,25 +175,25 @@ XpdfApp::XpdfApp(int &argc, char **argv):
  QObject::connect(tcp_server, &QTcpServer::newConnection, [this, rzw, tcp_server, temps]
  {
   QTcpSocket* clientConnection = tcp_server->nextPendingConnection();
-  QMessageBox::information(nullptr, "Qt Server ...",
+  Q#messageBox::information(nullptr, "Qt Server ...",
     QString("received: %1, %2")
     .arg(QString::fromLatin1("received")).arg(0));
   QObject::connect(clientConnection, &QTcpSocket::readyRead, [clientConnection, this, rzw, temps]
   {
    qintptr sd = clientConnection->socketDescriptor();
    QByteArray received = clientConnection->readAll();
-   QMessageBox::information(nullptr, "Qt Server",
+   Q#messageBox::information(nullptr, "Qt Server",
      QString("received: %1, %2")
      .arg(QString::fromLatin1(received)).arg(sd));
 
 //   while(clientConnection->bytesAvailable())
 //   {
 //    received.append(clientConnection->readAll());
-//       QMessageBox::information(nullptr, "Qt Server",
+//       Q#messageBox::information(nullptr, "Qt Server",
 //                                QString("received: %1, %2")
 //                                .arg(QString::fromLatin1(received)).arg(sd));
 //   }
-////   QMessageBox::information(nullptr, "Qt Server",
+////   Q#messageBox::information(nullptr, "Qt Server",
 ////                            QString("received: %1, %2")
 ////                            .arg(QString::fromLatin1(received)).arg(sd));
 //   if(received.endsWith("<//>"))
@@ -307,7 +307,7 @@ XpdfApp::XpdfApp(int &argc, char **argv):
 // // // rz
 // connect(this, &XpdfApp::window_ready, [rzw, port]
 // {
-//  QMessageBox::information(nullptr, "Qt Server",
+//  Q#messageBox::information(nullptr, "Qt Server",
 //                           QString("hello:xpdf;%1")
 //                           .arg(port));
 //  send_msg(*rzw, QString("hello:xpdf;%1").arg(port));

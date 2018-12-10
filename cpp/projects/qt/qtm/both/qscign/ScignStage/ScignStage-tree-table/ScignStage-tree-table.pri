@@ -42,16 +42,16 @@ DEFINES += USE_RZNS
 
 exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/external--xpdf--xpdf) \#/
 {
- message(DEFINE\'ing USING_XPDF)
- DEFINES += USING_XPDF
- LIBS += -L$$TARGETSDIR -lxpdf
+ message(DEFINE\'ing ISO__USING_XPDF)
+ DEFINES += ISO__USING_XPDF
+ #? LIBS += -L$$TARGETSDIR -lxpdf
 }
 
 exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/tests-kph--kauvir-phaon--kauvir-phaon) \#/
 {
- message(DEFINE\'ing USING_XPDF)
- DEFINES += USING_KPH
- LIBS += -L$$TARGETSDIR -lPhaonLib -lkauvir-phaon -lkauvir-code-model
+ message(DEFINE\'ing ISO__USING_XPDF)
+ DEFINES += ISO__USING_KPH
+ #? LIBS += -L$$TARGETSDIR -lPhaonLib -lkauvir-phaon -lkauvir-code-model
 }
 
 

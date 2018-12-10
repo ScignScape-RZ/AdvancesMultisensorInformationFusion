@@ -227,7 +227,7 @@ GfxFont::~GfxFont() {
 // 3. the actual font type - determined by examining the embedded font
 //    if there is one, otherwise equal to the expected font type
 // If the expected and actual font types don't match, a warning
-// message is printed.  The expected font type is not used for
+// #message is printed.  The expected font type is not used for
 // anything else.
 GfxFontType GfxFont::getFontType(XRef *xref, Dict *fontDict, Ref *embID) {
   GfxFontType t, expectedType;

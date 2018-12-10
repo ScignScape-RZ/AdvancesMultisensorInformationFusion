@@ -46,12 +46,11 @@ LIBS += -L$$TARGETSDIR  -lScignStage-tree-table
 
 exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/tests-kph--kauvir-phaon--kauvir-phaon) \#/
 {
- message(DEFINE\'ing USING_KPH)
- DEFINES += USING_KPH
- LIBS += -L$$TARGETSDIR  -lkauvir-phaon \
-
+ message(DEFINE\'ing ISO__USING_KPH)
+ DEFINES += ISO__USING_KPH
+ #?LIBS += -L$$TARGETSDIR  -lkauvir-phaon \
 }
 
 
-message(choice: $$CPP_ROOT_DIR/targets/$$CHOICE_CODE/$$PROJECT_SET--$$PROJECT_GROUP--$$PROJECT_NAME)
+#message(choice: $$CPP_ROOT_DIR/targets/$$CHOICE_CODE/$$PROJECT_SET--$$PROJECT_GROUP--$$PROJECT_NAME)
 mkpath($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/$$PROJECT_SET--$$PROJECT_GROUP--$$PROJECT_NAME)

@@ -34,9 +34,9 @@ DEFINES += USE_KANS
 
 exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/kauvir--kauvir-phaon--kph-generator) \#/
 {
- message(DEFINE\'ing USING_KPH_GEN)
- DEFINES += USING_KPH_GEN
- LIBS += -L$$TARGETSDIR -lkph-generator
+ message(DEFINE\'ing ISO__USING_KPH_GEN)
+ DEFINES += ISO__USING_KPH_GEN
+ #? LIBS += -L$$TARGETSDIR -lkph-generator
 }
 
 

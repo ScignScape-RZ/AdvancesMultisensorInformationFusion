@@ -28,6 +28,8 @@
 
 #include <QFileDialog>
 
+#include "defines.h"
+
 #include "ScignStage-tree-table/scignstage-tree-table-dialog.h"
 
 #include "ScignStage-tree-table/xpdf-bridge.h"
@@ -62,6 +64,9 @@ USING_KANS(PhaonLib)
 
 int main(int argc, char **argv)
 {
+
+ qDebug() << WHICH_DEFINES;
+
  QApplication qapp(argc, argv);
 
  Test_Series ts;
