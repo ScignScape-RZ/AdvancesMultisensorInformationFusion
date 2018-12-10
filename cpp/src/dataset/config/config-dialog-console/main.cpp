@@ -22,6 +22,11 @@ int main(int argc, char* argv[])
 
  Config_Dialog dlg(nullptr);
 
+ dlg.set_proceed_callback([](QString qs)
+ {
+  qDebug() << qs;
+ });
+
  dlg.show();
 
  return qapp.exec();

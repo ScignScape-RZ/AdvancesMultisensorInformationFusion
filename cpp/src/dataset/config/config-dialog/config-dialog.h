@@ -52,7 +52,6 @@ class QCheckBox;
 
 class Config_Dialog : public QDialog
 {
-
  Q_OBJECT
 
  QDialogButtonBox* button_box_;
@@ -60,8 +59,12 @@ class Config_Dialog : public QDialog
  QPushButton* button_cancel_;
  QPushButton* button_proceed_;
 
+ QGridLayout* compile_options_grid_layout_;
+ QGridLayout* roles_grid_layout_;
 
- QGridLayout* main_grid_layout_;
+ QGroupBox* compile_options_group_box_;
+ QGroupBox* roles_group_box_;
+
  QVBoxLayout* main_layout_;
 
  QCheckBox* ss3d_check_box_;
@@ -70,18 +73,43 @@ class Config_Dialog : public QDialog
  QCheckBox* xpdf_qt_libs_check_box_;
  QCheckBox* xpdf_system_libs_check_box_;
 
+ QButtonGroup* qs_button_group_;
+ QButtonGroup* main_button_group_;
+
+ QButtonGroup* roles_button_group_;
+
+ QString last_ac_;
+
+ QPushButton* autofill_button_;
+
+ std::function<void(QString)> proceed_callback_;
+
  QString get_apply_code();
+ QString get_role_code();
+
+ void autofill_1();
+ void autofill_2(bool ss3d = true, bool kph = false);
+ void autofill_3();
+ void autofill_4();
+ void autofill_5();
+ void autofill_6();
 
 public:
 
  Config_Dialog(QWidget* parent);
-
  ~Config_Dialog();
+
+ ACCESSORS(std::function<void(QString)> ,proceed_callback)
+
+ void register_proceed_completed(QString ac);
+ void check_proceed_possible();
 
 
 Q_SIGNALS:
+
  void canceled(QDialog*);
  void accepted(QDialog*);
+ void proceed_requested(QString);
 
 
 public Q_SLOTS:
