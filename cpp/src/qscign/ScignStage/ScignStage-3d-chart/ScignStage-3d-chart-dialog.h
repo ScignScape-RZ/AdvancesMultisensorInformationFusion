@@ -49,8 +49,6 @@ class ScignStage_3d_Chart_Dialog : public QDialog
 
 public:
 
- std::function<void (Test_Sample*)> selected_cb;
-
  ScignStage_3d_Chart_Dialog(Test_Series* ts,
    int fres, int tres, QWidget* parent);
 

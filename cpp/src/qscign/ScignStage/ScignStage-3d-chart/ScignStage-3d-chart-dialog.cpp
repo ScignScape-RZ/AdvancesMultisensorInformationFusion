@@ -39,7 +39,7 @@ USING_KANS(TextIO)
 
 ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
   int fres, int tres, QWidget* parent)
- : QDialog(parent), selected_cb(nullptr), held_external_selected_(nullptr)
+ : QDialog(parent), held_external_selected_(nullptr)
 {
  button_box_ = new QDialogButtonBox(this);
 
@@ -210,7 +210,7 @@ void ScignStage_3d_Chart_Dialog::handle_selection_change(int series,
   held_external_selected_ = nullptr;
  }
  if(samp)
-   selected_cb(samp);
+   Q_EMIT( sample_selected(this, samp) );
 }
 
 void ScignStage_3d_Chart_Dialog::external_selected(Test_Sample* samp)
