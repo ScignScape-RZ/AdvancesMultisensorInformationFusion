@@ -51,8 +51,17 @@ SOURCES += \
   $$SRC_DIR/graphic-dialog-container.cpp
 
 
-LIBS += -L$$TARGETSDIR -ldsmain  -lScignStage-tree-table \
-    -lScignStage-2d-chart  -lScignStage-3d-chart  -lapplication-model \
+LIBS += -L$$TARGETSDIR -ldsmain  -lposit-lib  -lScignStage-tree-table \
+    -lScignStage-2d-chart  -lapplication-model \
+
+
+exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/qscign--ScignStage--ScignStage-3d-chart) \#/
+{
+ message(DEFINE\'ing USING_SCIGNSTAGE_3D)
+ DEFINES += USING_SCIGNSTAGE_3D
+ LIBS += -L$$TARGETSDIR -lScignStage-3d-chart
+}
+
 
 
 exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/external--xpdf--xpdf) \#/

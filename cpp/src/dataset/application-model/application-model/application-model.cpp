@@ -7,7 +7,7 @@
 
 #include "application-model.h"
 
-#include "ScignStage-tree-table/ScignStage-tree-table-dialog.h"
+#include "ScignStage-tree-table/scignstage-tree-table-dialog.h"
 
 #include "kauvir-phaon/kph-command-package.h"
 

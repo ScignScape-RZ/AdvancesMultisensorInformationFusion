@@ -11,7 +11,9 @@
 
 #include "ScignStage-3d-chart/ScignStage-3d-chart-dialog.h"
 
-#include "ScignStage-tree-table/ScignStage-tree-table-dialog.h"
+#include "ScignStage-tree-table/scignstage-tree-table-dialog.h"
+
+#include <QMessageBox>
 
 
 #include "dsmain/test-sample.h"
@@ -64,6 +66,7 @@ void Graphic_Dialog_Container::handle_graphic_open_requested(quint8 d, quint8 r,
   }
   else if(d == 3)
   {
+#ifdef USING_SCIGNSTAGE_3D
    ScignStage_3d_Chart_Dialog* dlg = new ScignStage_3d_Chart_Dialog(
      parent_dialog_->series(), r, c, parent_dialog_);
    connect(dlg, SIGNAL(sample_selected(QWidget*, Test_Sample*)),
@@ -72,9 +75,6 @@ void Graphic_Dialog_Container::handle_graphic_open_requested(quint8 d, quint8 r,
      dlg, SLOT(highlight_selected_sample(Test_Sample*)));
    connect(parent_dialog_, SIGNAL( external_sample_highlighted(QWidget*, Test_Sample*)),
      dlg, SLOT(external_highlight_selected_sample(QWidget*, Test_Sample*)));
-
-
-
    connect(dlg, &QDialog::accepted, [this, dlg]
    {
     dlg->show();
@@ -88,6 +88,13 @@ void Graphic_Dialog_Container::handle_graphic_open_requested(quint8 d, quint8 r,
    });
 
    graphics_[code] = dlg;
+#else
+  QMessageBox::critical(nullptr, "3D not Supported",
+    "The 3D data visualization components are not including in this build "
+    "of the data set application.  Please try using a different build "
+    "strategy (like build-quick) to use these components.");
+  return;
+#endif  //  USING_SCIGNSTAGE_3D
   }
   else
     return;
