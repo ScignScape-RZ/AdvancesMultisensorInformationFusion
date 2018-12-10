@@ -47,7 +47,6 @@ exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/external--xpdf--xpdf) \#/
  LIBS += -L$$TARGETSDIR -lxpdf
 }
 
-
 exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/tests-kph--kauvir-phaon--kauvir-phaon) \#/
 {
  message(DEFINE\'ing USING_XPDF)

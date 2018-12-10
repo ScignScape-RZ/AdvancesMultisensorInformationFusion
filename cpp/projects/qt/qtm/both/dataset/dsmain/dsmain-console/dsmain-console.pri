@@ -55,13 +55,13 @@ LIBS += -L$$TARGETSDIR -ldsmain  -lScignStage-tree-table \
     -lScignStage-2d-chart  -lScignStage-3d-chart  -lapplication-model \
 
 
-
 exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/external--xpdf--xpdf) \#/
 {
  message(DEFINE\'ing USING_XPDF)
  DEFINES += USING_XPDF
  LIBS += -L$$TARGETSDIR -lxpdf
 }
+
 
 exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/tests-kph--kauvir-phaon--kauvir-phaon) \#/
 {
@@ -71,7 +71,6 @@ exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/tests-kph--kauvir-phaon--kauvir-phao
    -lPhaonLib -lkauvir-code-model -lkcm-command-runtime -lkcm-command-package \
    -lkauvir-type-system
 }
-
 
 exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/kauvir--kauvir-kcm--kcm-lisp-bridge) \#/
 {
