@@ -44,13 +44,24 @@ SOURCES += \
 
 LIBS += -L$$TARGETSDIR  -lScignStage-tree-table
 
-exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/tests-kph--kauvir-phaon--kauvir-phaon) \#/
+contains(CHOICE_FEATURES, "kph") \#/
 {
- message(DEFINE\'ing ISO__USING_KPH)
- DEFINES += ISO__USING_KPH
- #?LIBS += -L$$TARGETSDIR  -lkauvir-phaon \
+ #?message(DEFINE\'ing USING_KPH)
+ #?DEFINES += USING_KPH
+ LIBS += -L$$TARGETSDIR -lPhaonLib -lkauvir-phaon -lkauvir-code-model
 }
 
 
-#message(choice: $$CPP_ROOT_DIR/targets/$$CHOICE_CODE/$$PROJECT_SET--$$PROJECT_GROUP--$$PROJECT_NAME)
+contains(CHOICE_FEATURES, "iso-choice") \#/
+{
+ exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/tests-kph--kauvir-phaon--kauvir-phaon) \#/
+ {
+  message(DEFINE\'ing ISO__USING_XPDF)
+  DEFINES += ISO__USING_KPH
+  LIBS += -L$$TARGETSDIR -lPhaonLib -lkauvir-phaon -lkauvir-code-model
+ }
+}
+
+
+message(choice: $$CPP_ROOT_DIR/targets/$$CHOICE_CODE/$$PROJECT_SET--$$PROJECT_GROUP--$$PROJECT_NAME)
 mkpath($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/$$PROJECT_SET--$$PROJECT_GROUP--$$PROJECT_NAME)

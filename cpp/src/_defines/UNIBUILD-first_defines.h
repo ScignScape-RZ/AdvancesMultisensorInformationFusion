@@ -4,9 +4,9 @@
 //     (See accompanying file LICENSE_1_0.txt or copy at
 //           http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef UNIBUILD_QUICK_DEFINES__H
-#define UNIBUILD_QUICK_DEFINES__H
+#ifndef UNIBUILD_FIRST_DEFINES__H
+#define UNIBUILD_FIRST_DEFINES__H
 
 
 
-#endif // UNIBUILD_QUICK_DEFINES__H
+#endif // UNIBUILD_FIRST_DEFINES__H

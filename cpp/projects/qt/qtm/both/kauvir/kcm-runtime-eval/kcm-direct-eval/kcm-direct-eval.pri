@@ -32,13 +32,15 @@ CONFIG += no_keywords
 
 DEFINES += USE_KANS
 
-exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/kauvir--kauvir-phaon--kph-generator) \#/
+contains(CHOICE_FEATURES, "iso-choice") \#/
 {
- message(DEFINE\'ing ISO__USING_KPH_GEN)
- DEFINES += ISO__USING_KPH_GEN
+ exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/kauvir--kauvir-phaon--kph-generator) \#/
+ {
+  message(DEFINE\'ing ISO__USING_KPH_GEN)
+  DEFINES += ISO__USING_KPH_GEN
  #? LIBS += -L$$TARGETSDIR -lkph-generator
+ }
 }
-
 
 message(choice: $$CPP_ROOT_DIR/targets/$$CHOICE_CODE/$$PROJECT_SET--$$PROJECT_GROUP--$$PROJECT_NAME)
 mkpath($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/$$PROJECT_SET--$$PROJECT_GROUP--$$PROJECT_NAME)

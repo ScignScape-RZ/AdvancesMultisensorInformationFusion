@@ -4,9 +4,11 @@
 //     (See accompanying file LICENSE_1_0.txt or copy at
 //           http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef BUILD_ALL_DEFINES__H
-#define BUILD_ALL_DEFINES__H
+#ifndef UNIBUILD_ALL_DEFINES__H
+#define UNIBUILD_ALL_DEFINES__H
 
+#define USING_XPDF
+#define USING_SCIGNSTAGE_3D
+#define USING_KPH
 
-
-#endif // BUILD_ALL_DEFINES__H
+#endif // UNIBUILD_ALL_DEFINES__H
