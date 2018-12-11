@@ -23,7 +23,7 @@ Application_Config_Model::Application_Config_Model()
      { "xpdf",
       {{{"external/xpdf/xpdf"},
        {"USING_XPDF"},
-       {""} }}},
+       {} }}},
 
     { "ss3d",
       {{{"qscign/ScignStage/ScignStage-3d-chart"},
@@ -74,7 +74,6 @@ void Application_Config_Model::parse_config_code(QString cc)
  cc = cc.left(index);
 
  usrl_ = (User_Levels) ul;
-  qDebug() << ul;
 
  if(cc.contains("xq"))
  {
@@ -88,6 +87,17 @@ void Application_Config_Model::parse_config_code(QString cc)
  }
  else
    insert_text_.remove("xpdf");
+
+ if(!cc.contains('k'))
+ {
+  insert_text_.remove("kph");
+ }
+
+ if(!cc.contains('3'))
+ {
+  insert_text_.remove("ss3d");
+ }
+
 }
 
 QString Application_Config_Model::insert_to_defines(QString file_path, QString& result)
@@ -119,4 +129,66 @@ QString Application_Config_Model::insert_to_defines(QString file_path, QString& 
  result.replace(index, 0, insert);
 
  return file_path += gen_test_;
+}
+
+QString Application_Config_Model::insert_to_choices(QString file_path, QString& result)
+{
+ load_file(file_path, result);
+
+ QString locator = "\n#__CHOICE_FEATURES__#\n";
+
+ int index = result.indexOf(locator);
+
+ if(index == -1)
+   return file_path += ".err.txt";
+
+ index += locator.size();
+
+ QString insert = QString("CHOICE_FEATURES = %1").arg(insert_text_.isEmpty()?
+    "none" : insert_text_.keys().join(' '));
+
+ result.replace(index, 0, insert);
+
+ return file_path += gen_test_;
+}
+
+void Application_Config_Model::insert_to_custom_libs(const QMap<QString, QString>& files,
+  QMap<QString, QString>& result)
+{
+ QMapIterator<QString, QString> it(files);
+
+ while(it.hasNext())
+ {
+  it.next();
+
+  QString k = it.key();
+  QString fn = it.value();
+  QString c = load_file(fn);
+
+  QString locator = "\n#__CUSTOM_LIBS__#\n";
+
+  int index = c.indexOf(locator);
+
+  if(index == -1)
+  {
+   result[fn + ".err.txt"] = c;
+   continue;
+  }
+
+  index += locator.size();
+
+  QString libs;
+
+  if(insert_text_.contains(k))
+  {
+   for(QString lib : insert_text_[k][0].pri_libs)
+   {
+    libs += QString(" -l%1 ").arg(lib);
+   }
+   QString insert = QString("LIBS += %1").arg(libs);
+   c.replace(index, 0, insert);
+  }
+
+  result[fn + gen_test_] = c;
+ }
 }

@@ -1,0 +1,5 @@
+
+#__CUSTOM_LIBS__#
+LIBS +=  -llibqtpng  -llibqtfreetyped 
+
+
