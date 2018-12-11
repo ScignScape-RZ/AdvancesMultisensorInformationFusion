@@ -73,6 +73,8 @@ class Config_Dialog : public QDialog
  QCheckBox* xpdf_qt_libs_check_box_;
  QCheckBox* xpdf_system_libs_check_box_;
 
+ QCheckBox* gen_test_check_box_;
+
  QButtonGroup* qs_button_group_;
  QButtonGroup* main_button_group_;
 

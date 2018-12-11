@@ -118,6 +118,14 @@ Config_Dialog::Config_Dialog(QWidget* parent)
  main_button_group_->addButton(kph_check_box_);
  main_button_group_->setExclusive(false);
 
+ gen_test_check_box_ = new QCheckBox("Preview (right click \"Administrator\" "
+    "to enable/disable)", this);
+ gen_test_check_box_->setEnabled(false);
+
+ compile_options_grid_layout_->addWidget(gen_test_check_box_, 3, 0, 1, 3, Qt::AlignRight);
+
+ //main_layout_->addWidget(gen_test_check_box_);
+
  connect(main_button_group_,
    QOverload<QAbstractButton *, bool>::of(&QButtonGroup::buttonToggled),
    [this](QAbstractButton*, bool)
@@ -139,7 +147,7 @@ Config_Dialog::Config_Dialog(QWidget* parent)
   if(b)
   {
    QString ac = get_apply_code();
-   if(ac.contains('s') || ac.contains('q'))
+   if(ac.contains("xs") || ac.contains("xq"))
    {
 
    }
@@ -166,6 +174,20 @@ Config_Dialog::Config_Dialog(QWidget* parent)
    r += " (Default)";
   }
   QCheckBox* ckb = new QCheckBox(r, this);
+
+  if(r == "Administrator")
+  {
+   ckb->setContextMenuPolicy(Qt::CustomContextMenu);
+
+   connect(ckb, &QCheckBox::customContextMenuRequested, [this](const QPoint& p)
+   {
+    if(gen_test_check_box_->isEnabled())
+      gen_test_check_box_->setEnabled(false);
+    else
+      gen_test_check_box_->setEnabled(true);
+   });
+  }
+
   roles_button_group_->addButton(ckb);
   roles_grid_layout_->addWidget(ckb, j, i, 1, span);
   if(i == 2)
@@ -272,6 +294,7 @@ QString Config_Dialog::get_role_code()
 QString Config_Dialog::get_apply_code()
 {
  QString result;
+
  if(xpdf_check_box_->isChecked())
    result += "x";
  if(xpdf_qt_libs_check_box_->isChecked())
@@ -282,6 +305,10 @@ QString Config_Dialog::get_apply_code()
    result += "k";
  if(ss3d_check_box_->isChecked())
    result += "3";
+
+ if(gen_test_check_box_->isEnabled() && gen_test_check_box_->isChecked())
+   result.prepend("gen_test__");
+
  return result;
 }
 

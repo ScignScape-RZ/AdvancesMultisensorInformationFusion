@@ -32,6 +32,11 @@ CONFIG += no_keywords
 DEFINES += USE_KANS
 DEFINES += USE_RZNS
 
+DEFINES += DEFINES_SRC_FOLDER=\\\"$$SRC_ROOT_DIR/_defines\\\"
+DEFINES += CHOICES_PRI_FOLDER=\\\"$$CPP_ROOT_DIR/projects/qt/qtm/_choices\\\"
+DEFINES += CUSTOM_LIBS_PRI_FOLDER=\\\"$$CPP_ROOT_DIR/projects/qt/qtm/_custom_libs\\\"
+
+
 HEADERS += \
 
 
