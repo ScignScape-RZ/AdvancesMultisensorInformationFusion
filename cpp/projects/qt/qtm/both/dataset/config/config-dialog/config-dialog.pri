@@ -10,8 +10,6 @@ QT += widgets
 
 INCLUDEPATH += $$SRC_DIR
 
-
-
 DEFINES += CAON_DEBUG
 DEFINES += RELAE_LABEL_NODES
 
@@ -27,5 +25,5 @@ SOURCES += \
   $$SRC_DIR/config-dialog.cpp \
 
 
-##message(choice: $$CPP_ROOT_DIR/targets/$$CHOICE_CODE/$$PROJECT_SET--$$PROJECT_GROUP--$$PROJECT_NAME)
+message(choice: $$CPP_ROOT_DIR/targets/$$CHOICE_CODE/$$PROJECT_SET--$$PROJECT_GROUP--$$PROJECT_NAME)
 mkpath($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/$$PROJECT_SET--$$PROJECT_GROUP--$$PROJECT_NAME)

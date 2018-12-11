@@ -36,10 +36,13 @@ DEFINES += USE_RZNS
 HEADERS += \
   $$SRC_DIR/application-model.h \
   $$SRC_DIR/application-test-model.h \
+  $$SRC_DIR/application-config-model.h \
+
 
 SOURCES += \
   $$SRC_DIR/application-model.cpp \
   $$SRC_DIR/application-test-model.cpp \
+  $$SRC_DIR/application-config-model.cpp \
 
 
 LIBS += -L$$TARGETSDIR  -lScignStage-tree-table
