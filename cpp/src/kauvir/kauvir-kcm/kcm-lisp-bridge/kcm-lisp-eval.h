@@ -9,6 +9,9 @@
 
 #include "kans.h"
 
+#include "defines.h"
+
+
 #ifdef USING_ECL
 
 #include <QObject>

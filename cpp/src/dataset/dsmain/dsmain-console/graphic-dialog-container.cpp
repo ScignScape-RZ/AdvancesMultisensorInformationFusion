@@ -7,6 +7,8 @@
 
 #include "graphic-dialog-container.h"
 
+#include "defines.h"
+
 #include "ScignStage-2d-chart/ScignStage-2d-chart-dialog.h"
 
 #include "ScignStage-3d-chart/ScignStage-3d-chart-dialog.h"

@@ -7,10 +7,17 @@
 #ifndef XPDF_BRIDGE__H
 #define XPDF_BRIDGE__H
 
+// //  Note:  the MOC doesn't seem to follow the MACRO-based
+ //    include here, but the XPDF_Bridge class is structured
+ //    so this doesn't seem to matter (no functionality
+ //    affected by USING_XPDF is involved in the MOC generated code ...
+#include "defines.h"
+
+
+
 //QSNS_(ScignStage)
 //?namespace QScign { namespace ScignStage {
 
-#ifdef USING_XPDF
 
 #include <QObject>
 
@@ -22,6 +29,7 @@ class XPDF_Bridge : public QObject
 {
  Q_OBJECT
 
+#ifdef USING_XPDF
  Xpdf_Component* xpdf_component_;
  int argc_;
  char** argv_;
@@ -31,11 +39,14 @@ public:
  XPDF_Bridge(int argc, char** argv);
 
  void init();
-
  bool is_ready();
-
  void take_message(QString msg);
 
+#else
+ void take_message(QString) {}
+ bool is_ready(){ return false; }
+ void init(){}
+#endif //  USING_XPDF
 
 Q_SIGNALS:
 
@@ -46,17 +57,14 @@ Q_SIGNALS:
 
 //_QSNS(ScignStage)
 
-#else
+//#else
 
 
-struct XPDF_Bridge
-{
- void take_message(QString) {}
- bool is_ready(){ return false; }
- void init(){}
+//struct XPDF_Bridge
+//{
 
-};
+//};
 
-#endif // USING_XPDF
+//#endif // USING_XPDF
 
 #endif  //XPDF_BRIDGE__H

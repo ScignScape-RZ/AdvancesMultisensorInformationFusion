@@ -7,6 +7,8 @@
 #ifndef TEST_FUNCTIONS__H
 #define TEST_FUNCTIONS__H
 
+#include "defines.h"
+
 #ifdef USING_KPH
 
 #include "accessors.h"

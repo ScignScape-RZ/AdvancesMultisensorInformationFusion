@@ -6,6 +6,9 @@
 
 #include "kcm-direct-eval.h"
 
+#include "defines.h"
+
+
 #include "kauvir-code-model/kauvir-code-model.h"
 #include "kcm-lisp-bridge/kcm-lisp-bridge.h"
 #include "kcm-command-package/kcm-command-package.h"

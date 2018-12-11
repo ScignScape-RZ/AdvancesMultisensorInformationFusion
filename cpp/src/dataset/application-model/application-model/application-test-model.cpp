@@ -12,11 +12,12 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 
-USING_KANS(Phaon)
-USING_KANS(DSM)
-
 #include <QDebug>
 
+#include "defines.h"
+
+USING_KANS(Phaon)
+USING_KANS(DSM)
 
 Application_Test_Model::Application_Test_Model()
   :  qnam_(nullptr)

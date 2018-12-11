@@ -7,9 +7,10 @@
 
 #include "scignstage-tree-table-dialog.h"
 
+#include "defines.h"
+
+
 #include "styles.h"
-
-
 
 
 #include <QApplication>

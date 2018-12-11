@@ -42,7 +42,7 @@ DEFINES += USE_RZNS
 
 contains(CHOICE_FEATURES, "xpdf") \#/
 {
- #?message(DEFINE\'ing USING_XPDF)
+ message(LINKING XPDF)
  #?DEFINES += USING_XPDF
  LIBS += -L$$TARGETSDIR -lxpdf
 }
