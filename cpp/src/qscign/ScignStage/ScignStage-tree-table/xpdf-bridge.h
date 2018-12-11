@@ -43,6 +43,9 @@ public:
  void take_message(QString msg);
 
 #else
+
+public:
+
  void take_message(QString) {}
  bool is_ready(){ return false; }
  void init(){}
@@ -56,14 +59,6 @@ Q_SIGNALS:
 };
 
 //_QSNS(ScignStage)
-
-//#else
-
-
-//struct XPDF_Bridge
-//{
-
-//};
 
 //#endif // USING_XPDF
 

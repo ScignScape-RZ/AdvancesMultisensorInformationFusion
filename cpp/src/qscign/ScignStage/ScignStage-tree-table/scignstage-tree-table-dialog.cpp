@@ -140,8 +140,14 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
 
  activate_tcp_button_ = new QPushButton("Activate TCP", this);
 
+ launch_config_button_ = new QPushButton("Customize Build", this);
+
  take_screenshot_button_->setStyleSheet(colorful_button_style_sheet_());
  activate_tcp_button_->setStyleSheet(colorful_button_style_sheet_());
+ launch_config_button_->setStyleSheet(colorful_button_style_sheet_());
+
+ connect(launch_config_button_, SIGNAL(clicked()),
+   this, SLOT(handle_launch_config_requested()));
 
  connect(take_screenshot_button_, SIGNAL(clicked()),
    this, SLOT(handle_take_screenshot_requested()));
@@ -151,8 +157,8 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
 
  top_buttons_layout_->addStretch();
 
+ top_buttons_layout_->addWidget(launch_config_button_);
  top_buttons_layout_->addWidget(activate_tcp_button_);
-
  top_buttons_layout_->addWidget(take_screenshot_button_);
 
  main_layout_->addLayout(top_buttons_layout_);
@@ -865,6 +871,13 @@ void ScignStage_Tree_Table_Dialog::handle_sample_first()
  QTreeWidgetItem* twi = main_tree_widget_->topLevelItem(0);
  highlight(current_sample_);
  main_tree_widget_->scrollToItem(twi);
+}
+
+void ScignStage_Tree_Table_Dialog::handle_launch_config_requested()
+{
+ Q_EMIT(launch_config_requested());
+// if(screenshot_function_)
+//   screenshot_function_();
 }
 
 void ScignStage_Tree_Table_Dialog::handle_take_screenshot_requested()

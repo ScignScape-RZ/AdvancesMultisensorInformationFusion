@@ -87,8 +87,8 @@ class ScignStage_Tree_Table_Dialog : public QDialog
  // //  "Pseudo" Toolbar ...
  QHBoxLayout* top_buttons_layout_;
 
+ QPushButton* launch_config_button_;
  QPushButton* activate_tcp_button_;
-
  QPushButton* take_screenshot_button_;
 
  QTabWidget* main_tab_widget_;
@@ -189,6 +189,7 @@ Q_SIGNALS:
  void canceled(QDialog*);
  void accepted(QDialog*);
  void take_screenshot_requested();
+ void launch_config_requested();
  void sample_highlighted(Test_Sample* samp);
 
  void external_sample_highlighted(QWidget*, Test_Sample* samp);
@@ -203,6 +204,7 @@ public Q_SLOTS:
 
  void handle_xpdf_is_ready();
  void handle_take_screenshot_requested();
+ void handle_launch_config_requested();
 
  void handle_sample_down();
  void handle_sample_up();
