@@ -6,8 +6,10 @@
 
 #include "application-model/application-config-model.h"
 
-#include <QApplication>
+#include "config-dialog/config-dialog.h"
 
+#include <QApplication>
+#include <QDebug>
 
 #include "kans.h"
 
@@ -28,7 +30,19 @@ USING_KANS(DSM)
 
 int main(int argc, char **argv)
 {
+ QApplication qapp(argc, argv);
+
  Application_Config_Model acm;
  acm.parse_config_code("cc");
- return 0;
+
+ Config_Dialog dlg(nullptr);
+
+ dlg.set_proceed_callback([](QString qs)
+ {
+  qDebug() << qs;
+ });
+
+ dlg.show();
+
+ return qapp.exec();
 }

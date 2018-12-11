@@ -19,6 +19,11 @@ KANS_(DSM)
 
 class Application_Config_Model
 {
+ enum class User_Levels {
+   N_A = 0, Unidentified = 1, User = 2, Author = 3,
+   Editor = 4, Tester = 5, Administrator = 6
+ };
+
  struct Gen_Targets {
    QStringList subdirs;
    QStringList defines;
@@ -29,6 +34,8 @@ class Application_Config_Model
 
  };
  //QStringList subdirs_text_;
+
+ User_Levels usrl_;
 
  QMap<QString, QList<Gen_Targets>> insert_text_;
 

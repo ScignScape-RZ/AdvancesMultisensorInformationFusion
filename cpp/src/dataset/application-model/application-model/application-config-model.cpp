@@ -16,7 +16,7 @@ USING_KANS(DSM)
 
 
 Application_Config_Model::Application_Config_Model()
- : insert_text_{{
+ : usrl_(User_Levels::N_A), insert_text_{{
      { "xpdf",
       {{{"external/xpdf/xpdf"},
        {"USING_XPDF"},
@@ -59,4 +59,12 @@ Application_Config_Model::Application_Config_Model()
 void Application_Config_Model::parse_config_code(QString cc)
 {
  qDebug() << cc;
+ int index = cc.indexOf('-');
+
+ int ul = cc.mid(index + 1).toInt();
+ cc = cc.left(index);
+
+ usrl_ = (User_Levels) ul;
+  qDebug() << ul;
+
 }

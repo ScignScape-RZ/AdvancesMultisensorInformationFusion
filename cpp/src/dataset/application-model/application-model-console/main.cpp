@@ -29,6 +29,9 @@ USING_KANS(DSM)
 int main(int argc, char **argv)
 {
  Application_Config_Model acm;
- acm.parse_config_code("cc");
+ acm.parse_config_code("xq-1");
+
+
+
  return 0;
 }
