@@ -11,7 +11,10 @@
 
 #include "kans.h"
 
-#include <QThread>
+#include "textio.h"
+USING_KANS(TextIO)
+
+#include <QDebug>
 
 
 USING_KANS(DSM)
@@ -29,9 +32,12 @@ USING_KANS(DSM)
 int main(int argc, char **argv)
 {
  Application_Config_Model acm;
- acm.parse_config_code("xq-1");
+ acm.parse_config_code("gen_test__xq-1");
 
+ QString result;
+ QString f = acm.insert_to_defines(DEFINES_SRC_FOLDER "/UNIBUILD-custom_defines.h", result);
 
+ save_file(f, result);
 
  return 0;
 }

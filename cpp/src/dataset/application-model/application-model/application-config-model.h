@@ -39,11 +39,15 @@ class Application_Config_Model
 
  QMap<QString, QList<Gen_Targets>> insert_text_;
 
+ QString gen_test_;
+
 public:
 
  Application_Config_Model();
 
  void parse_config_code(QString cc);
+
+ QString insert_to_defines(QString file_path, QString& result);
 
 
 };

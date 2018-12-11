@@ -9,8 +9,11 @@
 
 #include <QDebug>
 
-
 #include "kans.h"
+
+#include "textio.h"
+
+USING_KANS(TextIO)
 
 USING_KANS(DSM)
 
@@ -58,6 +61,12 @@ Application_Config_Model::Application_Config_Model()
 
 void Application_Config_Model::parse_config_code(QString cc)
 {
+ if(cc.startsWith("gen_test__"))
+ {
+  gen_test_ = ".gen.txt";
+  cc = cc.mid(10);
+ }
+
  qDebug() << cc;
  int index = cc.indexOf('-');
 
@@ -67,4 +76,47 @@ void Application_Config_Model::parse_config_code(QString cc)
  usrl_ = (User_Levels) ul;
   qDebug() << ul;
 
+ if(cc.contains("xq"))
+ {
+  insert_text_["xpdf"][0].pri_libs.append(
+    QString("libqtpng libqtfreetyped").split(' '));
+ }
+ else if(cc.contains("xs"))
+ {
+  insert_text_["xpdf"][0].pri_libs.append(
+    QString("png freetype").split(' '));
+ }
+ else
+   insert_text_.remove("xpdf");
+}
+
+QString Application_Config_Model::insert_to_defines(QString file_path, QString& result)
+{
+ load_file(file_path, result);
+
+ QString locator = "\n//__CUSTOM_DEFINES__//\n";
+
+ int index = result.indexOf(locator);
+
+ if(index == -1)
+   return file_path += ".err.txt";
+
+ index += locator.size();
+
+ QString insert;
+
+ QMapIterator<QString, QList<Gen_Targets>> it(insert_text_);
+
+ while(it.hasNext())
+ {
+  it.next();
+  for(QString def : it.value()[0].defines)
+  {
+   insert += QString("#define %1\n").arg(def);
+  }
+ }
+
+ result.replace(index, 0, insert);
+
+ return file_path += gen_test_;
 }
