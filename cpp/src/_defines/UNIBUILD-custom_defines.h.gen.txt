@@ -9,6 +9,7 @@
 
 //__CUSTOM_DEFINES__//
 
+#define USING_KPH
 #define USING_SCIGNSTAGE_3D
 #define USING_XPDF
 

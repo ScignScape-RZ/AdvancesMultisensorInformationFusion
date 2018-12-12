@@ -64,7 +64,7 @@ Config_Dialog::Config_Dialog(QWidget* parent)
 
  button_proceed_->setDefault(false);
  button_proceed_->setAutoDefault(false);
- button_proceed_->setEnabled(false);
+ button_proceed_->setEnabled(true);
 
  button_cancel_->setDefault(true);
 
@@ -343,7 +343,7 @@ Config_Dialog::~Config_Dialog()
 
 void Config_Dialog::check_proceed_possible()
 {
- if(get_apply_code() == last_ac_)
+ if(get_apply_code() + get_role_code() == last_ac_)
  {
   button_ok_->setEnabled(true);
   button_cancel_->setEnabled(false);
@@ -354,6 +354,7 @@ void Config_Dialog::check_proceed_possible()
   button_ok_->setEnabled(false);
   button_cancel_->setEnabled(true);
   button_proceed_->setEnabled(true);
+  button_proceed_->setDefault(true);
  }
 }
 
@@ -377,11 +378,11 @@ void Config_Dialog::cancel()
 {
  Q_EMIT(rejected());
  Q_EMIT(canceled(this));
- Q_EMIT(rejected());
  close();
 }
 
 void Config_Dialog::accept()
 {
  Q_EMIT(accepted(this));
+ close();
 }

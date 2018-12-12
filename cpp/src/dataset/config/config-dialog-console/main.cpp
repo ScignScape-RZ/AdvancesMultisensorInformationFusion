@@ -52,7 +52,7 @@ int main(int argc, char **argv)
   }, ".reset");
  });
 
- dlg.set_proceed_callback([](QString qs)
+ dlg.set_proceed_callback([&dlg](QString qs)
  {
   qDebug() << qs;
 
@@ -94,6 +94,8 @@ int main(int argc, char **argv)
     save_file(it.key(), it.value());
    }
   }
+
+  dlg.register_proceed_completed(qs);
  });
 
  dlg.show();

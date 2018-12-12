@@ -9,8 +9,6 @@
 
 //__CUSTOM_DEFINES__//
 
-#define USING_SCIGNSTAGE_3D
-#define USING_XPDF
 
 
 //__END_INSERT__//
