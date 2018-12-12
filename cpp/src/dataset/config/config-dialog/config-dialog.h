@@ -84,7 +84,12 @@ class Config_Dialog : public QDialog
 
  QPushButton* autofill_button_;
 
+ QPushButton* reset_button_;
+ QLabel* reset_button_label_;
+ QHBoxLayout* reset_button_layout_;
+
  std::function<void(QString)> proceed_callback_;
+ std::function<void()> reset_callback_;
 
  QString get_apply_code();
  QString get_role_code();
@@ -102,6 +107,7 @@ public:
  ~Config_Dialog();
 
  ACCESSORS(std::function<void(QString)> ,proceed_callback)
+ ACCESSORS(std::function<void()> ,reset_callback)
 
  void register_proceed_completed(QString ac);
  void check_proceed_possible();
@@ -112,7 +118,7 @@ Q_SIGNALS:
  void canceled(QDialog*);
  void accepted(QDialog*);
  void proceed_requested(QString);
-
+ void reset_requested();
 
 public Q_SLOTS:
 

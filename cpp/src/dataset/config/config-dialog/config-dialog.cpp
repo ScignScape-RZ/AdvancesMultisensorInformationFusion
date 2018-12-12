@@ -49,9 +49,9 @@
 
 
 Config_Dialog::Config_Dialog(QWidget* parent)
-  : QDialog(parent), proceed_callback_(nullptr)
+  : QDialog(parent), proceed_callback_(nullptr),
+    reset_callback_(nullptr)
 {
-
  button_box_ = new QDialogButtonBox(this);
 
  button_ok_ = new QPushButton("OK");
@@ -157,6 +157,29 @@ Config_Dialog::Config_Dialog(QWidget* parent)
   check_proceed_possible();
  });
 
+ reset_button_ = new QPushButton("Reset", this);
+ reset_button_->setEnabled(false);
+
+ connect(reset_button_, &QPushButton::clicked,
+   [this]()
+ {
+  if(reset_callback_)
+    reset_callback_();
+  else
+    Q_EMIT(reset_requested());
+ });
+
+ reset_button_label_ = new QLabel("(reset files to original state;\n"
+   "right-click \"Administrator\" to enable/disable)");
+ reset_button_label_->setEnabled(false);
+
+ reset_button_layout_ = new QHBoxLayout;
+ reset_button_layout_->addStretch();
+ reset_button_layout_->addWidget(reset_button_);
+ reset_button_layout_->addWidget(reset_button_label_);
+
+ compile_options_grid_layout_->addLayout(reset_button_layout_, 4, 0, 1, 3);
+
  compile_options_group_box_->setLayout(compile_options_grid_layout_);
  main_layout_->addWidget(compile_options_group_box_);
 
@@ -181,10 +204,10 @@ Config_Dialog::Config_Dialog(QWidget* parent)
 
    connect(ckb, &QCheckBox::customContextMenuRequested, [this](const QPoint& p)
    {
-    if(gen_test_check_box_->isEnabled())
-      gen_test_check_box_->setEnabled(false);
-    else
-      gen_test_check_box_->setEnabled(true);
+    bool b = !gen_test_check_box_->isEnabled();
+    reset_button_->setEnabled(b);
+    reset_button_label_->setEnabled(b);
+    gen_test_check_box_->setEnabled(b);
    });
   }
 

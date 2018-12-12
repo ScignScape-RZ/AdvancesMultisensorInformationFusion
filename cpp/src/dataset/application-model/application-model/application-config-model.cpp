@@ -114,6 +114,16 @@ void Application_Config_Model::parse_config_code(QString cc)
    subdirs_.push_back(pr);
 }
 
+void Application_Config_Model::reset(QStringList files, QString name_supplement)
+{
+ for(QString f : files)
+ {
+  QString text;
+  load_file(f + name_supplement, text);
+  save_file(f, text);
+ }
+}
+
 QPair<int, int> Application_Config_Model::find_insert_indices(QString qs,
   QString locator,
   QString end_locator)

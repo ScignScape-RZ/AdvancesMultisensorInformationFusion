@@ -59,6 +59,8 @@ public:
 
  void insert_to_custom_libs(const QMap<QString, QString>& files,
    QMap<QString, QString>& result);
+
+ static void reset(QStringList files, QString name_supplement);
 };
 
 _KANS(DSM)
