@@ -6,11 +6,13 @@ SUBDIRS = \
   dataset/dsmain/dsmain \
   qscign/ScignStage/ScignStage-2d-chart \
   qscign/ScignStage/ScignStage-3d-chart \
-  qscign/ScignStage/ScignStage-tree-table \
-  dataset/application-model/application-model \
-
+ 
 SUBDIRS += \
   external/xpdf/xpdf \
+  
+SUBDIRS += \
+  qscign/ScignStage/ScignStage-tree-table \
+  dataset/application-model/application-model \
 
 SUBDIRS += \
   dataset/dsmain/_run__dsmain-console \

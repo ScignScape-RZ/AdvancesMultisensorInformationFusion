@@ -43,6 +43,10 @@ class Application_Config_Model
 
  QList<QPair<QString, QString>> subdirs_;
 
+ QPair<int, int> find_insert_indices(QString qs,
+   QString locator,
+   QString end_locator);
+
 public:
 
  Application_Config_Model();

@@ -44,7 +44,7 @@ int main(int argc, char **argv)
   qDebug() << qs;
 
   Application_Config_Model acm;
-  qs.prepend("gen_test__");
+  //qs.prepend("gen_test__");
   acm.parse_config_code(qs);
 
   {
@@ -56,6 +56,12 @@ int main(int argc, char **argv)
   {
    QString result;
    QString f = acm.insert_to_choices(CHOICES_PRI_FOLDER "/UNIBUILD-custom_choices.pri", result);
+   save_file(f, result);
+  }
+
+  {
+   QString result;
+   QString f = acm.insert_to_unibuild(UNIBUILD_PRI_FOLDER "/build-custom.pro", result);
    save_file(f, result);
   }
 

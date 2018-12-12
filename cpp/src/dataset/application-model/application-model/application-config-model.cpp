@@ -104,27 +104,41 @@ void Application_Config_Model::parse_config_code(QString cc)
  {"", "qscign/ScignStage/ScignStage-2d-chart"},
 
  {"ss3d", "*"},
+ {"xpdf", "*"},
+
  {"", "qscign/ScignStage/ScignStage-tree-table"},
  {"", "dataset/application-model/application-model"},
- {"xpdf", "*"},
  {"", "dataset/dsmain/_run__dsmain-console"},
  })
  if(pr.first.isEmpty() || insert_text_.contains(pr.first))
    subdirs_.push_back(pr);
 }
 
+QPair<int, int> Application_Config_Model::find_insert_indices(QString qs,
+  QString locator,
+  QString end_locator)
+{
+ int index = qs.indexOf(locator);
+ if(index == -1)
+  return {-1, -1};
+ index += locator.size();
+ int end = qs.indexOf(end_locator, index);
+ if(end == -1)
+   return {index, -1};
+ return {index, end - index};
+}
+
 QString Application_Config_Model::insert_to_defines(QString file_path, QString& result)
 {
  load_file(file_path, result);
 
- QString locator = "\n//__CUSTOM_DEFINES__//\n";
+ QString locator = "\n//__CUSTOM_DEFINES__//\n\n";
+ QString end_locator = "\n\n//__END_INSERT__//\n";
 
- int index = result.indexOf(locator);
+ QPair<int, int> ii = find_insert_indices(result, locator, end_locator);
 
- if(index == -1)
+ if(ii.second == -1)
    return file_path + ".err.txt";
-
- index += locator.size();
 
  QString insert;
 
@@ -139,7 +153,7 @@ QString Application_Config_Model::insert_to_defines(QString file_path, QString& 
   }
  }
 
- result.replace(index, 0, insert);
+ result.replace(ii.first, ii.second, insert);
 
  return file_path + gen_test_;
 }
@@ -148,14 +162,11 @@ QString Application_Config_Model::insert_to_unibuild(QString file_path, QString&
 {
  load_file(file_path, result);
 
- QString locator = "\n#__CHOICE_SUBDIRS__#\n";
-
- int index = result.indexOf(locator);
-
- if(index == -1)
+ QString locator = "\n#__CHOICE_SUBDIRS__#\n\n";
+ QString end_locator = "\n\n#__END_INSERT__#\n";
+ QPair<int, int> ii = find_insert_indices(result, locator, end_locator);
+ if(ii.second == -1)
    return file_path + ".err.txt";
-
- index += locator.size();
 
  QString insert = "SUBDIRS = \\\n";
 
@@ -170,7 +181,7 @@ QString Application_Config_Model::insert_to_unibuild(QString file_path, QString&
     insert += QString("  %1 \\\n").arg(pr.second);
  }
 
- result.replace(index, 0, insert);
+ result.replace(ii.first, ii.second, insert);
 
  return file_path + gen_test_;
 }
@@ -179,19 +190,16 @@ QString Application_Config_Model::insert_to_choices(QString file_path, QString& 
 {
  load_file(file_path, result);
 
- QString locator = "\n#__CHOICE_FEATURES__#\n";
-
- int index = result.indexOf(locator);
-
- if(index == -1)
+ QString locator = "\n#__CHOICE_FEATURES__#\n\n";
+ QString end_locator = "\n\n#__END_INSERT__#\n";
+ QPair<int, int> ii = find_insert_indices(result, locator, end_locator);
+ if(ii.second == -1)
    return file_path + ".err.txt";
-
- index += locator.size();
 
  QString insert = QString("CHOICE_FEATURES = %1").arg(insert_text_.isEmpty()?
     "none" : insert_text_.keys().join(' '));
 
- result.replace(index, 0, insert);
+ result.replace(ii.first, ii.second, insert);
 
  return file_path + gen_test_;
 }
@@ -209,17 +217,15 @@ void Application_Config_Model::insert_to_custom_libs(const QMap<QString, QString
   QString fn = it.value();
   QString c = load_file(fn);
 
-  QString locator = "\n#__CUSTOM_LIBS__#\n";
+  QString locator = "\n#__CUSTOM_LIBS__#\n\n";
+  QString end_locator = "\n\n#__END_INSERT__#\n";
+  QPair<int, int> ii = find_insert_indices(c, locator, end_locator);
 
-  int index = c.indexOf(locator);
-
-  if(index == -1)
+  if(ii.second == -1)
   {
    result[fn + ".err.txt"] = c;
    continue;
   }
-
-  index += locator.size();
 
   QString libs;
 
@@ -230,7 +236,7 @@ void Application_Config_Model::insert_to_custom_libs(const QMap<QString, QString
     libs += QString(" -l%1 ").arg(lib);
    }
    QString insert = QString("LIBS += %1").arg(libs);
-   c.replace(index, 0, insert);
+   c.replace(ii.first, ii.second, insert);
   }
 
   result[fn + gen_test_] = c;
