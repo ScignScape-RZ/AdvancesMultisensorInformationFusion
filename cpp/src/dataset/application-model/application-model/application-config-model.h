@@ -41,6 +41,8 @@ class Application_Config_Model
 
  QString gen_test_;
 
+ QList<QPair<QString, QString>> subdirs_;
+
 public:
 
  Application_Config_Model();
@@ -49,6 +51,7 @@ public:
 
  QString insert_to_defines(QString file_path, QString& result);
  QString insert_to_choices(QString file_path, QString& result);
+ QString insert_to_unibuild(QString file_path, QString& result);
 
  void insert_to_custom_libs(const QMap<QString, QString>& files,
    QMap<QString, QString>& result);

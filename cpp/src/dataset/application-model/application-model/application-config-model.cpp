@@ -98,6 +98,19 @@ void Application_Config_Model::parse_config_code(QString cc)
   insert_text_.remove("ss3d");
  }
 
+ for(QPair<QString, QString> pr : QList<QPair<QString, QString>>{
+ {"", "external/posit/posit-lib"},
+ {"", "dataset/dsmain/dsmain"},
+ {"", "qscign/ScignStage/ScignStage-2d-chart"},
+
+ {"ss3d", "*"},
+ {"", "qscign/ScignStage/ScignStage-tree-table"},
+ {"", "dataset/application-model/application-model"},
+ {"xpdf", "*"},
+ {"", "dataset/dsmain/_run__dsmain-console"},
+ })
+ if(pr.first.isEmpty() || insert_text_.contains(pr.first))
+   subdirs_.push_back(pr);
 }
 
 QString Application_Config_Model::insert_to_defines(QString file_path, QString& result)
@@ -109,7 +122,7 @@ QString Application_Config_Model::insert_to_defines(QString file_path, QString& 
  int index = result.indexOf(locator);
 
  if(index == -1)
-   return file_path += ".err.txt";
+   return file_path + ".err.txt";
 
  index += locator.size();
 
@@ -128,7 +141,38 @@ QString Application_Config_Model::insert_to_defines(QString file_path, QString& 
 
  result.replace(index, 0, insert);
 
- return file_path += gen_test_;
+ return file_path + gen_test_;
+}
+
+QString Application_Config_Model::insert_to_unibuild(QString file_path, QString& result)
+{
+ load_file(file_path, result);
+
+ QString locator = "\n#__CHOICE_SUBDIRS__#\n";
+
+ int index = result.indexOf(locator);
+
+ if(index == -1)
+   return file_path + ".err.txt";
+
+ index += locator.size();
+
+ QString insert = "SUBDIRS = \\\n";
+
+ for(QPair<QString, QString> pr : subdirs_)
+ {
+  if(pr.first.isEmpty())
+    insert += QString("  %1 \\\n").arg(pr.second);
+  else if(pr.second == "*")
+    for(QString qs : insert_text_[pr.first][0].subdirs)
+      insert += QString("  %1 \\\n").arg(qs);
+  else
+    insert += QString("  %1 \\\n").arg(pr.second);
+ }
+
+ result.replace(index, 0, insert);
+
+ return file_path + gen_test_;
 }
 
 QString Application_Config_Model::insert_to_choices(QString file_path, QString& result)
@@ -140,7 +184,7 @@ QString Application_Config_Model::insert_to_choices(QString file_path, QString& 
  int index = result.indexOf(locator);
 
  if(index == -1)
-   return file_path += ".err.txt";
+   return file_path + ".err.txt";
 
  index += locator.size();
 
@@ -149,7 +193,7 @@ QString Application_Config_Model::insert_to_choices(QString file_path, QString& 
 
  result.replace(index, 0, insert);
 
- return file_path += gen_test_;
+ return file_path + gen_test_;
 }
 
 void Application_Config_Model::insert_to_custom_libs(const QMap<QString, QString>& files,

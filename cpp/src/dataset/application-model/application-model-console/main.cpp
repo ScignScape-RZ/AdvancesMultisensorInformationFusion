@@ -47,6 +47,12 @@ int main(int argc, char **argv)
  }
 
  {
+  QString result;
+  QString f = acm.insert_to_unibuild(UNIBUILD_PRI_FOLDER "/build-custom.pro", result);
+  save_file(f, result);
+ }
+
+ {
   QMap<QString, QString> result;
   QMap<QString, QString> files {{
     { "xpdf", CUSTOM_LIBS_PRI_FOLDER "/_xpdf.pri" },
