@@ -122,6 +122,11 @@ Config_Dialog::Config_Dialog(QWidget* parent)
     "to enable/disable)", this);
  gen_test_check_box_->setEnabled(false);
 
+ connect(gen_test_check_box_, &QCheckBox::toggled, [this](bool b)
+ {
+  check_proceed_possible();
+ });
+
  compile_options_grid_layout_->addWidget(gen_test_check_box_, 3, 0, 1, 3, Qt::AlignRight);
 
  //main_layout_->addWidget(gen_test_check_box_);
@@ -197,6 +202,11 @@ Config_Dialog::Config_Dialog(QWidget* parent)
    r += " (Default)";
   }
   QCheckBox* ckb = new QCheckBox(r, this);
+
+  connect(ckb, &QCheckBox::toggled, [this](bool b)
+  {
+   check_proceed_possible();
+  });
 
   if(r == "Administrator")
   {
