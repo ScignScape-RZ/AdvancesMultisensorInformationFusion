@@ -6,9 +6,13 @@ build-*
 !build-all.pro
 !build-quick.pro
 !build-most.pro
+!build-first.pro
+!build-custom.pro
 targets
 Contents
 *.pro.user
+*.err.txt
+*.gen.txt
 screenshots
 *.rz.*
 
