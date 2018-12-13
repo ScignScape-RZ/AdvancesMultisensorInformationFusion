@@ -32,7 +32,7 @@ USING_KANS(DSM)
 int main(int argc, char **argv)
 {
  Application_Config_Model acm;
- acm.parse_config_code("gen_test__xq-1");
+ acm.parse_config_code("gen_test__xqk3-5");
 
  {
   QString result;

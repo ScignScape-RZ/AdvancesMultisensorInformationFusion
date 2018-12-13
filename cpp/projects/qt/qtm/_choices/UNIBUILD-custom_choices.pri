@@ -1,7 +1,7 @@
 
 #__CHOICE_FEATURES__#
 
-CHOICE_FEATURES = ss3d xpdf
+CHOICE_FEATURES = kph ss3d xpdf
 
 #__END_INSERT__#
 

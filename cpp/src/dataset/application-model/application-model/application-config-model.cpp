@@ -43,9 +43,6 @@ Application_Config_Model::Application_Config_Model()
         "tests-kph/kauvir-phaon/kauvir-phaon",
         "phaon/phaon/phaon-console",
         "tests-kph/kauvir-phaon/kauvir-phaon-console",
-        "dataset/application-model/application-model",
-        "dataset/application-model/application-model-test-dialog",
-        "dataset/application-model/amtd-console",
         "tests-kph/kauvir-phaon/kph-tcp-console",
         "phaon/phaon-xml/phaon-xml",
         "phaon/phaon-xml/phaon-xml-console",
@@ -103,11 +100,20 @@ void Application_Config_Model::parse_config_code(QString cc)
  {"", "dataset/dsmain/dsmain"},
  {"", "qscign/ScignStage/ScignStage-2d-chart"},
 
+//? {"", "qscign/ScignStage/ro-info"},
+//? {"", "qscign/ScignStage/ro-info-console"},
+
  {"ss3d", "*"},
  {"xpdf", "*"},
 
+ {"kph", "*"},
+
  {"", "qscign/ScignStage/ScignStage-tree-table"},
  {"", "dataset/application-model/application-model"},
+
+ {"kph", "dataset/application-model/application-model-test-dialog"},
+ {"kph", "dataset/application-model/amtd-console"},
+
  {"", "dataset/dsmain/_run__dsmain-console"},
  })
  if(pr.first.isEmpty() || insert_text_.contains(pr.first))
