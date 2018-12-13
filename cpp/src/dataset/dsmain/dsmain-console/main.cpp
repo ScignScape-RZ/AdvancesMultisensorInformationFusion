@@ -216,8 +216,11 @@ int main(int argc, char **argv)
  });
 
  Config_Dialog* cdlg = nullptr;
- launch_config_dialog(cdlg, &dlg);
 
+ dlg.set_launch_config_function([&cdlg, &dlg]()
+ {
+  launch_config_dialog(cdlg, &dlg);
+ });
 
  dlg.show();
 

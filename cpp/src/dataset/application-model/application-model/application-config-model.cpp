@@ -97,6 +97,7 @@ void Application_Config_Model::parse_config_code(QString cc)
 
  for(QPair<QString, QString> pr : QList<QPair<QString, QString>>{
  {"", "external/posit/posit-lib"},
+ {"", "dataset/config/config-dialog"},
  {"", "dataset/dsmain/dsmain"},
  {"", "qscign/ScignStage/ScignStage-2d-chart"},
 
