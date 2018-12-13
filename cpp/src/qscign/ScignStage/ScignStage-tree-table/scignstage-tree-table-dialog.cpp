@@ -94,7 +94,9 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
   : QDialog(parent), xpdf_bridge_(xpdf_bridge),
     series_(series), tcp_server_(nullptr),
     phr_(nullptr), phr_init_function_(nullptr),
-    screenshot_function_(nullptr), current_sample_(nullptr),
+    screenshot_function_(nullptr),
+    launch_config_function_(nullptr),
+    current_sample_(nullptr),
     current_tcp_msecs_(0), application_model_(nullptr)
 {
 
@@ -876,8 +878,8 @@ void ScignStage_Tree_Table_Dialog::handle_sample_first()
 void ScignStage_Tree_Table_Dialog::handle_launch_config_requested()
 {
  Q_EMIT(launch_config_requested());
-// if(screenshot_function_)
-//   screenshot_function_();
+ if(launch_config_function_)
+   launch_config_function_();
 }
 
 void ScignStage_Tree_Table_Dialog::handle_take_screenshot_requested()

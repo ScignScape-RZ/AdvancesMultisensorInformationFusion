@@ -17,7 +17,6 @@ exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/kauvir--kauvir-kcm--kcm-lisp-bridge)
  #? INCLUDEPATH += $$SEXP_DIR/pingus/
 }
 
-
 LIBS += -L$$TARGETSDIR -lposit-lib
 
 DEFINES += CAON_DEBUG

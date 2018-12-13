@@ -111,6 +111,7 @@ class ScignStage_Tree_Table_Dialog : public QDialog
 
  std::function<void(Phaon_Runner&)> phr_init_function_;
  std::function<void()> screenshot_function_;
+ std::function<void()> launch_config_function_;
 
  Test_Sample* current_sample_;
 
@@ -169,6 +170,7 @@ public:
 
  ACCESSORS__SET(std::function<void(Phaon_Runner&)>, phr_init_function)
  ACCESSORS__SET(std::function<void()> ,screenshot_function)
+ ACCESSORS__SET(std::function<void()> ,launch_config_function)
 
  ACCESSORS(Test_Series* ,series)
  ACCESSORS(void* ,application_model)

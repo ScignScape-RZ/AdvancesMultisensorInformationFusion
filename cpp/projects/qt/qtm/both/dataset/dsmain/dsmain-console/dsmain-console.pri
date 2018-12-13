@@ -20,6 +20,7 @@ INCLUDEPATH += $$QHYP_SRC_GROUP_DIR
 INCLUDEPATH += $$KCM_RUNTIME_EVAL_SRC_GROUP_DIR
 INCLUDEPATH += $$KAUVIR_RUNTIME_SRC_GROUP_DIR
 
+INCLUDEPATH += $$CONFIG_SRC_GROUP_DIR
 INCLUDEPATH += $$APPLICATION_MODEL_SRC_GROUP_DIR
 
 
@@ -30,6 +31,12 @@ DEFINES += RELAE_LABEL_NODES
 DEFINES += SAMPLES_FOLDER=\\\"$$DATA_ROOT_DIR/samples\\\"
 DEFINES += SCREENSHOTS_FOLDER=\\\"$$ROOT_DIR/screenshots\\\"
 DEFINES += DATA_FOLDER=\\\"$$DATA_ROOT_DIR\\\"
+
+DEFINES += DEFINES_SRC_FOLDER=\\\"$$SRC_ROOT_DIR/_defines\\\"
+DEFINES += CHOICES_PRI_FOLDER=\\\"$$CPP_ROOT_DIR/projects/qt/qtm/_choices\\\"
+DEFINES += CUSTOM_LIBS_PRI_FOLDER=\\\"$$CPP_ROOT_DIR/projects/qt/qtm/_custom_libs\\\"
+DEFINES += UNIBUILD_PRI_FOLDER=\\\"$$CPP_ROOT_DIR/projects/qt/qtm/unibuild\\\"
+
 
 
 DEFINES += USE_KANS
@@ -51,7 +58,7 @@ SOURCES += \
 
 
 LIBS += -L$$TARGETSDIR -ldsmain  -lposit-lib  -lScignStage-tree-table \
-    -lScignStage-2d-chart  -lapplication-model \
+    -lScignStage-2d-chart  -lapplication-model  -lconfig-dialog  \
 
 
 contains(CHOICE_FEATURES, "xpdf") \#/
