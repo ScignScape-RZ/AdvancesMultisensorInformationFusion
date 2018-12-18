@@ -258,39 +258,71 @@ void Application_Model_Test_Dialog::save_results()
  }
 }
 
+void add_or_remove(QMessageBox* qmb,
+  QCheckBox*& ckb, QString& file)
+{
+ static QMap<QMessageBox*, QPair<QCheckBox*, QString>> static_map;
+ if(ckb)
+ {
+  static_map[qmb] = {ckb, file};
+ }
+ else
+ {
+  QPair<QCheckBox*, QString> pr = static_map.take(qmb);
+  ckb = pr.first;
+  file = pr.second;
+ }
+}
+
 void Application_Model_Test_Dialog::check_test_result(QString desc,
   QCheckBox* ckb, QString file)
 {
+ QMessageBox* qmb = new QMessageBox;
+
+ add_or_remove(qmb, ckb, file);
+
  QString ask = QString("Test %1: Pass or Fail?").arg(desc);
- QMessageBox qmb;
- qmb.setText(ask);
- qmb.setIcon(QMessageBox::Question);
- qmb.setWindowTitle("Test Returned");
- qmb.setDetailedText("Note: For tests which involve "
+
+ qmb->setAttribute(Qt::WA_DeleteOnClose);
+ qmb->setText(ask);
+ qmb->setIcon(QMessageBox::Question);
+ qmb->setWindowTitle("Test Returned");
+ qmb->setDetailedText("Note: For tests which involve "
    "values copied to the system clipboard, you can use the "
    "text area below as a scratch pad to examine the clipboard contents.");
 
- QPlainTextEdit* qpte = new QPlainTextEdit(&qmb);
+ QPlainTextEdit* qpte = new QPlainTextEdit(qmb);
  qpte->setStyleSheet("QPlainTextEdit{background:rgb(213,242,252);"
    "border:6px ridge #EC8A80;}");
 
- if(QGridLayout* gl = dynamic_cast<QGridLayout*>(qmb.layout()))
+ if(QGridLayout* gl = dynamic_cast<QGridLayout*>(qmb->layout()))
  {
   gl->addWidget(qpte, gl->rowCount(), 0, 1, 3);
  }
  else
  {
   qpte->setMaximumWidth(100);
-  qmb.layout()->addWidget(qpte);
+  qmb->layout()->addWidget(qpte);
  }
 
+ qmb->addButton("Pass", QMessageBox::YesRole);
+ qmb->addButton("Fail", QMessageBox::NoRole);
+ qmb->setModal(false);
+ qmb->open(this, SLOT(test_message_box_closed(QAbstractButton*)));
+}
 
- QAbstractButton* yes = qmb.addButton("Pass", QMessageBox::YesRole);
- qmb.addButton("Fail", QMessageBox::NoRole);
+void Application_Model_Test_Dialog::test_message_box_closed(QAbstractButton* btn)
+{
+ QMessageBox* qmb = qobject_cast<QMessageBox*>(sender());
+ QMessageBox::ButtonRole br = qmb->buttonRole(btn);
 
+ setWindowState(Qt::WindowMaximized);
 
- qmb.exec();
- if(qmb.clickedButton() == yes)
+ QCheckBox* ckb = nullptr;
+ QString file;
+ add_or_remove(qmb, ckb, file);
+
+ if(br == QMessageBox::YesRole)
    set_result_yes(ckb, file);
  else
    set_result_no(ckb, file);

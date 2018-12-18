@@ -81,6 +81,8 @@ Q_SIGNALS:
 
 public Q_SLOTS:
 
+ void test_message_box_closed(QAbstractButton* btn);
+
 
 };
 
