@@ -316,7 +316,7 @@ void Application_Model_Test_Dialog::test_message_box_closed(QAbstractButton* btn
  QMessageBox* qmb = qobject_cast<QMessageBox*>(sender());
  QMessageBox::ButtonRole br = qmb->buttonRole(btn);
 
- setWindowState(Qt::WindowMaximized);
+ setWindowState(Qt::WindowActive);
 
  QCheckBox* ckb = nullptr;
  QString file;
