@@ -81,6 +81,11 @@
 
 #include "subwindows/series-treewidget.h"
 
+
+#include "add-minimize-frame.h"
+
+
+
 #include "textio.h"
 
 USING_KANS(TextIO)
@@ -239,7 +244,13 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
 
  main_layout_->addWidget(nav_panel_);
 
- main_layout_->addWidget(button_box_);
+ minimize_layout_ = add_minimize_frame(button_box_, [this]
+ {
+  setWindowState(Qt::WindowMinimized);
+ });
+
+ main_layout_->addLayout(minimize_layout_);
+ //main_layout_->addWidget(button_box_);
 
  setLayout(main_layout_);
 

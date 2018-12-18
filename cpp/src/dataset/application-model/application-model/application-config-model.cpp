@@ -25,6 +25,16 @@ Application_Config_Model::Application_Config_Model()
        {"USING_XPDF"},
        {} }}},
 
+     { "xx",
+      {{{"external/xpdf/xpdf-console"},
+       {},
+       {} }}},
+
+     { "ro",
+      {{{"dataset/ro-info/ro-info-console"},
+         {},
+         {} }}},
+
     { "ss3d",
       {{{"qscign/ScignStage/ScignStage-3d-chart"},
        {"USING_SCIGNSTAGE_3D"},
@@ -49,7 +59,7 @@ Application_Config_Model::Application_Config_Model()
        },
 
        {"USING_KPH"},
-       {""} }}}
+       {} }}}
                 }}
 {
 
@@ -85,9 +95,19 @@ void Application_Config_Model::parse_config_code(QString cc)
  else
    insert_text_.remove("xpdf");
 
+ if(!cc.contains("xx"))
+ {
+  insert_text_.remove("xx");
+ }
+
  if(!cc.contains('k'))
  {
   insert_text_.remove("kph");
+ }
+
+ if(!cc.contains('r'))
+ {
+  insert_text_.remove("ro");
  }
 
  if(!cc.contains('3'))
@@ -96,16 +116,17 @@ void Application_Config_Model::parse_config_code(QString cc)
  }
 
  for(QPair<QString, QString> pr : QList<QPair<QString, QString>>{
+ {"", "dataset/ro-info/ro-info"},
  {"", "external/posit/posit-lib"},
  {"", "dataset/config/config-dialog"},
  {"", "dataset/dsmain/dsmain"},
  {"", "qscign/ScignStage/ScignStage-2d-chart"},
 
-//? {"", "qscign/ScignStage/ro-info"},
-//? {"", "qscign/ScignStage/ro-info-console"},
-
+ {"ro", "*"},
  {"ss3d", "*"},
  {"xpdf", "*"},
+
+ {"xx", "*"},
 
  {"kph", "*"},
 

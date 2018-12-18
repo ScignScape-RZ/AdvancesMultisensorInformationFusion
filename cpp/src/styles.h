@@ -265,6 +265,23 @@ inline QString colorful_button_style_sheet_down_()
    "}\n";
 }
 
+inline QString colorful_small_button_style_sheet_()
+{
+ return
+   "QPushButton {background:rgb(190,190,230);min-width: 11px;"
+   " padding-left:2;padding-right:2;padding-top:0;padding-bottom:0;"
+   " border-left: 4px groove rgb(240,190,150); "
+   " border-right: 4px ridge rgb(240,190,150); "
+   "}\n"
+
+   "QPushButton:hover {background:rgb(0,190,230);min-width:11px;"
+   " border-radius: 4px;padding-left:2;padding-right:2;padding-top:0;padding-bottom:0;"
+   " border-left: 4px groove rgb(240,190,0); "
+   " border-right: 4px ridge rgb(240,190,0); "
+   "}\n"
+   ;
+}
+
 inline QString make_basic_style_sheet_()
 {
  QString result = "QMainWindow{background:coral}"

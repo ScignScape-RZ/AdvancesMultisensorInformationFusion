@@ -54,6 +54,8 @@ class Config_Dialog : public QDialog
 {
  Q_OBJECT
 
+ QHBoxLayout* minimize_layout_;
+
  QDialogButtonBox* button_box_;
  QPushButton* button_ok_;
  QPushButton* button_cancel_;
@@ -74,6 +76,8 @@ class Config_Dialog : public QDialog
  QCheckBox* xpdf_system_libs_check_box_;
 
  QCheckBox* gen_test_check_box_;
+ QCheckBox* roic_check_box_;
+ QCheckBox* xx_check_box_;
 
  QButtonGroup* qs_button_group_;
  QButtonGroup* main_button_group_;
@@ -95,7 +99,8 @@ class Config_Dialog : public QDialog
  QString get_role_code();
 
  void autofill_1();
- void autofill_2(bool ss3d = true, bool kph = false);
+ void autofill_2(bool ss3d = true, bool kph = false,
+   bool xx = false, bool roic = false);
  void autofill_3();
  void autofill_4();
  void autofill_5();

@@ -2,6 +2,7 @@
 TEMPLATE = subdirs
 
 SUBDIRS = \
+  dataset/ro-info/ro-info \
   external/posit/posit-lib \
   dataset/config/config-dialog \
   dataset/dsmain/dsmain \

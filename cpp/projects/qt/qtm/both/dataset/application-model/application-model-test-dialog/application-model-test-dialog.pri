@@ -40,6 +40,7 @@ HEADERS += \
 
 SOURCES += \
   $$SRC_DIR/application-model-test-dialog.cpp \
+  $$SRC_ROOT_DIR/add-minimize-frame.cpp \
 
 
 LIBS += -L$$TARGETSDIR -lapplication-model

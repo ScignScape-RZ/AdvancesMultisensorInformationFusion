@@ -86,6 +86,7 @@ SOURCES += \
   $$SRC_DIR/subwindows/scignstage-clickable-label.cpp \
   $$SRC_DIR/subwindows/series-treewidget.cpp \
   $$SRC_DIR/xpdf-bridge.cpp \
+  $$SRC_ROOT_DIR/add-minimize-frame.cpp \
 
 
 LIBS += -L$$TARGETSDIR -ldsmain -lposit-lib

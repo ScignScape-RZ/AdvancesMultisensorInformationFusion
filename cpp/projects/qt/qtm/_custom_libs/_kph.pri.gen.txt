@@ -1,7 +1,7 @@
 
 #__CUSTOM_LIBS__#
 
-LIBS +=  -l 
+LIBS += 
 
 #__END_INSERT__#
 

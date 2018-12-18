@@ -4,28 +4,16 @@ TEMPLATE = subdirs
 #__CHOICE_SUBDIRS__#
 
 SUBDIRS = \
+  dataset/ro-info/ro-info \
   external/posit/posit-lib \
+  dataset/config/config-dialog \
   dataset/dsmain/dsmain \
   qscign/ScignStage/ScignStage-2d-chart \
-  qscign/ScignStage/ScignStage-3d-chart \
+  dataset/ro-info/ro-info-console \
   external/xpdf/xpdf \
-  kauvir/kauvir-kcm/kauvir-type-system \
-  kauvir/kcm-runtime-eval/kcm-scopes \
-  kauvir/kauvir-kcm/kauvir-code-model \
-  kauvir/kauvir-runtime/kcm-command-package \
-  phaon/phaon/PhaonLib \
-  kauvir/kauvir-runtime/kcm-command-runtime \
-  kauvir/kcm-runtime-eval/kcm-direct-eval \
-  tests-kph/kauvir-phaon/kauvir-phaon \
-  phaon/phaon/phaon-console \
-  tests-kph/kauvir-phaon/kauvir-phaon-console \
-  tests-kph/kauvir-phaon/kph-tcp-console \
-  phaon/phaon-xml/phaon-xml \
-  phaon/phaon-xml/phaon-xml-console \
+  external/xpdf/xpdf-console \
   qscign/ScignStage/ScignStage-tree-table \
   dataset/application-model/application-model \
-  dataset/application-model/application-model-test-dialog \
-  dataset/application-model/amtd-console \
   dataset/dsmain/_run__dsmain-console \
 
 

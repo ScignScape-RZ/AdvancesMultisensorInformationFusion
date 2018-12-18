@@ -34,6 +34,9 @@
 
 #include "kauvir-phaon/kph-command-package.h"
 
+
+#include "add-minimize-frame.h"
+
 USING_KANS(Phaon)
 
 
@@ -158,7 +161,15 @@ Application_Model_Test_Dialog::Application_Model_Test_Dialog(
  main_scroll_area_->setWidget(main_form_frame_);
 
  main_layout_->addWidget(main_scroll_area_);
- main_layout_->addWidget(button_box_);
+
+ minimize_layout_ = add_minimize_frame(button_box_, [this]
+ {
+  setWindowState(Qt::WindowMinimized);
+ });
+
+ main_layout_->addLayout(minimize_layout_);
+ //
+ //main_layout_->addWidget(button_box_);
 
  setLayout(main_layout_);
 }

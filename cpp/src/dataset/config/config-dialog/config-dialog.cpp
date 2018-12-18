@@ -9,9 +9,6 @@
 
 #include "styles.h"
 
-
-
-
 #include <QApplication>
 
 #include <QHBoxLayout>
@@ -46,7 +43,7 @@
 
 #include <QHeaderView>
 
-
+#include "add-minimize-frame.h"
 
 Config_Dialog::Config_Dialog(QWidget* parent)
   : QDialog(parent), proceed_callback_(nullptr),
@@ -116,6 +113,16 @@ Config_Dialog::Config_Dialog(QWidget* parent)
 
  main_button_group_->addButton(ss3d_check_box_);
  main_button_group_->addButton(kph_check_box_);
+
+ roic_check_box_ = new QCheckBox("Build Research Object Information Console", this);
+ compile_options_grid_layout_->addWidget(roic_check_box_, 3, 0, 1, 3);
+
+ xx_check_box_ = new QCheckBox("Build External XPDF Application", this);
+ compile_options_grid_layout_->addWidget(xx_check_box_, 4, 0, 1, 3);
+
+ main_button_group_->addButton(roic_check_box_);
+ main_button_group_->addButton(xx_check_box_);
+
  main_button_group_->setExclusive(false);
 
  gen_test_check_box_ = new QCheckBox("Preview (right click \"Administrator\" "
@@ -127,7 +134,7 @@ Config_Dialog::Config_Dialog(QWidget* parent)
   check_proceed_possible();
  });
 
- compile_options_grid_layout_->addWidget(gen_test_check_box_, 3, 0, 1, 3, Qt::AlignRight);
+ compile_options_grid_layout_->addWidget(gen_test_check_box_, 5, 0, 1, 3, Qt::AlignRight);
 
  //main_layout_->addWidget(gen_test_check_box_);
 
@@ -183,7 +190,7 @@ Config_Dialog::Config_Dialog(QWidget* parent)
  reset_button_layout_->addWidget(reset_button_);
  reset_button_layout_->addWidget(reset_button_label_);
 
- compile_options_grid_layout_->addLayout(reset_button_layout_, 4, 0, 1, 3);
+ compile_options_grid_layout_->addLayout(reset_button_layout_, 6, 0, 1, 3);
 
  compile_options_group_box_->setLayout(compile_options_grid_layout_);
  main_layout_->addWidget(compile_options_group_box_);
@@ -264,10 +271,17 @@ Config_Dialog::Config_Dialog(QWidget* parent)
  main_layout_->addLayout(autofill_layout_);
  main_layout_->addSpacing(5);
  main_layout_->addStretch();
- main_layout_->addWidget(button_box_);
+
+ minimize_layout_ = add_minimize_frame(button_box_, [this]
+ {
+  setWindowState(Qt::WindowMinimized);
+ });
+
+ main_layout_->addLayout(minimize_layout_);
+ //
+ //main_layout_->addWidget(button_box_);
 
  setLayout(main_layout_);
-
 }
 
 void Config_Dialog::autofill_1()
@@ -275,6 +289,8 @@ void Config_Dialog::autofill_1()
  const QSignalBlocker mbl(main_button_group_);
  ss3d_check_box_->setChecked(false);
  kph_check_box_->setChecked(false);
+ roic_check_box_->setChecked(false);
+ xx_check_box_->setChecked(false);
 
  if(xpdf_check_box_->isChecked())
  {
@@ -285,7 +301,7 @@ void Config_Dialog::autofill_1()
    check_proceed_possible();
 }
 
-void Config_Dialog::autofill_2(bool ss3d, bool kph)
+void Config_Dialog::autofill_2(bool ss3d, bool kph, bool xx, bool roic)
 {
  const QSignalBlocker mbl(main_button_group_);
  const QSignalBlocker qsbl(qs_button_group_);
@@ -296,27 +312,29 @@ void Config_Dialog::autofill_2(bool ss3d, bool kph)
  xpdf_qt_libs_check_box_->setChecked(true);
  xpdf_system_libs_check_box_->setEnabled(true);
  xpdf_system_libs_check_box_->setChecked(false);
+ xx_check_box_->setChecked(xx);
+ roic_check_box_->setChecked(roic);
  check_proceed_possible();
 }
 
 void Config_Dialog::autofill_3()
 {
- autofill_2();
+ autofill_2(true, false, true);
 }
 
 void Config_Dialog::autofill_4()
 {
- autofill_2();
+ autofill_2(true, false, true, true);
 }
 
 void Config_Dialog::autofill_5()
 {
- autofill_2(true, true);
+ autofill_2(true, true, true, true);
 }
 
 void Config_Dialog::autofill_6()
 {
- autofill_2(false, true);
+ autofill_2(false, true, false, true);
 }
 
 QString Config_Dialog::get_role_code()
@@ -328,6 +346,10 @@ QString Config_Dialog::get_apply_code()
 {
  QString result;
 
+ if(roic_check_box_->isChecked())
+   result += "r";
+ if(xx_check_box_->isChecked())
+   result += "xx";
  if(xpdf_check_box_->isChecked())
    result += "x";
  if(xpdf_qt_libs_check_box_->isChecked())
