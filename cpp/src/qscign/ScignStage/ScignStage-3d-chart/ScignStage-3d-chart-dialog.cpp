@@ -39,7 +39,8 @@ USING_KANS(TextIO)
 
 ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
   int fres, int tres, QWidget* parent)
- : QDialog(parent), held_external_selected_(nullptr)
+ : QDialog(nullptr)//parnt
+   , held_external_selected_(nullptr)
 {
  button_box_ = new QDialogButtonBox(this);
 

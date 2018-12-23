@@ -35,7 +35,8 @@ USING_KANS(TextIO)
 
 ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
   int fres, int tres, QWidget* parent)
- : QDialog(parent), last_selected_item_(nullptr), current_z_value_(1)
+ : QDialog(nullptr), //QDialog(parent),
+   last_selected_item_(nullptr), current_z_value_(1)
 {
  button_box_ = new QDialogButtonBox(this);
 

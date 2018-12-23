@@ -34,8 +34,8 @@
 
 #include "kauvir-phaon/kph-command-package.h"
 
-
 #include "add-minimize-frame.h"
+
 
 USING_KANS(Phaon)
 
@@ -308,6 +308,14 @@ void Application_Model_Test_Dialog::check_test_result(QString desc,
  qmb->addButton("Pass", QMessageBox::YesRole);
  qmb->addButton("Fail", QMessageBox::NoRole);
  qmb->setModal(false);
+
+ add_minimize_frame(qmb, [qmb]()
+ {
+  qmb->setWindowState(Qt::WindowMinimized);
+ });
+
+ qmb->setModal(false);
+
  qmb->open(this, SLOT(test_message_box_closed(QAbstractButton*)));
 }
 
