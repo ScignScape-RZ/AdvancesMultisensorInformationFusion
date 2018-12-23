@@ -46,7 +46,8 @@
 #include "add-minimize-frame.h"
 
 Config_Dialog::Config_Dialog(QWidget* parent)
-  : QDialog(parent), proceed_callback_(nullptr),
+  : QDialog(), //QDialog(parent),
+    proceed_callback_(nullptr),
     reset_callback_(nullptr)
 {
  button_box_ = new QDialogButtonBox(this);
