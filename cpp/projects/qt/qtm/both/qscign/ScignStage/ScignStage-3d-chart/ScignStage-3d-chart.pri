@@ -50,7 +50,7 @@ HEADERS += \
 
 SOURCES += \
   $$SRC_DIR/scignstage-3d-chart-dialog.cpp \
-
+  $$SRC_ROOT_DIR/add-minimize-frame.cpp \
 
 
 LIBS += -L$$TARGETSDIR -ldsmain -lposit-lib

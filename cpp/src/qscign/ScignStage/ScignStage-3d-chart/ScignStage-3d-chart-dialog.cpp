@@ -32,9 +32,9 @@ using namespace QtDataVisualization;
 #include "dsmain/test-sample.h"
 #include "dsmain/test-series.h"
 
+#include "add-minimize-frame.h"
+
 #include "textio.h"
-
-
 USING_KANS(TextIO)
 
 ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
@@ -68,19 +68,19 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
  Q3DBars* bars = new Q3DBars;
  QWidget* container = QWidget::createWindowContainer(bars);
 
- bars->rowAxis()->setRange(0, fres);
- bars->columnAxis()->setRange(0, tres);
+ bars->rowAxis()->setRange(0, fres - 1);
+ bars->columnAxis()->setRange(0, tres - 1);
 
  QMap<QPair<int, int>, QList<QPair<Cell_Info*, double>>> qm;
 
  ts->cells_to_qmap(fres, tres, qm);
 
  series_ = new QBar3DSeries;
- for(int i = 0; i <= fres; ++i)
+ for(int i = 0; i < fres; ++i)
  {
   QBarDataRow* r = new QBarDataRow;
   r->resize(tres + 1);
-  for(int j = 0; j <= tres; ++j)
+  for(int j = 0; j < tres; ++j)
   {
    if(qm.contains({i, j}))
    {
@@ -111,11 +111,11 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
 
 #ifdef SER2
  less_series_ = new QBar3DSeries;
- for(int i = 0; i <= fres; ++i)
+ for(int i = 0; i < fres; ++i)
  {
   QBarDataRow* r = new QBarDataRow;
   r->resize(tres + 1);
-  for(int j = 0; j <= tres; ++j)
+  for(int j = 0; j < tres; ++j)
   {
    if(qm.contains({i, j}) && qm[{i, j}].size() > 1)
    {
@@ -189,7 +189,15 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
  container->setMinimumWidth(500);
 
  main_layout_->addWidget(container);
- main_layout_->addWidget(button_box_);
+
+ minimize_layout_ = add_minimize_frame(button_box_, [this]
+ {
+  setWindowState(Qt::WindowMinimized);
+ });
+
+ main_layout_->addLayout(minimize_layout_);
+ //
+ //main_layout_->addWidget(button_box_);
 
  setLayout(main_layout_);
 }

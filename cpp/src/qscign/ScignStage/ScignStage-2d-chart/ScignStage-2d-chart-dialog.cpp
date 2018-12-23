@@ -28,9 +28,9 @@
 #include "dsmain/test-sample.h"
 #include "dsmain/test-series.h"
 
+#include "add-minimize-frame.h"
+
 #include "textio.h"
-
-
 USING_KANS(TextIO)
 
 ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
@@ -345,9 +345,16 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
   qm->popup(g);
  });
 
-
  main_layout_->addWidget(main_view_);
- main_layout_->addWidget(button_box_);
+
+ minimize_layout_ = add_minimize_frame(button_box_, [this]
+ {
+  setWindowState(Qt::WindowMinimized);
+ });
+
+ main_layout_->addLayout(minimize_layout_);
+ //
+ //main_layout_->addWidget(button_box_);
 
  setLayout(main_layout_);
 
