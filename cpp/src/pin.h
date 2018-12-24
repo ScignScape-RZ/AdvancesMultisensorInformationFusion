@@ -38,7 +38,7 @@ struct _pin_
 template<typename T, typename PH = _Pin_Holder<T>>
 using pin = _pin_<T, PH>&;
 
-#define pinned(ty ,sym) pin<ty> pinned__##x
+#define pinned(ty ,sym) pin<ty> sym##_pinned
 
 template<typename T, typename PH = _Pin_Holder<T>>
 T& nip__(_pin_<T, PH>& _p)
@@ -72,7 +72,7 @@ T& nip__(_pin_<T, PH>& _p)
 // return nip(_p);
 //}
 
-#define nip(sym) nip__(pinned__##sym)
+#define nip(sym) nip__(sym##_pinned)
 
 #define _pre(v) {v, {[&](){
 
@@ -80,15 +80,15 @@ T& nip__(_pin_<T, PH>& _p)
 
 #define _pre_(ty) _pre(_Pin_Holder<ty>::preinit_val())
 
-#define _pin(ty, sym) _pin_<ty> pinned__##sym _pre_(ty)
+#define _pin(ty, sym) _pin_<ty> sym##_pinned _pre_(ty)
 
-#define _nip(sym) pinned__##sym <<= [&](decltype(nip__(pinned__##sym)) sym)
+#define _nip(sym) sym##_pinned <<= [&](decltype(nip__(sym##_pinned)) sym)
 
-#define _repin(sym) pinned__##sym << [&](decltype(nip__(pinned__##sym)) sym) {
+#define _repin(sym) sym##_pinned << [&](decltype(nip__(sym##_pinned)) sym) {
 
 #define _as(e) return e;}
 
-#define _unpin(sym) decltype(nip__(pinned__##sym)) sym = nip__(pinned__##sym)
+#define _unpin(sym) decltype(nip__(sym##_pinned)) sym = nip__(sym##_pinned)
 
 template<typename T, typename F>
 void operator <<= (_pin_<T>& _p, F fn)
@@ -124,7 +124,7 @@ void demo1()
  int a = 9;
  _pin(int ,x) _tobe(a + 3);
  a += 20;
- test(pinned__x);
+ test(PINNED_x);
 }
 
 void demo2()
@@ -175,7 +175,7 @@ void demo4()
  int a = 9;
  _pin(int ,x) _tobe(a + 3);
  a += 20;
- test1(pinned__x);
+ test1(PINNED_x);
 
  qDebug() << "x = " << nip(x);
 }
