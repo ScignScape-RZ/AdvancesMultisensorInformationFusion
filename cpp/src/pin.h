@@ -38,8 +38,10 @@ struct _pin_
 template<typename T, typename PH = _Pin_Holder<T>>
 using pin = _pin_<T, PH>&;
 
+#define pinned(ty ,sym) pin<ty> pinned__##x
+
 template<typename T, typename PH = _Pin_Holder<T>>
-T& nip(_pin_<T, PH>& _p)
+T& nip__(_pin_<T, PH>& _p)
 {
  if(_p.exprs.isEmpty())
  {
@@ -64,11 +66,13 @@ T& nip(_pin_<T, PH>& _p)
  }
 }
 
-template<typename T, typename PH>
-T& nip__(_pin_<T, PH>& _p)
-{
- return nip(_p);
-}
+//template<typename T, typename PH>
+//T& nip__(_pin_<T, PH>& _p)
+//{
+// return nip(_p);
+//}
+
+#define nip(sym) nip__(pinned__##sym)
 
 #define _pre(v) {v, {[&](){
 
@@ -76,20 +80,20 @@ T& nip__(_pin_<T, PH>& _p)
 
 #define _pre_(ty) _pre(_Pin_Holder<ty>::preinit_val())
 
-#define _pin(ty, sym) _pin_<ty> sym _pre_(ty)
+#define _pin(ty, sym) _pin_<ty> pinned__##sym _pre_(ty)
 
-#define _nip(sym) sym <<= [&](decltype(nip(sym)) sym)
+#define _nip(sym) pinned__##sym <<= [&](decltype(nip__(pinned__##sym)) sym)
 
-#define _repin(sym) sym << [&](decltype(nip(sym)) sym) {
+#define _repin(sym) pinned__##sym << [&](decltype(nip__(pinned__##sym)) sym) {
 
 #define _as(e) return e;}
 
-#define _unpin(sym) decltype(nip(sym)) _##sym = nip(sym)
+#define _unpin(sym) decltype(nip__(pinned__##sym)) sym = nip__(pinned__##sym)
 
 template<typename T, typename F>
 void operator <<= (_pin_<T>& _p, F fn)
 {
- fn(nip(_p));
+ fn(nip__(_p));
 }
 
 
@@ -109,19 +113,18 @@ void operator << (_pin_<T>& _p, F fn)
 
 #include "pin.h"
 
-void test(pin<int> x)
+void test(pinned(int ,x))
 {
  _repin(x) _as(x + 8);
  qDebug() << "x = " << nip(x);
 }
-
 
 void demo1()
 {
  int a = 9;
  _pin(int ,x) _tobe(a + 3);
  a += 20;
- test(x);
+ test(pinned__x);
 }
 
 void demo2()
@@ -130,7 +133,7 @@ void demo2()
 
  _pin(int ,x) _tobe(a + 3);
 
- int y = x.nip();
+ int y = nip(x);
  _repin(x) _as(x + 5);
 
  qDebug() << "y = " << y;
@@ -147,7 +150,7 @@ void demo3()
  _repin(x) _as(x + 5);
 
  _repin(x)
-   x += y.nip();
+   x += nip(y);
  _as(x);
 
  _nip(x)
@@ -160,11 +163,29 @@ void demo3()
  };
 }
 
+void test1(pinned(int ,x))
+{
+ _unpin(x);
+ x += 50;
+ qDebug() << "x1 = " << x;
+}
+
+void demo4()
+{
+ int a = 9;
+ _pin(int ,x) _tobe(a + 3);
+ a += 20;
+ test1(pinned__x);
+
+ qDebug() << "x = " << nip(x);
+}
+
 int main(int argc, char *argv[])
 {
  demo1();
  demo2();
  demo3();
+ demo4();
 
  return 0;
 }
