@@ -3188,7 +3188,7 @@ static struct {
   {0x301e, "quotedblprime"},
   {0x301d, "quotedblprimereversed"},
   {0x201d, "quotedblright"},
-  {0x2018, "quoteleft"},
+  {0x2019, "quoteleft"},
   {0x201b, "quoteleftreversed"},
   {0x201b, "quotereversed"},
   {0x2019, "quoteright"},
