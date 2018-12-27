@@ -125,11 +125,6 @@ caon_ptr<RE_Node> RE_Markup_Position::insert_entry_node(
 
  if(is_statement_entry)
  {
-  if(held_assignment_annotation_node_)
-  {
-   result << fr_/rq_.Assignment_Annotation>> result;
-  }
-
   if(current_do_map_block_entry_node_)
   {
    last_do_map_block_statement_entry_node_ = result;
@@ -146,21 +141,18 @@ caon_ptr<RE_Node> RE_Markup_Position::insert_entry_node(
  CAON_PTR_DEBUG(RE_Node ,current_node_)
  CAON_PTR_DEBUG(RE_Node ,result)
 
-
-
  current_node_ <<fr_/connector>> result;
 
-   if(caon_ptr<RE_Token> token = current_node_->re_token())
-   {
-    if(token->raw_text() == "if")
-     result->re_call_entry()->flags.may_precede_if_block = true;
+ if(caon_ptr<RE_Token> token = current_node_->re_token())
+ {
+  if(token->raw_text() == "if")
+    result->re_call_entry()->flags.may_precede_if_block = true;
 
-    //?
-    if(token->raw_text() == "elsif")
-     result->re_call_entry()->flags.may_precede_elsif_block = true;
+  //?
+  if(token->raw_text() == "elsif")
+    result->re_call_entry()->flags.may_precede_elsif_block = true;
 
-   }
-
+ }
 
  return result;
 }
@@ -509,6 +501,13 @@ void RE_Markup_Position::add_call_entry(bool is_statement_entry, QString prefix)
 void RE_Markup_Position::add_equalizer_token_node(caon_ptr<RE_Node> token_node)
 {
  bool maybe_set_pending_equalizer_entry = position_state_ == Position_States::Active_Run_Token;
+
+ if(held_assignment_annotation_node_)
+ {
+  token_node << fr_/rq_.Assignment_Annotation>> held_assignment_annotation_node_;
+  held_assignment_annotation_node_ = nullptr;
+ }
+
  add_token_node(token_node);
  if(maybe_set_pending_equalizer_entry)
  {
@@ -1245,6 +1244,7 @@ void RE_Markup_Position::add_token_node(caon_ptr<RE_Node> token_node)
  CAON_PTR_DEBUG(RE_Node ,current_node_)
  caon_ptr<RE_Token> token = token_node->re_token();
  CAON_PTR_DEBUG(RE_Token ,token)
+
 
  if(flags.active_type_indicator_node)
  {

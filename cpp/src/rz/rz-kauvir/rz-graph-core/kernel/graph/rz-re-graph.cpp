@@ -91,6 +91,12 @@ void RE_Graph::report_from_node(QTextStream& qts,
    //?return;
   }
 
+  // //  This connector is tangential ...
+  if(connector.case_label == RE_Connectors_Case_Labels::Assignment_Annotation)
+  {
+   qts << "\n" << padding << " (Has connection: " << connector.label() << ")\n";
+   return;
+  }
 
   // //  This connector loops ...
   if(connector.case_label == RE_Connectors_Case_Labels::Parent_Block_Map)

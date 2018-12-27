@@ -76,7 +76,7 @@ RE_Token::RE_Token(QString raw_text, QString prefix,
 
  default:
   if(raw_text.endsWith('='))
-   flags.is_equalizer = true;
+    flags.is_equalizer = true;
 
   else if(raw_text.startsWith('-') && raw_text.endsWith('>'))
   {
