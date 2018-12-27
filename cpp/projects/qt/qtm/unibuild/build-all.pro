@@ -11,6 +11,7 @@ TEMPLATE = subdirs
 SUBDIRS = \
   external/posit/posit-lib \
   dataset/dsmain/dsmain \
+  dataset/config/config-dialog \
   dataset/dsmain/data-model-console \
   qscign/ScignStage/ScignStage-2d-chart \
   qscign/ScignStage/ScignStage-3d-chart \
