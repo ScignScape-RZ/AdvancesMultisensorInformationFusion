@@ -143,6 +143,7 @@ public:
 
  void complete_function_declaration();
 
+ void add_assignment_annotation(QString text);
 
  void init();
 

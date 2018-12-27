@@ -153,6 +153,13 @@ caon_ptr<RE_Node> RE_Graph_Build::make_new_node(caon_ptr<RE_Block_Entry> rbe)
  return result;
 }
 
+void RE_Graph_Build::add_assignment_annotation(QString text)
+{
+ caon_ptr<RE_Token> aa_token = new RE_Token(text);
+ caon_ptr<RE_Node> aa_node = make_new_node(aa_token);
+ markup_position_.hold_assignment_annotation_node(aa_node);
+}
+
 void RE_Graph_Build::check_line_increment(QString text)
 {
  if(text.endsWith('\\n'))

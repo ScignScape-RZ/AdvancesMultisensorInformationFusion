@@ -129,6 +129,9 @@ void RZ_Dynamo_Block::add_form_from_call_entry_node(RZ_Lisp_Graph_Visitor_Dynamo
     CAON_PTR_DEBUG(RZ_Code_Statement ,st)
     code_statements_.push_back(st);
     current_form_->set_code_statement(st);
+
+    visitor_dynamo.check_assignment_annotation(start_node, st);
+
    }
    else
    {

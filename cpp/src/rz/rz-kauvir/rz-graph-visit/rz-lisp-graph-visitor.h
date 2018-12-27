@@ -362,8 +362,10 @@ public:
  caon_ptr<RE_Node> get_code_statement_node_from_statement_entry_node(
    caon_ptr<RE_Node> statement_entry_node);
 
-  caon_ptr<RE_Node> get_expression_review_node_from_entry_node(caon_ptr<RE_Node> entry_node);
+ caon_ptr<RE_Node> get_expression_review_node_from_entry_node(caon_ptr<RE_Node> entry_node);
 
+ caon_ptr<RE_Node> get_assignment_annotation_node_from_statement_entry_node(
+    caon_ptr<RE_Node> statement_entry_node);
 
  caon_ptr<tNode> find_block_continue_node(caon_ptr<tNode> node, caon_ptr<tNode>& block_entry_node);
 

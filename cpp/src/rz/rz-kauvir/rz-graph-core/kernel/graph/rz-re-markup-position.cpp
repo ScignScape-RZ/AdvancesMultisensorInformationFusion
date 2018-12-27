@@ -44,7 +44,8 @@ RE_Markup_Position::RE_Markup_Position
    last_statement_entry_node_(nullptr),
    last_do_map_inner_block_first_entry_node_(nullptr),
    held_equalizer_context_(Equalizer_Contexts::N_A),
-   current_closed_do_entry_node_(nullptr)
+   current_closed_do_entry_node_(nullptr),
+   held_assignment_annotation_node_(nullptr)
 {
 }
 
@@ -124,6 +125,11 @@ caon_ptr<RE_Node> RE_Markup_Position::insert_entry_node(
 
  if(is_statement_entry)
  {
+  if(held_assignment_annotation_node_)
+  {
+   result << fr_/rq_.Assignment_Annotation>> result;
+  }
+
   if(current_do_map_block_entry_node_)
   {
    last_do_map_block_statement_entry_node_ = result;
@@ -1933,6 +1939,12 @@ void RE_Markup_Position::leave_expression()
  default:
   break;
  }
+}
+
+void RE_Markup_Position::hold_assignment_annotation_node(caon_ptr<RE_Node> aa_node)
+{
+ // //  Chance to check position state ...
+ held_assignment_annotation_node_ = aa_node;
 }
 
 void RE_Markup_Position::complete_function_declaration(caon_ptr<RE_Node> arrow_node,

@@ -145,6 +145,9 @@ public:
 
  caon_ptr<RE_Node> leave_nested_block(caon_ptr<RZ_Lisp_Graph_Block_Info> rbi, caon_ptr<RZ_Lisp_Graph_Block_Info>& nn_bi);
 
+ void check_assignment_annotation(caon_ptr<RE_Node> statement_entry_node,
+   caon_ptr<RZ_Code_Statement> st);
+
  RZ_Lisp_Graph_Valuer& valuer()
  {
   return *visitor_.valuer();

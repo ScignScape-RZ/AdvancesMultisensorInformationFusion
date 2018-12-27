@@ -174,6 +174,16 @@ caon_ptr<RZ_Lisp_Graph_Block_Info> RZ_Lisp_Graph_Visitor_Dynamo::clear_pending_b
  return result;
 }
 
+void RZ_Lisp_Graph_Visitor_Dynamo::check_assignment_annotation(caon_ptr<RE_Node> statement_entry_node,
+  caon_ptr<RZ_Code_Statement> st)
+{
+ if(caon_ptr<RE_Node> aa_node = visitor_.get_assignment_annotation_node_from_statement_entry_node(statement_entry_node))
+ {
+  if(caon_ptr<RE_Token> tok = aa_node->re_token())
+    st->set_annotation(tok->raw_text());
+ }
+}
+
 caon_ptr<RZ_Code_Statement> RZ_Lisp_Graph_Visitor_Dynamo::get_code_statement_from_statement_entry_node(
   caon_ptr<RE_Node> statement_entry_node)
 {

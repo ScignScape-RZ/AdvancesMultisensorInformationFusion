@@ -1,6 +1,6 @@
 
 ,fnd ::: Fn_Doc*;
-fnd \== default;
+{prebase} fnd \== default;
 
 ,kenv ::: KCM_Env*;
 kenv \= (envv _$);

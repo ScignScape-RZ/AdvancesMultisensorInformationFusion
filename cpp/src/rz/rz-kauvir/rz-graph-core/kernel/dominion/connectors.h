@@ -72,3 +72,4 @@ DOMINION_CONNECTOR(Type_Indicator, "type-indicator")
 DOMINION_CONNECTOR(Element_Association, "element-association")
 DOMINION_CONNECTOR(Retval_Follow, "retval-follow")
 
+DOMINION_CONNECTOR(Assignment_Annotation, "assignment-annotation")

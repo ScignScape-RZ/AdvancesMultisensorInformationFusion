@@ -44,9 +44,12 @@ private:
 
  caon_ptr<RE_Node> node_;
 
+ QString annotation_;
+
 public:
 
  ACCESSORS(caon_ptr<RE_Node> ,node)
+ ACCESSORS(QString ,annotation)
 
  RZ_Code_Statement(Statement_Kinds statement_kind, caon_ptr<RE_Node> node);
 

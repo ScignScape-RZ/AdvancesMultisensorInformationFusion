@@ -82,6 +82,8 @@ private:
  caon_ptr<RE_Node> type_indicator_node_;
 
  caon_ptr<RE_Node> current_closed_do_entry_node_;
+ caon_ptr<RE_Node> held_assignment_annotation_node_;
+
  caon_ptr<RE_Call_Entry> current_closed_do_entry();
 
  void check_append_chief(caon_ptr<RE_Node> new_chief);
@@ -159,6 +161,8 @@ public:
  void add_residual_node(caon_ptr<RE_Node> node);
 
  void add_arrow_node(caon_ptr<RE_Node> token_node, RE_Function_Def_Kinds kind);
+
+ void hold_assignment_annotation_node(caon_ptr<RE_Node> aa_node);
 
  void check_add_implied_my();
 

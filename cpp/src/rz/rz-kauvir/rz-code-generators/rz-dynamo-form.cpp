@@ -60,7 +60,13 @@ void RZ_Dynamo_Form::write_as_statement(QTextStream& qts)
  if(code_statement_)
  {
   qts << "\n\n ;; Identified as code statement kind: "
-      << code_statement_->kind_to_string() << "\n";
+      << code_statement_->kind_to_string();
+
+  if(!code_statement_->annotation().isEmpty())
+  {
+   qts << " " << code_statement_->annotation();
+  }
+  qts << "\n";
  }
  if(expression_review_)
  {
