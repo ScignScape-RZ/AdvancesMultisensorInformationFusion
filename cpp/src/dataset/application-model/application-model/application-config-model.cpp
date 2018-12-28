@@ -273,7 +273,9 @@ void Application_Config_Model::insert_to_custom_libs(const QMap<QString, QString
    {
     libs += QString(" -l%1 ").arg(lib);
    }
-   QString insert = QString("LIBS += %1").arg(libs);
+   QString insert;
+   if(!libs.isEmpty())
+     insert = QString("LIBS += %1").arg(libs);
    c.replace(ii.first, ii.second, insert);
   }
 

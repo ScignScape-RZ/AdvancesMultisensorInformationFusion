@@ -32,6 +32,7 @@ CONFIG += no_keywords
 
 DEFINES += USE_KANS
 
+
 contains(CHOICE_FEATURES, "iso-choice") \#/
 {
  exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/kauvir--kauvir-phaon--kph-generator) \#/

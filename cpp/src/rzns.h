@@ -10,7 +10,7 @@
 // // this is defined by default;
  //   for most cases it should stay so...
  //   Should be defined via compiler flag by qmake.
- //   If that is edited from the projeect files
+ //   If that is edited from the project files
  //   uncomment this as needed ...
  //   #define USE_RZNS
 
