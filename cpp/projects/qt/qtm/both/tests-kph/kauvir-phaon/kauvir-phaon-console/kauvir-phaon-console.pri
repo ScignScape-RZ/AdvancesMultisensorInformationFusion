@@ -48,12 +48,12 @@ LIBS += -L$$TARGETSDIR -lPhaonLib -lkauvir-code-model -lkauvir-type-system \
 
 contains(CHOICE_FEATURES, "kcm_ecl") \#/
 {
- LIBS += -L$$TARGETSDIR -lkcm-lisp-bridge -lrz-dynamo-generator
+#? LIBS += -L$$TARGETSDIR -lkcm-lisp-bridge -lrz-dynamo-generator
  message(DEFINE\'ing USING_ECL)
  include(../../../../find-ecl-sexp.pri)
- LIBS += -L$$ECL_DIR -lecl
- LIBS += -L$$CL_CXX_DIR/install/lib64 -lcl_cxx
- message($$ECL_DIR)
+#? LIBS += -L$$ECL_DIR -lecl
+#? LIBS += -L$$CL_CXX_DIR/install/lib64 -lcl_cxx
+#? message($$ECL_DIR)
 }
 
 contains(CHOICE_FEATURES, "iso-choice") \#/

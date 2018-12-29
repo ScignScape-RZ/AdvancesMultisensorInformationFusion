@@ -117,7 +117,7 @@ void KPH_Generator::encode(KCM_Command_Package& kcp, QMap<QString, QString> docu
     QString src_val = subs_? subs_->get_src_value(it.key(), car, c - 1)
       : car.get_src_value();
     aqts << chc << " :: " << QString::number(c) << " :: "
-      << QString::number(ty) << " ::: "
+      << QString::number(ty) << " :::"
       << src_val;
     ++c;
     close_line(aqts);

@@ -10,5 +10,6 @@
 #define USING_XPDF
 #define USING_SCIGNSTAGE_3D
 #define USING_KPH
+#define USING_ECL
 
 #endif // UNIBUILD_ALL_DEFINES__H

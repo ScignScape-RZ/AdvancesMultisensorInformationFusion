@@ -33,8 +33,22 @@ CONFIG += no_keywords
 DEFINES += USE_KANS
 
 
+contains(CHOICE_FEATURES, "kcm_ecl") \#/
+{
+ message(DEFINE\'ing USING_ECL)
+ include(../../../../find-ecl-sexp.pri)
+ LIBS += -L$$TARGETSDIR -lkcm-lisp-bridge
+}
+
 contains(CHOICE_FEATURES, "iso-choice") \#/
 {
+ exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/kauvir--kauvir-kcm--kcm-lisp-bridge) \#/
+ {
+  message(DEFINE\'ing USING_ECL)
+  include(../../../../find-ecl-sexp.pri)
+  LIBS += -L$$TARGETSDIR -lkcm-lisp-bridge
+ }
+
  exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/kauvir--kauvir-phaon--kph-generator) \#/
  {
   message(DEFINE\'ing ISO__USING_KPH_GEN)

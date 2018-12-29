@@ -34,6 +34,6 @@ QString fuxe_Line::to_string()
 
 QString arg_Line::to_string()
 {
- return QString("%1:%2::%3::::%4\n.\n").arg(ch_code).arg(code)
+ return QString("%1::%2::%3:::%4\n.\n").arg(ch_code).arg(code)
    .arg(ty_code).arg(text);
 }
