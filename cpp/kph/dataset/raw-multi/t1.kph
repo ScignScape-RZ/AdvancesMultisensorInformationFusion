@@ -1,0 +1,3 @@
+expand_sample(u32)
+show_graphic(u8, u8, u8)
+close_graphic(u8, u8, u8)
