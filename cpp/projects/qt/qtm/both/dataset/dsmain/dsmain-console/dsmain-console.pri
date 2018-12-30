@@ -70,15 +70,11 @@ contains(CHOICE_FEATURES, "xpdf") \#/
 
 contains(CHOICE_FEATURES, "ss3d") \#/
 {
- #? message(DEFINE\'ing USING_SCIGNSTAGE_3D)
- #? DEFINES += USING_SCIGNSTAGE_3D
  LIBS += -L$$TARGETSDIR -lScignStage-3d-chart
 }
 
 contains(CHOICE_FEATURES, "kph") \#/
 {
- #? message(DEFINE\'ing USING_KPH)
- #? DEFINES += USING_KPH
  LIBS += -L$$TARGETSDIR -lkcm-direct-eval -lkcm-scopes  -lkauvir-phaon \
    -lPhaonLib -lkauvir-code-model -lkcm-command-runtime -lkcm-command-package \
    -lkauvir-type-system
@@ -87,7 +83,6 @@ contains(CHOICE_FEATURES, "kph") \#/
 contains(CHOICE_FEATURES, "kcm_ecl") \#/
 {
  LIBS += -L$$TARGETSDIR -lkcm-lisp-bridge -lrz-dynamo-generator
- message(DEFINE\'ing USING_ECL)
  include(../../../../find-ecl-sexp.pri)
  LIBS += -L$$ECL_DIR -lecl
  LIBS += -L$$CL_CXX_DIR/install/lib64 -lcl_cxx
@@ -102,12 +97,14 @@ contains(CHOICE_FEATURES, "iso-choice") \#/
   DEFINES += ISO__USING_SCIGNSTAGE_3D
   LIBS += -L$$TARGETSDIR -lScignStage-3d-chart
  }
+
  exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/external--xpdf--xpdf) \#/
  {
   message(DEFINE\'ing ISO__USING_XPDF)
   DEFINES += ISO__USING_XPDF
   LIBS += -L$$TARGETSDIR -lxpdf
  }
+
  exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/tests-kph--kauvir-phaon--kauvir-phaon) \#/
  {
   message(DEFINE\'ing ISO__USING_KPH)
@@ -116,10 +113,12 @@ contains(CHOICE_FEATURES, "iso-choice") \#/
     -lPhaonLib -lkauvir-code-model -lkcm-command-runtime -lkcm-command-package \
     -lkauvir-type-system
  }
+
  exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/kauvir--kauvir-kcm--kcm-lisp-bridge) \#/
  {
   LIBS += -L$$TARGETSDIR -lkcm-lisp-bridge -lrz-dynamo-generator
   message(DEFINE\'ing ISO__USING_ECL)
+  DEFINES += ISO__USING_ECL
   include(../../../../find-ecl-sexp.pri)
   LIBS += -L$$ECL_DIR -lecl
   LIBS += -L$$CL_CXX_DIR/install/lib64 -lcl_cxx

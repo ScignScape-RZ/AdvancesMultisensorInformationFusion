@@ -1,4 +1,5 @@
 
+message(DEFINE\'ing FIND_ECL__USING_ECL)
 DEFINES += FIND_ECL__USING_ECL
 
 # ecl

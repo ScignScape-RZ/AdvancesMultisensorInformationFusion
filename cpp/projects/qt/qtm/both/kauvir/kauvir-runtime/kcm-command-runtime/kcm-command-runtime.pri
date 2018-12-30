@@ -42,7 +42,6 @@ LIBS += -L$$TARGETSDIR -lkcm-scopes -lkauvir-code-model \
 
 contains(CHOICE_FEATURES, "kcm_ecl") \#/
 {
- message(DEFINE\'ing USING_ECL)
  include(../../../../find-ecl-sexp.pri)
  LIBS += -L$$TARGETSDIR -lkcm-lisp-bridge
 }
@@ -51,7 +50,8 @@ contains(CHOICE_FEATURES, "iso-choice") \#/
 {
  exists($$CPP_ROOT_DIR/targets/$$CHOICE_CODE/kauvir--kauvir-kcm--kcm-lisp-bridge) \#/
  {
-  message(DEFINE\'ing USING_ECL)
+  message(DEFINE\'ing ISO_USING_ECL)
+  DEFINES += ISO_USING_ECL
   include(../../../../find-ecl-sexp.pri)
   LIBS += -L$$TARGETSDIR -lkcm-lisp-bridge
  }
