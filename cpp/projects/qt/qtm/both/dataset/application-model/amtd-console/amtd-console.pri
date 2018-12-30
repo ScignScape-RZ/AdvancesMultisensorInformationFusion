@@ -43,20 +43,26 @@ SOURCES += \
 LIBS += -L$$TARGETSDIR -lapplication-model-test-dialog  -lapplication-model \
    -lScignStage-tree-table -ldsmain -lposit-lib
 
+
 contains(CHOICE_FEATURES, "xpdf") \#/
 {
- #? message(DEFINE\'ing USING_XPDF)
-#?  DEFINES += USING_XPDF
  LIBS += -L$$TARGETSDIR -lxpdf
 }
 
 contains(CHOICE_FEATURES, "kph") \#/
 {
- #? message(DEFINE\'ing USING_KPH)
- #? DEFINES += USING_KPH
  LIBS += -L$$TARGETSDIR -lkcm-direct-eval -lkcm-scopes  -lkauvir-phaon \
    -lPhaonLib -lkauvir-code-model -lkcm-command-runtime -lkcm-command-package \
    -lkauvir-type-system
+}
+
+contains(CHOICE_FEATURES, "kcm_ecl") \#/
+{
+ LIBS += -L$$TARGETSDIR -lkcm-lisp-bridge -lrz-dynamo-generator
+ message(DEFINE\'ing USING_ECL)
+ include(../../../../find-ecl-sexp.pri)
+ LIBS += -L$$ECL_DIR -lecl
+ LIBS += -L$$CL_CXX_DIR/install/lib64 -lcl_cxx
 }
 
 contains(CHOICE_FEATURES, "iso-choice") \#/

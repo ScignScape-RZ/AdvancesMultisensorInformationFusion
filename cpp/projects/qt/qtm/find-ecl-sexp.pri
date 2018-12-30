@@ -1,5 +1,5 @@
 
-DEFINES += USING_ECL
+#?DEFINES += USING_ECL
 
 # ecl
 ECL_ROOT_DIR = $$ROOT_DIR/../../../ecl
