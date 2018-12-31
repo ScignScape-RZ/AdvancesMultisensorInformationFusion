@@ -158,7 +158,7 @@ NAV_Tree_Table1D_Panel::NAV_Tree_Table1D_Panel(QWidget* parent)
     [this, d, r, c](bool checked)
   {
    if(checked)
-     Q_EMIT( graphic_open_requested(d, r, c) );
+     Q_EMIT( graphic_open_requested(d, r, c, deco_button_->isChecked()) );
    else
      Q_EMIT( graphic_close_requested(d, r, c) );
   });

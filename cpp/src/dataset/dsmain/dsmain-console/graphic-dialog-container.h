@@ -34,7 +34,7 @@ public:
 
 public Q_SLOTS:
 
- void handle_graphic_open_requested(quint8, quint8, quint8);
+ void handle_graphic_open_requested(quint8, quint8, quint8, bool deco);
  void handle_graphic_close_requested(quint8, quint8, quint8);
 
 

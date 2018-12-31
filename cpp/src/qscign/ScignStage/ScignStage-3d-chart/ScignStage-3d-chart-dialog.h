@@ -42,7 +42,7 @@ class ScignStage_3d_Chart_Dialog : public QDialog
 
  QtDataVisualization::QBar3DSeries* series_;
 
-//#define SER2
+#define SER2
 #ifdef SER2
  QtDataVisualization::QBar3DSeries* less_series_;
 #endif
@@ -52,7 +52,7 @@ class ScignStage_3d_Chart_Dialog : public QDialog
 public:
 
  ScignStage_3d_Chart_Dialog(Test_Series* ts,
-   int fres, int tres, QWidget* parent);
+   int fres, int tres, QWidget* parent, bool dbl);
 
  Test_Sample* held_external_selected_;
 

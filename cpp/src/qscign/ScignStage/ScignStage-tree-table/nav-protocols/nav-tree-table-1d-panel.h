@@ -123,7 +123,7 @@ Q_SIGNALS:
  void sample_first_requested();
  void peer_first_requested();
 
- void graphic_open_requested(quint8, quint8, quint8);
+ void graphic_open_requested(quint8, quint8, quint8, bool);
  void graphic_close_requested(quint8, quint8, quint8);
 
 

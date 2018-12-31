@@ -221,8 +221,8 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
    this, SLOT(handle_sample_up()));
 
 
- connect(nav_panel_, SIGNAL(graphic_open_requested(quint8, quint8, quint8)),
-   this, SIGNAL(reemit_graphic_open_requested(quint8, quint8, quint8)));
+ connect(nav_panel_, SIGNAL(graphic_open_requested(quint8, quint8, quint8, bool)),
+   this, SIGNAL(reemit_graphic_open_requested(quint8, quint8, quint8, bool)));
 
  connect(nav_panel_, SIGNAL(graphic_close_requested(quint8, quint8, quint8)),
    this, SIGNAL(reemit_graphic_close_requested(quint8, quint8, quint8)));

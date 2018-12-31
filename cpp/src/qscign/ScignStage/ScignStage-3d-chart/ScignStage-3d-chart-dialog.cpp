@@ -37,8 +37,9 @@ using namespace QtDataVisualization;
 #include "textio.h"
 USING_KANS(TextIO)
 
+
 ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
-  int fres, int tres, QWidget* parent)
+  int fres, int tres, QWidget* parent, bool dbl)
  : QDialog(nullptr)//parnt
    , held_external_selected_(nullptr)
 {
@@ -111,42 +112,48 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
 #endif
 
 #ifdef SER2
- less_series_ = new QBar3DSeries;
- for(int i = 0; i < fres; ++i)
+ if(dbl)
  {
-  QBarDataRow* r = new QBarDataRow;
-  r->resize(tres + 1);
-  for(int j = 0; j < tres; ++j)
+  less_series_ = new QBar3DSeries;
+  for(int i = 0; i < fres; ++i)
   {
-   if(qm.contains({i, j}) && qm[{i, j}].size() > 1)
+   QBarDataRow* r = new QBarDataRow;
+   r->resize(tres + 1);
+   for(int j = 0; j < tres; ++j)
    {
-    Test_Sample* samp = qm[{i, j}].first().first->sample;
-    sample_map_[{i, j}].second = samp;
-    inv_sample_map_[{1, samp}] = {i, j};
-    (*r)[j].setValue(qm[{i, j}].last().second);
+    if(qm.contains({i, j}) && qm[{i, j}].size() > 1)
+    {
+     Test_Sample* samp = qm[{i, j}].first().first->sample;
+     sample_map_[{i, j}].second = samp;
+     inv_sample_map_[{1, samp}] = {i, j};
+     (*r)[j].setValue(qm[{i, j}].last().second);
+    }
+    else
+      (*r)[j].setValue(0);
    }
-   else
-     (*r)[j].setValue(0);
+   less_series_->dataProxy()->addRow(r);
   }
-  less_series_->dataProxy()->addRow(r);
+
+  QLinearGradient bar_gradient1(0, 0, 1, 100);
+  bar_gradient1.setColorAt(0.0, Qt::blue);
+  bar_gradient1.setColorAt(1.0, Qt::yellow);
+
+  less_series_->setBaseGradient(bar_gradient1);
+
+ #ifdef EXTRA_GRAPHICS_FEATURES
+  less_series_->setColorStyle(Q3DTheme::ColorStyleRangeGradient);
+ #else
+  less_series_->setColorStyle(Q3DTheme::ColorStyleObjectGradient);
+ #endif
+
+  less_series_->setMesh(QAbstract3DSeries::MeshCylinder);
+
+  //->setMesh(QAbstract3DSeries::MeshCube);
+  //->setMeshAngle(25);
  }
+ else
+   less_series_ = nullptr;
 
- QLinearGradient bar_gradient1(0, 0, 1, 100);
- bar_gradient1.setColorAt(0.0, Qt::blue);
- bar_gradient1.setColorAt(1.0, Qt::yellow);
-
- less_series_->setBaseGradient(bar_gradient1);
-
-#ifdef EXTRA_GRAPHICS_FEATURES
- less_series_->setColorStyle(Q3DTheme::ColorStyleRangeGradient);
-#else
- less_series_->setColorStyle(Q3DTheme::ColorStyleObjectGradient);
-#endif
-
- less_series_->setMesh(QAbstract3DSeries::MeshCylinder);
-
- //->setMesh(QAbstract3DSeries::MeshCube);
- //->setMeshAngle(25);
 #endif
 
  bars->addSeries(series_);
@@ -163,14 +170,13 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
 
 
 #ifdef SER2
- connect(less_series_, &QBar3DSeries::selectedBarChanged, [this]
+ if(dbl)
+   connect(less_series_, &QBar3DSeries::selectedBarChanged, [this]
    (const QPoint &qp)
  {
   handle_selection_change(1, qp);
  });
 #endif
-
-
 
 
 #ifdef EXTRA_GRAPHICS_FEATURES

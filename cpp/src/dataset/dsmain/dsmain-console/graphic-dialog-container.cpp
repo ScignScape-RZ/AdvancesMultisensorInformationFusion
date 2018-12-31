@@ -34,7 +34,7 @@ Graphic_Dialog_Container::Graphic_Dialog_Container(ScignStage_Tree_Table_Dialog*
 
 Graphic_Dialog_Container::~Graphic_Dialog_Container() {}
 
-void Graphic_Dialog_Container::handle_graphic_open_requested(quint8 d, quint8 r, quint8 c)
+void Graphic_Dialog_Container::handle_graphic_open_requested(quint8 d, quint8 r, quint8 c, bool deco)
 {
  QString code = QString("%1:%2x%3").arg(d).arg(r).arg(c);
 
@@ -71,7 +71,7 @@ void Graphic_Dialog_Container::handle_graphic_open_requested(quint8 d, quint8 r,
 #ifdef USING_SCIGNSTAGE_3D
 
    ScignStage_3d_Chart_Dialog* dlg = new ScignStage_3d_Chart_Dialog(
-     parent_dialog_->series(), r, c, parent_dialog_);
+     parent_dialog_->series(), r, c, parent_dialog_, deco);
 
    connect(dlg, SIGNAL(sample_selected(QWidget*, Test_Sample*)),
      parent_dialog_, SLOT(browse_to_selected_sample(QWidget*, Test_Sample*)));
@@ -97,7 +97,7 @@ void Graphic_Dialog_Container::handle_graphic_open_requested(quint8 d, quint8 r,
   QMessageBox::critical(nullptr, "3D not Supported",
     "The 3D data visualization components are not including in this build "
     "of the data set application.  Please try using a different build "
-    "strategy (like build-quick) to use these components.");
+    "strategy (like build-quick) to see these components.");
   return;
 #endif  //  USING_SCIGNSTAGE_3D
   }

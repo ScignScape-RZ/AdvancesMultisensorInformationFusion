@@ -66,7 +66,7 @@ void Application_Model::show_graphic(ScignStage_Tree_Table_Dialog* dlg, QString 
  int index = qs1.indexOf('x');
  int r = qs1.left(index).toInt();
  int c = qs1.mid(index + 1).toInt();
- dlg->reemit_graphic_open_requested(d,r,c);
+ dlg->reemit_graphic_open_requested(d,r,c,false);
 }
 
 void Application_Model::hide_graphic(ScignStage_Tree_Table_Dialog* dlg, QString code)

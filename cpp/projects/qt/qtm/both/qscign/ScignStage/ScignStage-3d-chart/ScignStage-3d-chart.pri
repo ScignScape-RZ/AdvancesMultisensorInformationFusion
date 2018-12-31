@@ -45,11 +45,11 @@ DEFINES += USE_RZNS
 
 
 HEADERS += \
-  $$SRC_DIR/scignstage-3d-chart-dialog.h \
+  $$SRC_DIR/ScignStage-3d-chart-dialog.h \
 
 
 SOURCES += \
-  $$SRC_DIR/scignstage-3d-chart-dialog.cpp \
+  $$SRC_DIR/ScignStage-3d-chart-dialog.cpp \
   $$SRC_ROOT_DIR/add-minimize-frame.cpp \
 
 
