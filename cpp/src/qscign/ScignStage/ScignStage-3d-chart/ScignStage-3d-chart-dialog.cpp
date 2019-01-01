@@ -1,4 +1,3 @@
-
 //          Copyright Nathaniel Christen 2019.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
@@ -37,6 +36,8 @@ using namespace QtDataVisualization;
 #include "textio.h"
 USING_KANS(TextIO)
 
+
+#define EXTRA_GRAPHICS_FEATURES
 
 ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
   int fres, int tres, QWidget* parent, bool dbl)
@@ -106,7 +107,10 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
  series_->setBaseGradient(bar_gradient);
 
 #ifdef EXTRA_GRAPHICS_FEATURES
- series_->setColorStyle(Q3DTheme::ColorStyleRangeGradient);
+ if(dbl)
+   series_->setColorStyle(Q3DTheme::ColorStyleRangeGradient);
+ else
+   series_->setColorStyle(Q3DTheme::ColorStyleObjectGradient);
 #else
  series_->setColorStyle(Q3DTheme::ColorStyleObjectGradient);
 #endif
@@ -141,7 +145,10 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
   less_series_->setBaseGradient(bar_gradient1);
 
  #ifdef EXTRA_GRAPHICS_FEATURES
-  less_series_->setColorStyle(Q3DTheme::ColorStyleRangeGradient);
+  if(dbl)
+    less_series_->setColorStyle(Q3DTheme::ColorStyleRangeGradient);
+  else
+    less_series_->setColorStyle(Q3DTheme::ColorStyleObjectGradient);
  #else
   less_series_->setColorStyle(Q3DTheme::ColorStyleObjectGradient);
  #endif
@@ -180,12 +187,15 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
 
 
 #ifdef EXTRA_GRAPHICS_FEATURES
- QCategory3DAxis* rax = new QCategory3DAxis;
- rax->setTitle("Flow");
- rax->setTitleVisible(true);
- bars->setRowAxis(rax);
+ if(dbl)
+ {
+  QCategory3DAxis* rax = new QCategory3DAxis;
+  rax->setTitle("Flow");
+  rax->setTitleVisible(true);
+  bars->setRowAxis(rax);
+  series_->setItemLabelFormat(QStringLiteral("Flow - @colLabel @rowLabel: @valueLabel"));
+ }
 
- series->setItemLabelFormat(QStringLiteral("Flow - @colLabel @rowLabel: @valueLabel"));
 
 #endif
 
@@ -250,4 +260,3 @@ ScignStage_3d_Chart_Dialog::~ScignStage_3d_Chart_Dialog()
 {
 
 }
-
