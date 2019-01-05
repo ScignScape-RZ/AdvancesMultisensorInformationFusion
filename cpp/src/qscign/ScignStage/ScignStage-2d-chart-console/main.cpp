@@ -27,6 +27,9 @@ int main(int argc, char **argv)
 {
  QApplication qapp(argc, argv);
 
+ qapp.setWindowIcon(QIcon(DEFAULT_ICON_FOLDER "/app-icon.svg"));
+
+
  Test_Series ts;
  ts.parse_data(DATA_FOLDER "/t1.txt");
 

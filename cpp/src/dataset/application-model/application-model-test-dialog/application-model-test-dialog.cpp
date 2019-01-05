@@ -164,7 +164,12 @@ Application_Model_Test_Dialog::Application_Model_Test_Dialog(
 
  minimize_layout_ = add_minimize_frame(button_box_, [this]
  {
-  setWindowState(Qt::WindowMinimized);
+#ifdef USE_UBUNTU_MINIMIZE
+   this->setWindowFlags(Qt::Window);
+   showMinimized();
+#else
+   setWindowState(Qt::WindowMinimized);
+#endif
  });
 
  main_layout_->addLayout(minimize_layout_);
@@ -311,7 +316,12 @@ void Application_Model_Test_Dialog::check_test_result(QString desc,
 
  add_minimize_frame(qmb, [qmb]()
  {
-  qmb->setWindowState(Qt::WindowMinimized);
+#ifdef USE_UBUNTU_MINIMIZE
+   qmb->setWindowFlags(Qt::Window);
+   qmb->showMinimized();
+#else
+   qmb->setWindowState(Qt::WindowMinimized);
+#endif
  });
 
  qmb->setModal(false);

@@ -36,7 +36,10 @@ USING_KANS(KCL)
 
 int main(int argc, char **argv)
 {
- QApplication qapp(argc, argv);
+// QApplication qapp(argc, argv);
+
+// qapp.setWindowIcon(QIcon(DEFAULT_ICON_FOLDER "/app-icon.svg"));
+
 
  qRegisterMetaType<KCM_Lisp_Bridge>();
  qRegisterMetaType<KCM_Lisp_Bridge*>();

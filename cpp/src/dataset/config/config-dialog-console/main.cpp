@@ -36,6 +36,7 @@ int main(int argc, char **argv)
 {
  QApplication qapp(argc, argv);
 
+ qapp.setWindowIcon(QIcon(DEFAULT_ICON_FOLDER "/app-icon.svg"));
 
  Config_Dialog dlg(nullptr);
 

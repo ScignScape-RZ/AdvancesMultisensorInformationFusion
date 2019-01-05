@@ -80,6 +80,7 @@ class ScignStage_2d_Chart_Dialog : public QDialog
  void uncontract_items(quint8 f, quint8 t);
 
  void highlight_items_by_oxy(quint8 oxy);
+ void unhighlight_items_by_oxy();
 
  enum class Item_States { Normal = 0,
     Highlight = 1, Contracted = 2, Highlight_Oxy = 4,

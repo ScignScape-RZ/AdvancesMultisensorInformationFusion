@@ -246,7 +246,12 @@ ScignStage_Tree_Table_Dialog::ScignStage_Tree_Table_Dialog(XPDF_Bridge* xpdf_bri
 
  minimize_layout_ = add_minimize_frame(button_box_, [this]
  {
-  setWindowState(Qt::WindowMinimized);
+#ifdef USE_UBUNTU_MINIMIZE
+   this->setWindowFlags(Qt::Window);
+   showMinimized();
+#else
+   setWindowState(Qt::WindowMinimized);
+#endif
  });
 
  main_layout_->addLayout(minimize_layout_);
@@ -314,6 +319,7 @@ bool ScignStage_Tree_Table_Dialog::ask_pdf_proceed(Series_TreeWidget::Sort_Optio
  {
   return ask_pdf_proceed(name.mid(1));
  }
+ return false;
 }
 
 void ScignStage_Tree_Table_Dialog::show_non_pdf_message(QString name)

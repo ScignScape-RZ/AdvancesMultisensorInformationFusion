@@ -24,6 +24,8 @@ int main(int argc, char **argv)
 {
  QApplication qapp(argc, argv);
 
+ qapp.setWindowIcon(QIcon(DEFAULT_ICON_FOLDER "/app-icon.svg"));
+
  Application_Test_Model apptm;
 
  Application_Model_Test_Dialog dlg(&apptm, {{

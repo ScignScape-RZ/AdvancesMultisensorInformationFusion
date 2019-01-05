@@ -209,7 +209,12 @@ ScignStage_3d_Chart_Dialog::ScignStage_3d_Chart_Dialog(Test_Series* ts,
 
  minimize_layout_ = add_minimize_frame(button_box_, [this]
  {
-  setWindowState(Qt::WindowMinimized);
+#ifdef USE_UBUNTU_MINIMIZE
+   this->setWindowFlags(Qt::Window);
+   showMinimized();
+#else
+   setWindowState(Qt::WindowMinimized);
+#endif
  });
 
  main_layout_->addLayout(minimize_layout_);

@@ -341,6 +341,11 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
    highlight_items_by_oxy(80);
   });
 
+  qm->addAction("Unhighlight Oxygen",
+    [this]()
+  {
+   unhighlight_items_by_oxy();
+  });
 
   QPoint g = main_view_->mapToGlobal(qp);
   qm->popup(g);
@@ -350,7 +355,12 @@ ScignStage_2d_Chart_Dialog::ScignStage_2d_Chart_Dialog(Test_Series* ts,
 
  minimize_layout_ = add_minimize_frame(button_box_, [this]
  {
-  setWindowState(Qt::WindowMinimized);
+#ifdef USE_UBUNTU_MINIMIZE
+   this->setWindowFlags(Qt::Window);
+   showMinimized();
+#else
+   setWindowState(Qt::WindowMinimized);
+#endif
  });
 
  main_layout_->addLayout(minimize_layout_);
@@ -377,6 +387,42 @@ void ScignStage_2d_Chart_Dialog::uncontract_items(quint8 f, quint8 t)
  }
  contracteds_.remove({f,t});
  delete vs;
+}
+
+void ScignStage_2d_Chart_Dialog::unhighlight_items_by_oxy()
+{
+ QMapIterator<Test_Sample*, QGraphicsItem*> it(sample_map_);
+ while(it.hasNext())
+ {
+  it.next();
+  Test_Sample* samp = it.key();
+  QGraphicsItem* qgi = it.value();
+
+  if(QGraphicsRectItem* qgri = qgraphicsitem_cast<QGraphicsRectItem*>(qgi))
+  {
+   Item_States ist = (Item_States) qgri->data(3).value<quint8>();
+   if(ist == Item_States::Highlight_Oxy)
+   {
+    QColor clr2 = QColor(90, 90, 255, 100);
+    QPen qpen(clr2);
+    qpen.setWidth(6);
+    qgri->setPen(qpen);
+    Item_States nist = Item_States::Normal;
+    qgri->setData(3, (quint8) nist);
+   }
+   else if(ist == Item_States::Highlight_Oxy_Contracted)
+   {
+    QColor clr2 = QColor(90, 90, 255, 100);
+    QPen qpen(clr2);
+    qpen.setWidth(3);
+    qgri->setPen(qpen);
+    Item_States nist = Item_States::Contracted;
+    qgri->setData(3, (quint8) nist);
+   }
+  }
+ }
+ main_scene_->update();
+ main_view_->update();
 }
 
 void ScignStage_2d_Chart_Dialog::highlight_items_by_oxy(quint8 oxy)
