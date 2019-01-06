@@ -14,7 +14,7 @@
 
 #include "kans.h"
 
-#include <QThread>
+#include <QIcon>
 
 
 USING_KANS(DSM)

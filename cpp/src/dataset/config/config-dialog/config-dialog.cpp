@@ -32,7 +32,7 @@
 #include <QPlainTextEdit>
 #include <QTextStream>
 
-#include <QtMultimedia/QMediaPlayer>
+#include <QComboBox>
 
 #include <QPainter>
 #include <QPushButton>
@@ -80,6 +80,29 @@ Config_Dialog::Config_Dialog(QWidget* parent)
  connect(button_box_, SIGNAL(rejected()), this, SLOT(cancel()));
 
  main_layout_ = new QVBoxLayout;
+
+ os_group_box_ = new QGroupBox("Operating System Profile");
+ os_layout_ = new QHBoxLayout;
+ os_combo_box_ = new QComboBox(this);
+ os_combo_box_->addItems({"Linux (Generic)",
+   "Uhuntu Linux", "Windows", "Mac"});
+
+ b32_checkbox_ = new QCheckBox("32 Bit");
+ b64_checkbox_ = new QCheckBox("64 Bit");
+ b3264_ = new QButtonGroup(this);
+
+ b3264_->addButton(b32_checkbox_);
+ b3264_->addButton(b64_checkbox_);
+
+ os_layout_->addStretch();
+ os_layout_->addWidget(os_combo_box_);
+ os_layout_->addStretch();
+ os_layout_->addWidget(b32_checkbox_);
+ os_layout_->addWidget(b64_checkbox_);
+ os_layout_->addStretch();
+
+ os_group_box_->setLayout(os_layout_);
+ main_layout_->addWidget(os_group_box_);
 
  compile_options_group_box_ = new QGroupBox("Compile Options", this);
  roles_group_box_ = new QGroupBox("Select User Role", this);

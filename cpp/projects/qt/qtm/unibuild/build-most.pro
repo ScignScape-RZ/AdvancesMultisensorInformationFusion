@@ -40,6 +40,7 @@ SUBDIRS += \
 SUBDIRS += \
   dataset/application-model/application-model \
   dataset/application-model/application-model-test-dialog \
+  dataset/config/config-dialog-console \
   dataset/application-model/amtd-console \
   dataset/dsmain/_run__dsmain-console \
 

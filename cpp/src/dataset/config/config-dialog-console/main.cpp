@@ -17,7 +17,7 @@
 
 USING_KANS(TextIO)
 
-#include <QThread>
+#include <QIcon>
 
 
 USING_KANS(DSM)
@@ -36,7 +36,7 @@ int main(int argc, char **argv)
 {
  QApplication qapp(argc, argv);
 
- qapp.setWindowIcon(QIcon(DEFAULT_ICON_FOLDER "/app-icon.svg"));
+ qapp.setWindowIcon(QIcon(DEFAULT_ICON_FOLDER "/app-icon.png"));
 
  Config_Dialog dlg(nullptr);
 
