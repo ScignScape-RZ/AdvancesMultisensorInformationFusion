@@ -349,7 +349,7 @@ bool ScignStage_Tree_Table_Dialog::ask_pdf_proceed(QString name)
   qmb.setWindowTitle(about.left(index));
   qmb.setText("Click 'Show Details' for a summary "
     "or 'More' for PDF/Original Article links.");
-  qmb.setDetailedText(about.mid(index + 2));
+  qmb.setDetailedText(about.mid(index + 2).trimmed());
  }
 
  qmb.setIcon(QMessageBox::Information);

@@ -162,6 +162,8 @@ int main(int argc, char **argv)
  ScignStage_Tree_Table_Dialog dlg (nullptr, &ts);
 #endif
 
+ dlg.setWindowTitle("Dataset Main Application");
+
  Graphic_Dialog_Container gdc(&dlg);
 
  Application_Model apm(&dlg);
@@ -206,7 +208,7 @@ int main(int argc, char **argv)
   QTimer::singleShot(10000, [=]
   {
    QPixmap pixmap = screen->grabWindow(target_window_id );
-   QString path = SCREENSHOTS_FOLDER "/ScignStage_Audio_Dialog.png";
+   QString path = SCREENSHOTS_FOLDER "/ScignStage_Tree_Table_Dialog.png";
    qDebug() << "Saving to path: " << path;
 
    QFile file(path);

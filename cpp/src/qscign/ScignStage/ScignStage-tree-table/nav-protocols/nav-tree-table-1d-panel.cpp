@@ -117,7 +117,7 @@ NAV_Tree_Table1D_Panel::NAV_Tree_Table1D_Panel(QWidget* parent)
 
  first_vlayout_->addLayout(peer_first_hlayout_);
 
- deco_button_ = new QPushButton("DECO", this);
+ deco_button_ = new QPushButton("DOUBLE", this);
  deco_button_->setCheckable(true);
  deco_button_->setChecked(false);
  deco_button_->setStyleSheet(colorful_toggle_button_style_sheet_());
