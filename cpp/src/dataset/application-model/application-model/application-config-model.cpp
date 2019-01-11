@@ -40,6 +40,17 @@ Application_Config_Model::Application_Config_Model()
        {"USING_SCIGNSTAGE_3D"},
        {"ScignStage-3d-chart"} }}},
 
+	{ "kdmi",
+      {{
+       {
+        "kdmi/ds-kdmi/ds-kdmi",
+        "kdmi/ds-kdmi/ds-kdmi-console",
+        "kdmi/kdmi-bridge/kdmi-bridge",
+        "kdmi/kdmi-bridge/kdmi-bridge-console",
+        },
+      {},
+      {} }}},
+
     { "kph",
       {{
        {
@@ -100,6 +111,11 @@ void Application_Config_Model::parse_config_code(QString cc)
   insert_text_.remove("xx");
  }
 
+ if(!cc.contains('d'))
+ {
+  insert_text_.remove("kdmi");
+ }
+ 
  if(!cc.contains('k'))
  {
   insert_text_.remove("kph");
@@ -121,6 +137,8 @@ void Application_Config_Model::parse_config_code(QString cc)
  {"", "dataset/config/config-dialog"},
  {"", "dataset/dsmain/dsmain"},
  {"", "qscign/ScignStage/ScignStage-2d-chart"},
+
+ {"kdmi", "*"},
 
  {"ro", "*"},
  {"ss3d", "*"},
