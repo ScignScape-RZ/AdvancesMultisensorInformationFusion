@@ -2,11 +2,11 @@
 # Advances in Multisensor Information Fusion
 ## Data Set and Code Base 
 
-This data set derives from _Advances in multisensor information fusion: A Markov–Kalman viscosity fuzzy statistical predictor for analysis of oxygen flow, diffusion, speed, temperature, and time metrics in CPAP_ by James A. Rodger.
+This data set derives from _Advances in multisensor information fusion: A Markovâ€“Kalman viscosity fuzzy statistical predictor for analysis of oxygen flow, diffusion, speed, temperature, and time metrics in CPAP_ by James A. Rodger.
 
 There are several ways to use the code, including several "build strategies".  The quickest option is to use the "`build-quick.pro`" project file in the "`./cpp/projects/qt/qt-multiple/unibuild`" folder.  For most users the best option may be "`build-most.pro`" in the same folder (both versions can be built independently).  The "`quick`" version lacks PDF and TCP features (which is explained via a message box when trying to use these features).
 
-A more complex option is "`build-all.pro`", which is only needed for users wishing to generate test scripts or use other advanced features related to "Runtime Reflection".  This part of dsC is more experimental and requires Embeddable Commmon Lisp (see below).  For developing new code or debugging the executables it may be necessary or easier to use the "`isobuild`" strategy, where each Qt project is built separately, rather than the "`unibuild`" options where projeects are built automatically in order.  Via "`isobuild`" developers can choose which projects to include more precisely.  For the equivalent of "`build-all.pro`" follow the build order listed in "`build-order.txt`".  Note that these comments are only applicable to a small set of users extending or exploring the code in detail.
+A more complex option is "`build-all.pro`", which is only needed for users wishing to generate test scripts or use other advanced features related to "Runtime Reflection".  This part of dsC is more experimental and requires Embeddable Commmon Lisp (see below).  For developing new code or debugging the executables it may be necessary or easier to use the "`isobuild`" strategy, where each Qt project is built separately, rather than the "`unibuild`" options where projects are built automatically in order.  Via "`isobuild`" developers can choose which projects to include more precisely.  For the equivalent of "`build-all.pro`" follow the build order listed in "`build-order.txt`".  Note that these comments are only applicable to a small set of users extending or exploring the code in detail.
 
 ---
 **Downloading**
